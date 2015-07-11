@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS4014
-
-namespace OpenInput
+﻿namespace OpenInput
 {
     using System;
     using System.Timers;
@@ -19,13 +17,16 @@ namespace OpenInput
             inputManager.KeyPress += (s, e) =>
             {
                 textInput.Process(e);
-                Console.WriteLine($"TextInput {textInput.Result}");
+                Console.Title = $"Text: {textInput.Result}";
             };
+
+            inputManager.KeyDown += (s, e) => Console.WriteLine($"KeyDown  {e.Key}");
+            inputManager.KeyUp += (s, e) => Console.WriteLine($"KeyUp .. {e.Key}");
 
             var timer = new Timer(1.0f / 30);
             timer.Elapsed += (s, e) =>
             {
-                inputManager.Update();
+                inputManager.Update().Wait();
 
                 var mouseState = Mouse.GetState();
                 if (mouseState.RightButton)
@@ -34,7 +35,7 @@ namespace OpenInput
                 }
 
                 //var keyState = Keyboard.GetState();
-                //if (keyState.IsKeyDown(Keys.A) && !previusKeyboardState.IsKeyDown(Keys.A))
+                //if (keyState.IsKeyDown(Keys.A))
                 //{
                 //    Console.WriteLine($"Key 'A' is down!");
                 //}

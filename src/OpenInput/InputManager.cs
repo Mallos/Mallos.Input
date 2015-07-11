@@ -9,7 +9,15 @@
 
     public partial class InputManager
     {
-        public static InputManager Current => current ?? (current = new InputManager());
+        public static InputManager Current
+        {
+            get
+            {
+                if (current == null)
+                    throw new ArgumentNullException("You have to create a instance of InputManager before!");
+                return current;
+            }
+        }
         private static InputManager current;
 
         public event Action<Device> DeviceConnected;
@@ -33,16 +41,7 @@
         private Keyboard currentKeyboard;
 
         private KeyboardState currentKeyboardState, previusKeyboardState;
-
-        public InputManager()
-        {
-            if (current == null) current = this;
-
-#if !PCL
-            this.PlatformInitialize();
-#endif
-        }
-
+        
         public async Task Update()
         {
             // TODO: update mouse
@@ -99,6 +98,18 @@
                     previusKeyboardState = currentKeyboardState;
                 }
             });
+        }
+
+        private void SetSingleton()
+        {
+            if (current == null)
+            {
+                current = this;
+            }
+            else
+            {
+                throw new ArgumentException("You have already initialized one InputManager!");
+            }
         }
     }
 }

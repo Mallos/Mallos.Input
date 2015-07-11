@@ -2,6 +2,8 @@
 {
     using System;
 
+    // TODO: This should be implemented into InputManager, so there can only be one
+
     public class TextInput
     {
         public string Result { get; internal set; }

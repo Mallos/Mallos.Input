@@ -6,9 +6,11 @@
     partial class InputManager
     {
         private DirectInput directInput;
-        
-        private void PlatformInitialize()
+
+        public InputManager()
         {
+            SetSingleton();
+
             directInput = new DirectInput();
 
             PlatformUpdate();
@@ -23,7 +25,7 @@
             //watcher.Query = query;
             //watcher.Start();
         }
-
+        
         public void PlatformUpdate()
         {
             var mouses = directInput.GetDevices(DeviceType.Mouse, DeviceEnumerationFlags.AllDevices);

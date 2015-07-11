@@ -1,14 +1,17 @@
 ﻿namespace OpenInput
 {
     using OpenTK;
-    using System.Linq;
 
     partial class InputManager
     {
         private GameWindow gameWindow;
 
-        private void PlatformInitialize()
+        public InputManager(GameWindow gameWindow)
         {
+            SetSingleton();
+
+            this.gameWindow = gameWindow;
+
             PlatformUpdate();
         }
         
