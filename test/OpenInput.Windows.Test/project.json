@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "OpenInput.Windows": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "4.0.10.0"
+      }
+    }
+  },
+  
+  "commands": {
+    "run": "OpenInput.Windows.Test"
+  }
+}

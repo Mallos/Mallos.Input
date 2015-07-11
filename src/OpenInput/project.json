@@ -1,0 +1,22 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "",
+  "authors": [ "Eric Tuvesson" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "define": [ "PCL" ]
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "4.0.10.0"
+      }
+    }
+  },
+
+  "shared": [ "**/*.cs" ]
+}
