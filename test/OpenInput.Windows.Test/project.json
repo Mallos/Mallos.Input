@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "OpenInput.Windows": "1.0.0-*",
-    "Nine.Injection": "1.2.0-alpha"
+    "Nine.Injection": "1.2.0-*",
+    "Nine.Hosting": "1.0.0"
   },
 
   "frameworks": {
@@ -11,8 +12,9 @@
       }
     }
   },
-  
+
   "commands": {
+    "dev": "OpenInput.Windows.Test --pin",
     "run": "OpenInput.Windows.Test"
   }
 }

@@ -7,25 +7,16 @@
 
     public class Program : GameWindow
     {
-        private InputManager inputManager;
-
         public Program()
             : base(800, 600, GraphicsMode.Default, "GameWindow")
         {
-            this.inputManager = new InputManager(this);
             this.VSync = VSyncMode.On;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            this.inputManager.KeyDown += (s, ev) =>
-            {
-                if (ev.Key == Keys.Escape)
-                    Exit();
-            };
-
+            
             GL.ClearColor(0.1f, 0.2f, 0.5f, 0.0f);
             GL.Enable(EnableCap.DepthTest);
         }
@@ -44,7 +35,6 @@
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            inputManager.Update().Wait();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

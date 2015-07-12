@@ -45,7 +45,7 @@
         public KeyboardState GetCurrentState()
         {
             if (keyboard.IsDisposed)
-                return new KeyboardState();
+                return new KeyboardState(new Keys[] { });
 
             // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
             // TODO: Check this instead of using try-catch
@@ -63,7 +63,7 @@
             }
             catch (SharpDXException e)
             {
-                return new KeyboardState();
+                return new KeyboardState(new Keys[] { });
             }
         }
     }
