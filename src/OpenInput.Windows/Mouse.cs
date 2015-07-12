@@ -49,6 +49,8 @@
 
                 var state = mouse.GetCurrentState();
                 //state.Update(new SharpDX.DirectInput.MouseUpdate())
+
+                // TODO: How can I set the mouse position?
             }
         }
 
