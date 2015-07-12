@@ -67,12 +67,12 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IGamePad: IDevice<KeyboardState>
+    public interface IGamePad: IDevice<GamePadState>
     {
         /// <summary>
         /// Gets the current state --
         /// </summary>
-        KeyboardState GetCurrentState(int index);
+        GamePadState GetCurrentState(int index);
     }
 
     /// <summary>
