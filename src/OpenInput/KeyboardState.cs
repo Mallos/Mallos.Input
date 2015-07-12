@@ -54,15 +54,20 @@
 
         public override string ToString()
         {
+            return JoinKeysToString(Keys);
+        }
+
+        public static string JoinKeysToString(Keys[] keys)
+        {
             string result = "{ ";
-            if (Keys.Length > 0)
+            if (keys.Length > 0)
             {
-                if (Keys.Length > 1)
+                if (keys.Length > 1)
                 {
-                    for (int i = 0; i < Keys.Length - 1; i++)
-                        result += Enum.GetName(typeof(Keys), Keys[i]) + ", ";
+                    for (int i = 0; i < keys.Length - 1; i++)
+                        result += Enum.GetName(typeof(Keys), keys[i]) + ", ";
                 }
-                result += Enum.GetName(typeof(Keys), Keys[Keys.Length - 1]);
+                result += Enum.GetName(typeof(Keys), keys[keys.Length - 1]);
             }
             result += " }";
             return result;

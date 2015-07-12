@@ -6,6 +6,10 @@
   "projectUrl": "",
   "licenseUrl": "",
 
+  "dependencies": {
+    "Nine.Injection": "1.1.66-alpha"
+  },
+
   "compilationOptions": {
     "define": [ "PCL" ]
   },

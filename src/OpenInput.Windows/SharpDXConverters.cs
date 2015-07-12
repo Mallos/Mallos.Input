@@ -1,8 +1,8 @@
-namespace OpenInput
+﻿namespace OpenInput.Windows
 {
     using System;
 
-    static class KeyboardUtilities
+    static class SharpDXConverters
     {
         public static Keys Convert(SharpDX.DirectInput.Key key)
         {
@@ -175,10 +175,10 @@ namespace OpenInput
                 case SharpDX.DirectInput.Key.Colon:
                 case SharpDX.DirectInput.Key.Equals:
                 case SharpDX.DirectInput.Key.Underline:
-                case SharpDX.DirectInput.Key.Convert: 
-                case SharpDX.DirectInput.Key.NoConvert: 
+                case SharpDX.DirectInput.Key.Convert:
+                case SharpDX.DirectInput.Key.NoConvert:
                 case SharpDX.DirectInput.Key.Oem102:
-                case SharpDX.DirectInput.Key.Kanji: 
+                case SharpDX.DirectInput.Key.Kanji:
                 case SharpDX.DirectInput.Key.Kana:
                 case SharpDX.DirectInput.Key.Yen:
                 case SharpDX.DirectInput.Key.Unlabeled:
