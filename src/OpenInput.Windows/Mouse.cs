@@ -39,7 +39,20 @@
         /// <inheritdoc />
         public MouseState GetCurrentState()
         {
-            throw new NotImplementedException();
+            if (mouse.IsDisposed)
+                return new MouseState();
+
+            mouse.Poll();
+
+            var state = mouse.GetCurrentState();
+
+            return new MouseState(
+                state.X, state.Y, state.Z,
+                state.Buttons[0],
+                state.Buttons[1],
+                state.Buttons[2],
+                state.Buttons[3],
+                state.Buttons[4]);
         }
     }
 }
