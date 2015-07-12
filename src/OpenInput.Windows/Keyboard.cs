@@ -1,5 +1,7 @@
 ﻿namespace OpenInput
 {
+    using SharpDX;
+    using SharpDX.DirectInput;
     using System;
     using DI_Keyboard = SharpDX.DirectInput.Keyboard;
 
@@ -29,20 +31,40 @@
         }
 
         /// <inheritdoc />
+        public void SetHandle(IntPtr handle)
+        {
+            if (!keyboard.IsDisposed)
+            {
+                keyboard.Unacquire();
+                keyboard.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.Exclusive);
+                keyboard.Acquire();
+            }
+        }
+
+        /// <inheritdoc />
         public KeyboardState GetCurrentState()
         {
             if (keyboard.IsDisposed)
                 return new KeyboardState();
 
-            keyboard.Poll();
+            // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
+            // TODO: Check this instead of using try-catch
+            try 
+            {
+                keyboard.Poll();
 
-            var state = keyboard.GetCurrentState();
+                var state = keyboard.GetCurrentState();
 
-            Keys[] keys = new Keys[state.PressedKeys.Count];
-            for (int i = 0; i < state.PressedKeys.Count; i++)
-                keys[i] = SharpDXConverters.Convert(state.PressedKeys[i]);
+                Keys[] keys = new Keys[state.PressedKeys.Count];
+                for (int i = 0; i < state.PressedKeys.Count; i++)
+                    keys[i] = SharpDXConverters.Convert(state.PressedKeys[i]);
 
-            return new KeyboardState(keys);
+                return new KeyboardState(keys);
+            }
+            catch (SharpDXException e)
+            {
+                return new KeyboardState();
+            }
         }
     }
 

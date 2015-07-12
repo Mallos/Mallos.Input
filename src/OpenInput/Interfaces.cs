@@ -46,6 +46,11 @@
     public interface IKeyboard : IDevice<KeyboardState>
     {
         /// <summary>
+        /// Sets the keyboard handle.
+        /// </summary>
+        void SetHandle(IntPtr handle);
+
+        /// <summary>
         /// Gets the <see cref="ITextInput"/>.
         /// </summary>
         ITextInput TextInput { get; }

@@ -4,8 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    // TODO: Store CapsLock & NumLock & ScrLk variables
+
+    /// <summary>
+    /// 
+    /// </summary>
     public struct KeyboardState
     {
+        /// <summary> Gets all the currently pressed keys. </summary>
         public Keys[] Keys { get; internal set; }
 
         public KeyboardState(Keys[] keys)

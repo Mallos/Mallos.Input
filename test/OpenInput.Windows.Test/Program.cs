@@ -5,32 +5,52 @@
     using System.Timers;
     using Form = System.Windows.Forms.Form;
     
-    public class Program
+    public class Program : Form
     {
-        public void Main(string[] args)
+        private IContainer container;
+        private Timer timer;
+
+        public Program()
         {
-            var container = new Container();
+            container = new Container();
             container
                 .Map<IMouse>(new Mouse())
                 .Map<IKeyboard>(new Keyboard());
 
+            timer = new Timer(1.0f / 4);
+            timer.Elapsed += TimerElapsed;
+        }
 
-            var timer = new Timer(1.0f / 4);
-            timer.Elapsed += (s, e) =>
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            container.Get<IKeyboard>().SetHandle(this.Handle);
+            container.Get<IMouse>().SetHandle(this.Handle);
+            timer.Start();
+        }
+        
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            var keyboard = container.Get<IKeyboard>();
+            if (keyboard != null)
             {
-                var keyboard = container.Get<IKeyboard>();
-                if (keyboard != null)
-                {
-                    var keyboardState = keyboard.GetCurrentState();
-                    Console.WriteLine(keyboardState.ToString());
-                }
-            };
+                var keyboardState = keyboard.GetCurrentState();
+                Console.WriteLine(keyboardState.ToString());
+            }
 
-            var form = new Form();
+            var mouse = container.Get<IMouse>();
+            if (mouse != null)
+            {
+                var mouseState = mouse.GetCurrentState();
+                Console.WriteLine(mouseState.ToString());
+            }
+        }
+
+        public void Main(string[] args)
+        {
+            var form = new Program();
             form.Width = 500;
             form.Height = 500;
-            
-            timer.Start();
             form.ShowDialog();
         }
     }
