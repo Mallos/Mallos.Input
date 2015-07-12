@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "OpenInput.Windows": "1.0.0-*"
+    "OpenInput.Windows": "1.0.0-*",
+    "Nine.Injection": "1.2.0-alpha"
   },
 
   "frameworks": {

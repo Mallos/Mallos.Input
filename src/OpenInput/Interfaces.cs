@@ -1,7 +1,10 @@
 ﻿namespace OpenInput
 {
-    using System.Collections.Generic;
+    using System;
 
+    /// <summary>
+    /// Interface for a basic device.
+    /// </summary>
     public interface IDevice
     {
         /// <summary>
@@ -11,7 +14,7 @@
     }
 
     /// <summary>
-    /// 
+    /// Interface for a device with a state.
     /// </summary>
     public interface IDevice<TState> : IDevice where TState : struct
     {
@@ -20,44 +23,55 @@
         /// </summary>
         TState GetCurrentState();
     }
-
-    public interface IMouse : IDevice<MouseState> { }
-    public interface IKeyboard : IDevice<KeyboardState> { }
-
+    
     /// <summary>
     /// 
     /// </summary>
-    public interface IDeviceService
+    public interface IMouse : IDevice<MouseState>
     {
         /// <summary>
-        /// Gets the current mouse.
+        /// Sets the mouse handle.
         /// </summary>
-        IMouse GetMouse();
+        void SetHandle(IntPtr handle);
 
         /// <summary>
-        /// Gets the current keyboard.
+        /// Sets the mouse cursor position.
         /// </summary>
-        IKeyboard GetKeyboard();
-
-        /// <summary>
-        /// Gets all the connected devices.
-        /// </summary>
-        IList<IDevice> GetDevices();
+        void SetPosition(int x, int y);
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IDeviceEventPusher<TDevice> where TDevice : IDevice
+    public interface IKeyboard : IDevice<KeyboardState>
     {
         /// <summary>
-        /// 
+        /// Gets the <see cref="ITextInput"/>.
         /// </summary>
-        void Push(TDevice device);
+        ITextInput TextInput { get; }
     }
 
     /// <summary>
     /// 
+    /// </summary>
+    public interface ITouchDevice : IDevice<TouchCollection>
+    {
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IGamePad: IDevice<KeyboardState>
+    {
+        /// <summary>
+        /// Gets the current state --
+        /// </summary>
+        KeyboardState GetCurrentState(int index);
+    }
+
+    /// <summary>
+    /// Interface that provides support for text input.
     /// </summary>
     public interface ITextInput
     {
@@ -67,8 +81,13 @@
         string Result { get; set; }
 
         /// <summary>
-        /// Gets or sets if capturing input.
+        /// Gets or sets, if capturing input.
         /// </summary>
         bool Capture { get; set; }
+        
+        /// <summary>
+        /// Gets or sets, if the capture should allow new lines.
+        /// </summary>
+        bool AllowNewLine { get; set; }
     }
 }

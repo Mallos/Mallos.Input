@@ -12,7 +12,7 @@ namespace OpenInput
 
         public static bool IsNumber(this Keys key)
         {
-            // TODO: NumPad etc
+            // TODO: NumPad etc ?
             var b = ((byte)key);
             return b >= 48 && b <= 57;
         }

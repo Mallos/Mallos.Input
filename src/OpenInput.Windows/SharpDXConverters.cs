@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Windows
+﻿namespace OpenInput
 {
     using System;
 
