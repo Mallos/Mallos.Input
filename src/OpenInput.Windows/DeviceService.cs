@@ -5,6 +5,8 @@
     using System.Drawing;
     using System.Windows.Forms;
 
+    // http://www.gamedev.net/blog/233/entry-1567278-reasons-not-to-use-directinput-for-keyboard-input/
+
     class DeviceService
     {
         public static Lazy<DeviceService> Service = new Lazy<DeviceService>();

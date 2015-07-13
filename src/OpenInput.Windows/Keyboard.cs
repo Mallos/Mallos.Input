@@ -15,7 +15,9 @@
 
         /// <inheritdoc />
         public ITextInput TextInput => textInput;
+
         private TextInput textInput;
+        private KeyboardState previusState;
 
         internal readonly DI_Keyboard keyboard;
 
@@ -28,6 +30,8 @@
 
             this.keyboard = new DI_Keyboard(directInput);
             this.keyboard.Acquire();
+
+            this.textInput = new TextInput();
         }
 
         /// <inheritdoc />
@@ -45,25 +49,52 @@
         public KeyboardState GetCurrentState()
         {
             if (keyboard.IsDisposed)
-                return new KeyboardState(new Keys[] { });
+                return previusState = new KeyboardState(new Keys[] { });
 
             // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
             // TODO: Check this instead of using try-catch
             try 
             {
                 keyboard.Poll();
-
+                
                 var state = keyboard.GetCurrentState();
-
+                
                 Keys[] keys = new Keys[state.PressedKeys.Count];
                 for (int i = 0; i < state.PressedKeys.Count; i++)
                     keys[i] = SharpDXConverters.Convert(state.PressedKeys[i]);
 
-                return new KeyboardState(keys);
+                var currentState = new KeyboardState(keys);
+                
+                if (TextInput.Capture) // I could pull from keyboard.GetBufferedData()
+                {
+                    var shift = currentState.IsKeyDown(Keys.LeftShift) | currentState.IsKeyDown(Keys.RightShift);
+
+                    var compare = currentState.Compare(previusState);
+                    foreach (var key in compare.Item1)
+                    {
+                        if (InputHelper.IsLetter(key))
+                        {
+                            var keyChar = InputHelper.ToText(key);
+                            TextInput.Result += shift ? keyChar[0] : (char)(keyChar[0] + 32);
+                        }
+
+                        if (TextInput.Result.Length > 0 && key == Keys.Back)
+                        {
+                            TextInput.Result = TextInput.Result.Remove(TextInput.Result.Length - 1);
+                        }
+
+                        if (TextInput.AllowNewLine && key == Keys.Enter)
+                        {
+                            TextInput.Result += Environment.NewLine;
+                        }
+                    }
+                }
+
+                return previusState = currentState;
             }
             catch (SharpDXException e)
             {
-                return new KeyboardState(new Keys[] { });
+                return previusState = new KeyboardState(new Keys[] { });
             }
         }
     }

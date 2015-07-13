@@ -69,6 +69,8 @@
     /// </summary>
     public interface IGamePad: IDevice<GamePadState>
     {
+        // TODO: I need a better interface for GamePad's, since it can support multiple.
+
         /// <summary>
         /// Gets the current state --
         /// </summary>

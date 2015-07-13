@@ -31,8 +31,8 @@
             base.OnShown(e);
 
             // TODO: This also creates an issue when tabbing back!
-            container.Get<IKeyboard>().SetHandle(this.Handle);
-            container.Get<IMouse>().SetHandle(this.Handle);
+            //container.Get<IKeyboard>().SetHandle(this.Handle);
+            //container.Get<IMouse>().SetHandle(this.Handle);
 
             timer.Start();
         }
@@ -42,8 +42,17 @@
             var keyboard = container.Get<IKeyboard>();
             if (keyboard != null)
             {
+                // If TextInput is capturing, this is pulling the updates
                 var keyboardState = keyboard.GetCurrentState();
-                Console.WriteLine(keyboardState.ToString());
+
+                if (keyboard.TextInput.Capture)
+                {
+                    Console.WriteLine(keyboard.TextInput.Result);
+                }
+                else
+                {
+                    Console.WriteLine(keyboardState.ToString());
+                }
             }
 
             var mouse = container.Get<IMouse>();
@@ -51,6 +60,11 @@
             {
                 var mouseState = mouse.GetCurrentState();
                 Console.WriteLine(mouseState.ToString());
+
+                if (mouseState.LeftButton && keyboard != null)
+                {
+                    keyboard.TextInput.Capture = !keyboard.TextInput.Capture;
+                }
             }
         }
     }
