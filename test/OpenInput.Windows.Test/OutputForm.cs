@@ -3,27 +3,26 @@
     using Nine.Injection;
     using System.Windows.Forms;
     using System;
+    using System.Text;
 
-    using Timer = System.Timers.Timer;
-    using ElapsedEventArgs = System.Timers.ElapsedEventArgs;
-
-    public class OutputForm : Form
+    public partial class OutputForm : Form
     {
         private IContainer container;
         private Timer timer;
 
         public OutputForm()
         {
-            this.Width = 500;
-            this.Height = 500;
+            this.Text = "OpenInput";
+            this.InitializeComponent();
 
             this.container = new Container();
             this.container
                 .Map<IMouse>(new DirectInput.Mouse())
                 .Map<IKeyboard>(new DirectInput.Keyboard());
 
-            this.timer = new Timer((1.0f / 12) * 1000.0f);
-            this.timer.Elapsed += TimerElapsed;
+            this.timer = new Timer();
+            this.timer.Interval = (int)TimeSpan.FromSeconds(1.0f / 12).TotalMilliseconds;
+            this.timer.Tick += TimerElapsed;
         }
         
         protected override void OnShown(EventArgs e)
@@ -34,24 +33,22 @@
             //container.Get<IKeyboard>().SetHandle(this.Handle);
             //container.Get<IMouse>().SetHandle(this.Handle);
 
+            //new RawInput.Keyboard(this.Handle);
+            
             timer.Start();
         }
 
-        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        private void TimerElapsed(object sender, EventArgs e)
         {
             var keyboard = container.Get<IKeyboard>();
             if (keyboard != null)
             {
-                // If TextInput is capturing, this is pulling the updates
-                var keyboardState = keyboard.GetCurrentState();
+                this.keyboardNamesLabel.Text = $"Name/s: {keyboard.Name}";
 
-                if (keyboard.TextInput.Capture)
+                var keyboardState = keyboard.GetCurrentState();
+                if (keyboardState.Keys.Length > 0)
                 {
-                    Console.WriteLine(keyboard.TextInput.Result);
-                }
-                else
-                {
-                    Console.WriteLine(keyboardState.ToString());
+                    AddKeyboardHistory(keyboard.TextInput.Capture ? keyboard.TextInput.Result : keyboardState.ToString());
                 }
             }
 
@@ -59,12 +56,18 @@
             if (mouse != null)
             {
                 var mouseState = mouse.GetCurrentState();
-                Console.WriteLine(mouseState.ToString());
 
-                if (mouseState.LeftButton && keyboard != null)
-                {
-                    keyboard.TextInput.Capture = !keyboard.TextInput.Capture;
-                }
+                this.mouseNamesLabel.Text = $"Name/s: {mouse.Name}";
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"Position: {mouseState.X}, {mouseState.Y}, MouseWheel: {mouseState.ScrollWheelValue}");
+                sb.AppendLine();
+                sb.AppendLine($"Left Button: {mouseState.LeftButton}, Middle Button: {mouseState.MiddleButton}, Right Button: {mouseState.RightButton}");
+                sb.AppendLine($"XButton1: {mouseState.XButton1}, XButton2: {mouseState.XButton2}");
+                this.mouseStateLabel.Text = sb.ToString();
+
+                //if (mouseState.LeftButton && keyboard != null)
+                //    keyboard.TextInput.Capture = !keyboard.TextInput.Capture;
             }
         }
     }

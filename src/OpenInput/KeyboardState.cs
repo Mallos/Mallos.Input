@@ -65,7 +65,7 @@
 
         public static string JoinKeysToString(Keys[] keys)
         {
-            string result = "{ ";
+            string result = "[ ";
             if (keys.Length > 0)
             {
                 if (keys.Length > 1)
@@ -75,7 +75,7 @@
                 }
                 result += Enum.GetName(typeof(Keys), keys[keys.Length - 1]);
             }
-            result += " }";
+            result += " ]";
             return result;
         }
     }
