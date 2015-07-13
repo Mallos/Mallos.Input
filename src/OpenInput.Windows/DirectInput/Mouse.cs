@@ -1,13 +1,17 @@
 ﻿namespace OpenInput.DirectInput
 {
-    using SharpDX;
     using System;
     using CooperativeLevel = SharpDX.DirectInput.CooperativeLevel;
     using DirectInputMouse = SharpDX.DirectInput.Mouse;
 
     /// <summary>
-    /// 
+    /// DirectInput Mouse
     /// </summary>
+    /// <remarks>
+    /// "There's one occasion where it's acceptable to use DirectInput for mouse input, 
+    /// and that's if you need high DPI mouse input and you need to support pre-Win2k machine."
+    /// http://www.gamedev.net/blog/233/entry-1567278-reasons-not-to-use-directinput-for-keyboard-input/
+    /// </remarks>
     public class Mouse : IMouse
     {
         /// <inheritdoc />
@@ -18,7 +22,7 @@
         private MouseState state;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Mouse"/> class.
         /// </summary>
         public Mouse()
         {
@@ -32,26 +36,19 @@
         /// <inheritdoc />
         public void SetHandle(IntPtr handle)
         {
-            if (!mouse.IsDisposed)
-            {
-                mouse.Unacquire();
-                mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
-                mouse.Acquire();
-            }
+            // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
+            //if (!mouse.IsDisposed)
+            //{
+            //    mouse.Unacquire();
+            //    mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
+            //    mouse.Acquire();
+            //}
         }
 
         /// <inheritdoc />
         public void SetPosition(int x, int y)
         {
-            if (!mouse.IsDisposed)
-            {
-                mouse.Poll();
-
-                var state = mouse.GetCurrentState();
-                //state.Update(new SharpDX.DirectInput.MouseUpdate())
-
-                // TODO: How can I set the mouse position?
-            }
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc />
@@ -60,36 +57,27 @@
             if (mouse.IsDisposed)
                 return new MouseState();
 
-            // Same issue as Keyboard
-            try
-            {
-                mouse.Poll();
+            mouse.Poll();
 
-                var state = mouse.GetCurrentState();
+            var state = mouse.GetCurrentState();
 
-                this.state.X += state.X;
-                this.state.Y += state.Y;
+            this.state.X += state.X;
+            this.state.Y += state.Y;
 
-                var screenBounds = DeviceService.Service.Value.ScreenBounds;
-                if (this.state.X < screenBounds.X) this.state.X = screenBounds.X;
-                if (this.state.Y < screenBounds.Y) this.state.Y = screenBounds.Y;
-                if (this.state.X > screenBounds.Width) this.state.X = screenBounds.Width;
-                if (this.state.Y > screenBounds.Height) this.state.Y = screenBounds.Height;
+            var screenBounds = DeviceService.Service.Value.ScreenBounds;
+            if (this.state.X < screenBounds.X) this.state.X = screenBounds.X;
+            if (this.state.Y < screenBounds.Y) this.state.Y = screenBounds.Y;
+            if (this.state.X > screenBounds.Width) this.state.X = screenBounds.Width;
+            if (this.state.Y > screenBounds.Height) this.state.Y = screenBounds.Height;
 
-                this.state.ScrollWheelDelta = state.Z;
-                this.state.ScrollWheelValue += state.Z;
-                this.state.LeftButton = state.Buttons[0];
-                this.state.MiddleButton = state.Buttons[2];
-                this.state.RightButton = state.Buttons[1];
-                this.state.XButton1 = state.Buttons[3];
-                this.state.XButton2 = state.Buttons[4];
-
-            }
-            catch (SharpDXException e)
-            {
-
-            }
-
+            this.state.ScrollWheelDelta = state.Z;
+            this.state.ScrollWheelValue += state.Z;
+            this.state.LeftButton = state.Buttons[0];
+            this.state.MiddleButton = state.Buttons[2];
+            this.state.RightButton = state.Buttons[1];
+            this.state.XButton1 = state.Buttons[3];
+            this.state.XButton2 = state.Buttons[4];
+            
             return this.state;
         }
     }

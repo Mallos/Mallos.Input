@@ -97,4 +97,12 @@
         /// </summary>
         bool AllowNewLine { get; set; }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDeviceService
+    {
+        int NumberOfKeyboards { get; }
+    }
 }
