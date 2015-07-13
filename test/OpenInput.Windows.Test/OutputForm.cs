@@ -19,8 +19,8 @@
 
             this.container = new Container();
             this.container
-                .Map<IMouse>(new Mouse())
-                .Map<IKeyboard>(new Keyboard());
+                .Map<IMouse>(new DirectInput.Mouse())
+                .Map<IKeyboard>(new DirectInput.Keyboard());
 
             this.timer = new Timer((1.0f / 12) * 1000.0f);
             this.timer.Elapsed += TimerElapsed;

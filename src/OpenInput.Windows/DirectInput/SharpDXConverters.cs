@@ -1,4 +1,4 @@
-﻿namespace OpenInput
+﻿namespace OpenInput.DirectInput
 {
     using System;
 

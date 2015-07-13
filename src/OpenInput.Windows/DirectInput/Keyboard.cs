@@ -1,9 +1,9 @@
-﻿namespace OpenInput
+﻿namespace OpenInput.DirectInput
 {
     using SharpDX;
-    using SharpDX.DirectInput;
     using System;
-    using DI_Keyboard = SharpDX.DirectInput.Keyboard;
+    using CooperativeLevel = SharpDX.DirectInput.CooperativeLevel;
+    using DirectInputKeyboard = SharpDX.DirectInput.Keyboard;
 
     /// <summary>
     /// 
@@ -19,7 +19,7 @@
         private TextInput textInput;
         private KeyboardState previusState;
 
-        internal readonly DI_Keyboard keyboard;
+        internal readonly DirectInputKeyboard keyboard;
 
         /// <summary>
         /// 
@@ -28,7 +28,7 @@
         {
             var directInput = DeviceService.Service.Value.directInput;
 
-            this.keyboard = new DI_Keyboard(directInput);
+            this.keyboard = new DirectInputKeyboard(directInput);
             this.keyboard.Acquire();
 
             this.textInput = new TextInput();
@@ -76,6 +76,11 @@
                         {
                             var keyChar = InputHelper.ToText(key);
                             TextInput.Result += shift ? keyChar[0] : (char)(keyChar[0] + 32);
+                        }
+
+                        if (key == Keys.Space)
+                        {
+                            TextInput.Result += " ";
                         }
 
                         if (TextInput.Result.Length > 0 && key == Keys.Back)

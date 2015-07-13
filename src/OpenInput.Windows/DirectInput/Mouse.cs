@@ -1,9 +1,9 @@
-﻿namespace OpenInput
+﻿namespace OpenInput.DirectInput
 {
     using SharpDX;
-    using SharpDX.DirectInput;
     using System;
-    using DI_Mouse = SharpDX.DirectInput.Mouse;
+    using CooperativeLevel = SharpDX.DirectInput.CooperativeLevel;
+    using DirectInputMouse = SharpDX.DirectInput.Mouse;
 
     /// <summary>
     /// 
@@ -13,7 +13,7 @@
         /// <inheritdoc />
         public string Name => mouse.Information.ProductName.Trim('\0');
 
-        internal readonly DI_Mouse mouse;
+        internal readonly DirectInputMouse mouse;
 
         private MouseState state;
 
@@ -25,7 +25,7 @@
             var directInput = DeviceService.Service.Value.directInput;
 
             this.state = new MouseState();
-            this.mouse = new DI_Mouse(directInput);
+            this.mouse = new DirectInputMouse(directInput);
             this.mouse.Acquire();
         }
 
