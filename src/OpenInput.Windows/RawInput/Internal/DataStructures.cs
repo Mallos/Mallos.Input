@@ -57,8 +57,8 @@
 
         public override string ToString()
         {
-            return $"DeviceInfoKeyboard [ Type: {Type}, SubType: {SubType}, KeyboardMode: {KeyboardMode}, NumberOfFunctionKeys: {NumberOfFunctionKeys},"
-                + "NumberOfIndicators: {NumberOfIndicators}, NumberOfKeysTotal: {NumberOfKeysTotal} ]";
+            return $"DeviceInfoKeyboard [ Type: {Type}, SubType: {SubType}, KeyboardMode: {KeyboardMode}, NumberOfFunctionKeys: {NumberOfFunctionKeys}, "
+                + $"NumberOfIndicators: {NumberOfIndicators}, NumberOfKeysTotal: {NumberOfKeysTotal} ]";
         }
     }
 

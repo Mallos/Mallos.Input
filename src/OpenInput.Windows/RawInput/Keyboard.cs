@@ -1,6 +1,7 @@
 ﻿namespace OpenInput.RawInput
 {
     using System;
+    using System.Diagnostics;
     using System.Runtime.InteropServices;
 
     delegate void DeviceEventHandler(object sender, RawInputEventArg e);
@@ -23,40 +24,22 @@
             }
         }
 
-        readonly object _padLock = new object();
-        static InputData rawBuffer;
-
-        event DeviceEventHandler KeyPressed;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
         /// </summary>
-        public Keyboard(bool captureInBackground = false)
-            : this(IntPtr.Zero, captureInBackground)
+        public Keyboard(IntPtr handle, bool captureInBackground = false)
         {
+            new DeviceService(handle);
 
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Keyboard"/> class.
-        /// </summary>
-        public Keyboard(IntPtr hwnd, bool captureInBackground = false)
-        {
             var rid = new RawInputDevice[1];
-
             rid[0].UsagePage = HidUsagePage.GENERIC;
             rid[0].Usage = HidUsage.Keyboard;
-            rid[0].Flags = (captureInBackground ? RawInputDeviceFlags.NONE : RawInputDeviceFlags.INPUTSINK) | RawInputDeviceFlags.DEVNOTIFY;
-
-            if (hwnd == IntPtr.Zero)
-            {
-                rid[0].Target = hwnd;
-            }
-
+            rid[0].Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY;
+            rid[0].Target = handle;
             if (!Win32.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0])))
-            {
                 throw new ApplicationException("Failed to register raw input device(s).");
-            }
+
+            //DeviceService.Service.Value.Devices.Add(this);
         }
 
         public KeyboardState GetCurrentState()

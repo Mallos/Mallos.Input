@@ -4,7 +4,7 @@
 
     static class RegistryAccess
     {
-        internal static RegistryKey GetDeviceKey(string device)
+        public static RegistryKey GetDeviceKey(string device)
         {
             var split = device.Substring(4).Split('#');
 
@@ -15,7 +15,7 @@
             return Registry.LocalMachine.OpenSubKey(string.Format(@"System\CurrentControlSet\Enum\{0}\{1}\{2}", classCode, subClassCode, protocolCode));
         }
 
-        internal static string GetClassType(string classGuid)
+        public static string GetClassType(string classGuid)
         {
             var classGuidKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + classGuid);
 
