@@ -8,9 +8,9 @@
     {
         [FieldOffset(0)] public int Size;
         [FieldOffset(4)] public int Type;
-        [FieldOffset(8)] public DeviceMouse Mouse;
-        [FieldOffset(8)] public DeviceKeyboard Keyboard;
-        [FieldOffset(8)] public DeviceHID HID;
+        [FieldOffset(8)] public RawDeviceMouse Mouse;
+        [FieldOffset(8)] public RawDeviceKeyboard Keyboard;
+        [FieldOffset(8)] public RawDeviceHID HID;
 
         public override string ToString()
         {
@@ -18,7 +18,7 @@
         }
     }
 
-    struct DeviceMouse
+    struct RawDeviceMouse
     {
         /// <summary> Identifier of the mouse device. </summary>
         public uint Id;
@@ -35,7 +35,7 @@
         }
     }
 
-    struct DeviceKeyboard
+    struct RawDeviceKeyboard
     {
         /// <summary> Type of the keyboard. </summary>
         public uint Type;
@@ -57,7 +57,7 @@
         }
     }
 
-    struct DeviceHID
+    struct RawDeviceHID
     {
         /// <summary> Vendor identifier for the HID. </summary>
         public uint VendorID;
@@ -76,17 +76,8 @@
         }
     }
 
-    struct BroadcastDeviceInterface
-    {
-        public int DbccSize;
-        public BroadcastDeviceType BroadcastDeviceType;
-        public int DbccReserved;
-        public Guid DbccClassguid;
-        public char DbccName;
-    }
-
     [StructLayout(LayoutKind.Sequential)]
-    struct Rawinputdevicelist
+    struct RawInputDeviceList
     {
         public IntPtr hDevice;
         public uint dwType;
@@ -101,7 +92,7 @@
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct InputData
+    struct RawInputData
     {
         /// <summary> 
         /// 64 bit, header size: 24
@@ -190,5 +181,15 @@
         {
             return $"{UsagePage} / {Usage}, Flags: {Flags}, Target: {Target}";
         }
+    }
+
+
+    struct BroadcastDeviceInterface
+    {
+        public int DbccSize;
+        public BroadcastDeviceType BroadcastDeviceType;
+        public int DbccReserved;
+        public Guid DbccClassguid;
+        public char DbccName;
     }
 }

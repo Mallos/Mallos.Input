@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class Mouse : IMouse
+    public class Mouse : RawDevice, IMouse
     {
         public string Name
         {
@@ -10,6 +10,12 @@
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public Mouse(IntPtr handle)
+            : base(handle)
+        {
+
         }
 
         public MouseState GetCurrentState()

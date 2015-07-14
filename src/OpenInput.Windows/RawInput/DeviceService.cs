@@ -1,6 +1,7 @@
 ﻿namespace OpenInput.RawInput
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
@@ -8,19 +9,21 @@
     partial class DeviceService : NativeWindow
     {
         static readonly Guid DeviceInterfaceHid = new Guid("4D1E55B2-F16F-11CF-88CB-001111000030");
-        public static Lazy<DeviceService> Service = new Lazy<DeviceService>();
+
+        public readonly Dictionary<IntPtr, RawDevice> Devices;
 
         private readonly IntPtr devNotifyHandle;
         private PreMessageFilter filter;
 
-        readonly object objectlock = new object();
-        private static InputData rawBuffer;
+        private readonly object objectlock = new object();
+        private static RawInputData rawBuffer;
 
-        public DeviceService(IntPtr parentHandle)
+        public DeviceService(IntPtr handle)
         {
-            AssignHandle(parentHandle);
+            AssignHandle(handle);
 
-            this.devNotifyHandle = RegisterForDeviceNotifications(parentHandle);
+            this.Devices = new Dictionary<IntPtr, RawDevice>();
+            this.devNotifyHandle = RegisterForDeviceNotifications(handle);
 
             FindDevices();
 
@@ -55,61 +58,67 @@
             switch (message.Msg)
             {
                 case Win32.WM_INPUT:
-                    //if (Devices.Count > 0)
                     {
-                        var hdevice = message.LParam;
-                        //Debug.WriteLine(_rawBuffer.data.keyboard.ToString());
-                        //Debug.WriteLine(_rawBuffer.data.hid.ToString());
-                        //Debug.WriteLine(_rawBuffer.header.ToString());
-
                         var dwSize = 0;
+                        var hdevice = message.LParam;
                         Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, IntPtr.Zero, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader)));
-
                         if (dwSize != Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, out rawBuffer, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader))))
                         {
-                            Debug.WriteLine("Error getting the rawinput buffer");
-                            return;
-                        }
-
-                        int virtualKey = rawBuffer.data.keyboard.VKey;
-                        int makeCode = rawBuffer.data.keyboard.Makecode;
-                        int flags = rawBuffer.data.keyboard.Flags;
-
-                        if (virtualKey == Win32.KEYBOARD_OVERRUN_MAKE_CODE) return;
-
-                        var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
-
-                        KeyPressEvent keyPressEvent;
-
-                        if (Devices.ContainsKey(rawBuffer.header.hDevice))
-                        {
-                            lock (objectlock)
-                            {
-                                keyPressEvent = Devices[rawBuffer.header.hDevice].Item2;
-                            }
+                            Debug.WriteLine("RawInput: Failed to get the buffer.");
                         }
                         else
                         {
-                            Debug.WriteLine("Handle: {0} was not in the device list.", rawBuffer.header.hDevice);
-                            return;
+                            switch ((DeviceType)rawBuffer.header.dwType)
+                            {
+                                case DeviceType.Mouse:
+                                    break;
+
+                                case DeviceType.Keyboard:
+                                    {
+
+                                        int virtualKey = rawBuffer.data.keyboard.VKey;
+                                        int makeCode = rawBuffer.data.keyboard.Makecode;
+                                        int flags = rawBuffer.data.keyboard.Flags;
+
+                                        if (virtualKey == Win32.KEYBOARD_OVERRUN_MAKE_CODE)
+                                            return;
+
+                                        var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
+
+                                        RawDevice rawDevice;
+
+                                        if (Devices.ContainsKey(rawBuffer.header.hDevice))
+                                        {
+                                            lock (objectlock)
+                                            {
+                                                rawDevice = Devices[rawBuffer.header.hDevice];
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.WriteLine("Handle: {0} was not in the device list.", rawBuffer.header.hDevice);
+                                            return;
+                                        }
+
+                                        var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
+
+                                        var KeyPressState = isBreakBitSet ? "BREAK" : "MAKE";
+                                        var Message = rawBuffer.data.keyboard.Message;
+                                        var VKeyName = KeyMapper.GetKeyName(VirtualKeyCorrection(virtualKey, isE0BitSet, makeCode)).ToUpper();
+                                        var VKey = virtualKey;
+
+                                        Console.WriteLine($"RawInput: '{rawDevice.DeviceDescName}', {VKey}, '{VKeyName}', {KeyPressState}");
+                                    }
+                                    break;
+
+                                case DeviceType.HID:
+                                    break;
+                            }
                         }
-
-                        var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
-
-                        keyPressEvent.KeyPressState = isBreakBitSet ? "BREAK" : "MAKE";
-                        keyPressEvent.Message = rawBuffer.data.keyboard.Message;
-                        keyPressEvent.VKeyName = KeyMapper.GetKeyName(VirtualKeyCorrection(virtualKey, isE0BitSet, makeCode)).ToUpper();
-                        keyPressEvent.VKey = virtualKey;
-
-                        //if (KeyPressed != null)
-                        //{
-                        //    KeyPressed(this, new RawInputEventArg(keyPressEvent));
-                        //}
-                    }
-                    break;
+                    } break;
 
                 case Win32.WM_USB_DEVICECHANGE:
-                    Debug.WriteLine("USB Device Arrival / Removal");
+                    Debug.WriteLine("RawInput: USB Device Arrival / Removal");
                     // TODO: Call event
                     break;
             }

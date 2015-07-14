@@ -6,22 +6,19 @@
     /// <summary>
     /// 
     /// </summary>
-    public class Keyboard : IKeyboard
+    public class Keyboard : RawDevice, IKeyboard
     {
-        public string Name => "RawInput Keyboard (WIP)";
+        /// <inheritdoc />
+        public string Name => this.DeviceDescName;
 
-        public ITextInput TextInput
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        /// <inheritdoc />
+        public ITextInput TextInput => null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
         /// </summary>
         public Keyboard(IntPtr handle, bool captureInBackground = false)
+            : base(handle)
         {
             new DeviceService(handle);
 
@@ -36,11 +33,13 @@
             //DeviceService.Service.Value.Devices.Add(this);
         }
 
+        /// <inheritdoc />
         public KeyboardState GetCurrentState()
         {
-            return new KeyboardState(new Keys[] { });
+            throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public void SetHandle(IntPtr handle)
         {
 

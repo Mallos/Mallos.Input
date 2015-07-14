@@ -2,7 +2,7 @@
 {
     using System;
 
-    static class SharpDXConverters
+    static class KeyMapper
     {
         public static Keys Convert(SharpDX.DirectInput.Key key)
         {

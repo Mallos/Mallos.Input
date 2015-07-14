@@ -15,7 +15,9 @@
     /// </remarks>
     public class Keyboard : IKeyboard
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// [SharpDX.DirectInput] ApiCode: [E_NOTIMPL/Not implemented], Message: Not implemented
+        /// </summary>
         public string Name => "Keyboard";
 
         /// <inheritdoc />
@@ -63,7 +65,7 @@
                 
             Keys[] keys = new Keys[state.PressedKeys.Count];
             for (int i = 0; i < state.PressedKeys.Count; i++)
-                keys[i] = SharpDXConverters.Convert(state.PressedKeys[i]);
+                keys[i] = KeyMapper.Convert(state.PressedKeys[i]);
 
             var currentState = new KeyboardState(keys);
                 

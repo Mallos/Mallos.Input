@@ -68,7 +68,7 @@
         public const int RIM_INPUT = 0x00;
 
         [DllImport("User32.dll", SetLastError = true)]
-        public static extern int GetRawInputData(IntPtr hRawInput, DataCommand command, [Out] out InputData buffer, [In, Out] ref int size, int cbSizeHeader);
+        public static extern int GetRawInputData(IntPtr hRawInput, DataCommand command, [Out] out RawInputData buffer, [In, Out] ref int size, int cbSizeHeader);
 
         [DllImport("User32.dll", SetLastError = true)]
         public static extern int GetRawInputData(IntPtr hRawInput, DataCommand command, [Out] IntPtr pData, [In, Out] ref int size, int sizeHeader);
