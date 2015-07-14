@@ -1,7 +1,5 @@
 ﻿namespace OpenInput
 {
-    using System;
-
     /// <summary>
     /// Interface for a basic device.
     /// </summary>
@@ -30,11 +28,6 @@
     public interface IMouse : IDevice<MouseState>
     {
         /// <summary>
-        /// Sets the mouse handle.
-        /// </summary>
-        void SetHandle(IntPtr handle);
-
-        /// <summary>
         /// Sets the mouse cursor position.
         /// </summary>
         void SetPosition(int x, int y);
@@ -45,11 +38,6 @@
     /// </summary>
     public interface IKeyboard : IDevice<KeyboardState>
     {
-        /// <summary>
-        /// Sets the keyboard handle.
-        /// </summary>
-        void SetHandle(IntPtr handle);
-
         /// <summary>
         /// Gets the <see cref="ITextInput"/>.
         /// </summary>

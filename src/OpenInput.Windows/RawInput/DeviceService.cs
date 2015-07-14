@@ -10,7 +10,11 @@
     {
         static readonly Guid DeviceInterfaceHid = new Guid("4D1E55B2-F16F-11CF-88CB-001111000030");
 
-        public readonly Dictionary<IntPtr, RawDevice> Devices;
+        public readonly Dictionary<IntPtr, RawDeviceInfo> Devices;
+        public readonly HashSet<OpenInput.Keys> Keys;
+
+        public MouseState MouseState => mouseState;
+        private MouseState mouseState;
 
         private readonly IntPtr devNotifyHandle;
         private PreMessageFilter filter;
@@ -22,7 +26,9 @@
         {
             AssignHandle(handle);
 
-            this.Devices = new Dictionary<IntPtr, RawDevice>();
+            this.Devices = new Dictionary<IntPtr, RawDeviceInfo>();
+            this.Keys = new HashSet<OpenInput.Keys>();
+            this.mouseState = new MouseState();
             this.devNotifyHandle = RegisterForDeviceNotifications(handle);
 
             FindDevices();
@@ -55,6 +61,7 @@
 
         protected override void WndProc(ref Message message)
         {
+            // TODO: Simplify this method!
             switch (message.Msg)
             {
                 case Win32.WM_INPUT:
@@ -71,11 +78,44 @@
                             switch ((DeviceType)rawBuffer.header.dwType)
                             {
                                 case DeviceType.Mouse:
-                                    break;
+                                    {
+                                        switch ((MouseFlags)rawBuffer.data.mouse.usFlags)
+                                        {
+                                            case MouseFlags.VirtualDesktop:
+                                                break;
+
+                                            case MouseFlags.AttributesChanged:
+                                                {
+                                                    var buttons = (MouseButtonsFlags)rawBuffer.data.mouse.ulRawButtons;
+                                                    mouseState.LeftButton = (buttons & MouseButtonsFlags.LeftButtonDown) == MouseButtonsFlags.LeftButtonDown;
+                                                    mouseState.MiddleButton = (buttons & MouseButtonsFlags.MiddleButtonDown) == MouseButtonsFlags.MiddleButtonDown;
+                                                    mouseState.RightButton = (buttons & MouseButtonsFlags.RightButtonDown) == MouseButtonsFlags.RightButtonDown;
+                                                    mouseState.XButton1 = false; // TODO: 
+                                                    mouseState.XButton2 = false;
+                                                } break;
+
+                                            case MouseFlags.MoveRelative:
+                                                {
+                                                    this.mouseState.X += rawBuffer.data.mouse.lLastX;
+                                                    this.mouseState.Y += rawBuffer.data.mouse.lLastY;
+
+                                                    var screenBounds = Screen.GetBounds(new System.Drawing.Point(0, 0));
+
+                                                    if (this.mouseState.X < screenBounds.X) this.mouseState.X = screenBounds.X;
+                                                    if (this.mouseState.Y < screenBounds.Y) this.mouseState.Y = screenBounds.Y;
+                                                    if (this.mouseState.X > screenBounds.Width) this.mouseState.X = screenBounds.Width;
+                                                    if (this.mouseState.Y > screenBounds.Height) this.mouseState.Y = screenBounds.Height;
+                                                } break;
+
+                                            case MouseFlags.MoveAbsolute:
+                                                mouseState.X = rawBuffer.data.mouse.lLastX;
+                                                mouseState.Y = rawBuffer.data.mouse.lLastY;
+                                                break;
+                                        }
+                                    } break;
 
                                 case DeviceType.Keyboard:
                                     {
-
                                         int virtualKey = rawBuffer.data.keyboard.VKey;
                                         int makeCode = rawBuffer.data.keyboard.Makecode;
                                         int flags = rawBuffer.data.keyboard.Flags;
@@ -85,20 +125,20 @@
 
                                         var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
 
-                                        RawDevice rawDevice;
+                                        //RawDeviceInfo rawDevice;
 
-                                        if (Devices.ContainsKey(rawBuffer.header.hDevice))
-                                        {
-                                            lock (objectlock)
-                                            {
-                                                rawDevice = Devices[rawBuffer.header.hDevice];
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Debug.WriteLine("Handle: {0} was not in the device list.", rawBuffer.header.hDevice);
-                                            return;
-                                        }
+                                        //if (Devices.ContainsKey(rawBuffer.header.hDevice))
+                                        //{
+                                        //    lock (objectlock)
+                                        //    {
+                                        //        rawDevice = Devices[rawBuffer.header.hDevice];
+                                        //    }
+                                        //}
+                                        //else
+                                        //{
+                                        //    Debug.WriteLine("RawInput: handle '{0}' was not in the device list.", rawBuffer.header.hDevice);
+                                        //    return;
+                                        //}
 
                                         var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
 
@@ -107,7 +147,16 @@
                                         var VKeyName = KeyMapper.GetKeyName(VirtualKeyCorrection(virtualKey, isE0BitSet, makeCode)).ToUpper();
                                         var VKey = virtualKey;
 
-                                        Console.WriteLine($"RawInput: '{rawDevice.DeviceDescName}', {VKey}, '{VKeyName}', {KeyPressState}");
+                                        if (isBreakBitSet)
+                                        {
+                                            Keys.Remove(KeyMapper.ToKey(VKey));
+                                        }
+                                        else
+                                        {
+                                            Keys.Add(KeyMapper.ToKey(VKey)); 
+                                        }
+
+                                        //Console.WriteLine($"RawInput: '{rawDevice.DeviceDescName}', {VKey}, '{VKeyName}', {KeyPressState}");
                                     }
                                     break;
 
@@ -143,7 +192,7 @@
             }
             catch (Exception e)
             {
-                Debug.Print("Registration for device notifications Failed. Error: {0}", Marshal.GetLastWin32Error());
+                Debug.Print("RawInput: Registration for device notifications Failed. Error: {0}", Marshal.GetLastWin32Error());
                 Debug.Print(e.StackTrace);
             }
             finally
@@ -153,7 +202,7 @@
 
             if (usbNotifyHandle == IntPtr.Zero)
             {
-                Debug.Print("Registration for device notifications Failed. Error: {0}", Marshal.GetLastWin32Error());
+                Debug.Print("RawInput: Registration for device notifications Failed. Error: {0}", Marshal.GetLastWin32Error());
             }
 
             return usbNotifyHandle;

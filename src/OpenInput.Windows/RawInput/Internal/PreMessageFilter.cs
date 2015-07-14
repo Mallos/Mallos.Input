@@ -2,6 +2,9 @@
 {
     using System.Windows.Forms;
 
+    /// <remarks>
+    /// Note: IMessageFilter doesn't work with WPF applications.
+    /// </remarks>
     class PreMessageFilter : IMessageFilter
     {
         /// <summary>

@@ -41,17 +41,16 @@
             this.textInput = new TextInput();
         }
 
-        /// <inheritdoc />
-        public void SetHandle(IntPtr handle)
-        {
-            // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
-            //if (!keyboard.IsDisposed)
-            //{
-            //    keyboard.Unacquire();
-            //    keyboard.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.Exclusive);
-            //    keyboard.Acquire();
-            //}
-        }
+        //public void SetHandle(IntPtr handle)
+        //{
+        //    // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
+        //    //if (!keyboard.IsDisposed)
+        //    //{
+        //    //    keyboard.Unacquire();
+        //    //    keyboard.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.Exclusive);
+        //    //    keyboard.Acquire();
+        //    //}
+        //}
 
         /// <inheritdoc />
         public KeyboardState GetCurrentState()

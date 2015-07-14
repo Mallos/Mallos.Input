@@ -1,7 +1,5 @@
 ﻿namespace OpenInput.DirectInput
 {
-    using System;
-    using CooperativeLevel = SharpDX.DirectInput.CooperativeLevel;
     using DirectInputMouse = SharpDX.DirectInput.Mouse;
 
     /// <summary>
@@ -35,18 +33,17 @@
 
             this.SetPosition(0, 0);
         }
-
-        /// <inheritdoc />
-        public void SetHandle(IntPtr handle)
-        {
-            // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
-            //if (!mouse.IsDisposed)
-            //{
-            //    mouse.Unacquire();
-            //    mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
-            //    mouse.Acquire();
-            //}
-        }
+        
+        //public void SetHandle(IntPtr handle)
+        //{
+        //    // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
+        //    //if (!mouse.IsDisposed)
+        //    //{
+        //    //    mouse.Unacquire();
+        //    //    mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
+        //    //    mouse.Acquire();
+        //    //}
+        //}
 
         /// <inheritdoc />
         public void SetPosition(int x, int y)

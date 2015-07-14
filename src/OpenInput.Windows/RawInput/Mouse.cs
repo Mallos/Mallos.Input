@@ -1,33 +1,39 @@
 ﻿namespace OpenInput.RawInput
 {
     using System;
+    using System.Runtime.InteropServices;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class Mouse : RawDevice, IMouse
     {
-        public string Name
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        /// <inheritdoc />
+        public string Name => string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Keyboard"/> class.
+        /// </summary>
         public Mouse(IntPtr handle)
             : base(handle)
         {
+            var rid = new RawInputDevice[1];
+            rid[0].UsagePage = HidUsagePage.GENERIC;
+            rid[0].Usage = HidUsage.Mouse;
+            rid[0].Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY;
+            rid[0].Target = handle;
 
+            if (!Win32.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0])))
+                throw new ApplicationException("Failed to register raw input device(s).");
         }
 
+        /// <inheritdoc />
         public MouseState GetCurrentState()
         {
-            throw new NotImplementedException();
+            return Service.MouseState;
         }
-
-        public void SetHandle(IntPtr handle)
-        {
-            throw new NotImplementedException();
-        }
-
+        
+        /// <inheritdoc />
         public void SetPosition(int x, int y)
         {
             throw new NotImplementedException();

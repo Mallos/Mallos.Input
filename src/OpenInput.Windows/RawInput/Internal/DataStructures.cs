@@ -137,13 +137,18 @@
     [StructLayout(LayoutKind.Explicit)]
     struct RawMouse
     {
+        /// <summary> The mouse state. This member can be any reasonable combination of the following. </summary>
         [FieldOffset(0)] public ushort usFlags;
         [FieldOffset(4)] public uint ulButtons;
+        /// <summary> The transition state of the mouse buttons. This member can be one or more of the following values. </summary>
         [FieldOffset(4)] public ushort usButtonFlags;
+        /// <summary> If usButtonFlags is RI_MOUSE_WHEEL, this member is a signed value that specifies the wheel delta. </summary>
         [FieldOffset(6)] public ushort usButtonData;
+        /// <summary> The raw state of the mouse buttons. </summary>
         [FieldOffset(8)] public uint ulRawButtons;
         [FieldOffset(12)] public int lLastX;
         [FieldOffset(16)] public int lLastY;
+        /// <summary> The device-specific additional information for the event. </summary>
         [FieldOffset(20)] public uint ulExtraInformation;
     }
 
@@ -182,7 +187,6 @@
             return $"{UsagePage} / {Usage}, Flags: {Flags}, Target: {Target}";
         }
     }
-
 
     struct BroadcastDeviceInterface
     {
