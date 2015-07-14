@@ -8,6 +8,7 @@
     /// DirectInput Mouse
     /// </summary>
     /// <remarks>
+    /// * You basically need to set the cursor position to (0,0) so you can get right coords.
     /// "There's one occasion where it's acceptable to use DirectInput for mouse input, 
     /// and that's if you need high DPI mouse input and you need to support pre-Win2k machine."
     /// http://www.gamedev.net/blog/233/entry-1567278-reasons-not-to-use-directinput-for-keyboard-input/
@@ -31,6 +32,8 @@
             this.state = new MouseState();
             this.mouse = new DirectInputMouse(directInput);
             this.mouse.Acquire();
+
+            this.SetPosition(0, 0);
         }
 
         /// <inheritdoc />
@@ -48,7 +51,7 @@
         /// <inheritdoc />
         public void SetPosition(int x, int y)
         {
-            throw new NotSupportedException();
+            System.Windows.Forms.Cursor.Position = new System.Drawing.Point(x, y);
         }
 
         /// <inheritdoc />

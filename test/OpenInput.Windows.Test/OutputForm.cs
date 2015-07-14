@@ -18,7 +18,8 @@
             this.container = new Container();
             this.container
                 .Map<IMouse>(new DirectInput.Mouse())
-                .Map<IKeyboard>(new DirectInput.Keyboard());
+                //.Map<IKeyboard>(new DirectInput.Keyboard())
+                .Map<IKeyboard>(new RawInput.Keyboard(this.Handle));
 
             this.timer = new Timer();
             this.timer.Interval = (int)TimeSpan.FromSeconds(1.0f / 12).TotalMilliseconds;
@@ -32,8 +33,6 @@
             // TODO: This also creates an issue when tabbing back!
             //container.Get<IKeyboard>().SetHandle(this.Handle);
             //container.Get<IMouse>().SetHandle(this.Handle);
-
-            //new RawInput.Keyboard(this.Handle);
             
             timer.Start();
         }
@@ -43,7 +42,7 @@
             var keyboard = container.Get<IKeyboard>();
             if (keyboard != null)
             {
-                this.keyboardNamesLabel.Text = $"Name/s: {keyboard.Name}";
+                this.keyboardNamesLabel.Text = $"Name/s: {keyboard.Name}, Type: {keyboard.GetType().FullName}";
 
                 var keyboardState = keyboard.GetCurrentState();
                 if (keyboardState.Keys.Length > 0)
@@ -57,7 +56,7 @@
             {
                 var mouseState = mouse.GetCurrentState();
 
-                this.mouseNamesLabel.Text = $"Name/s: {mouse.Name}";
+                this.mouseNamesLabel.Text = $"Name/s: {mouse.Name}, Type: {mouse.GetType().FullName}";
 
                 var sb = new StringBuilder();
                 sb.AppendLine($"Position: {mouseState.X}, {mouseState.Y}, MouseWheel: {mouseState.ScrollWheelValue}");

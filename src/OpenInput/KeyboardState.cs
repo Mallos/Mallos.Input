@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    // TODO: Store CapsLock & NumLock & ScrLk variables
-
     /// <summary>
     /// 
     /// </summary>

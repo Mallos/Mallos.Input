@@ -1,11 +1,10 @@
 ﻿namespace OpenInput.RawInput
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
-
+    
     partial class DeviceService : NativeWindow
     {
         static readonly Guid DeviceInterfaceHid = new Guid("4D1E55B2-F16F-11CF-88CB-001111000030");
@@ -17,13 +16,10 @@
         readonly object objectlock = new object();
         private static InputData rawBuffer;
 
-        public event DeviceEventHandler KeyPressed;
-
         public DeviceService(IntPtr parentHandle)
         {
             AssignHandle(parentHandle);
 
-            this.Devices = new Dictionary<IntPtr, KeyPressEvent>();
             this.devNotifyHandle = RegisterForDeviceNotifications(parentHandle);
 
             FindDevices();
@@ -67,9 +63,9 @@
                         //Debug.WriteLine(_rawBuffer.header.ToString());
 
                         var dwSize = 0;
-                        Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, IntPtr.Zero, ref dwSize, Marshal.SizeOf(typeof(Rawinputheader)));
+                        Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, IntPtr.Zero, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader)));
 
-                        if (dwSize != Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, out rawBuffer, ref dwSize, Marshal.SizeOf(typeof(Rawinputheader))))
+                        if (dwSize != Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, out rawBuffer, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader))))
                         {
                             Debug.WriteLine("Error getting the rawinput buffer");
                             return;
@@ -89,7 +85,7 @@
                         {
                             lock (objectlock)
                             {
-                                keyPressEvent = Devices[rawBuffer.header.hDevice];
+                                keyPressEvent = Devices[rawBuffer.header.hDevice].Item2;
                             }
                         }
                         else
@@ -105,10 +101,10 @@
                         keyPressEvent.VKeyName = KeyMapper.GetKeyName(VirtualKeyCorrection(virtualKey, isE0BitSet, makeCode)).ToUpper();
                         keyPressEvent.VKey = virtualKey;
 
-                        if (KeyPressed != null)
-                        {
-                            KeyPressed(this, new RawInputEventArg(keyPressEvent));
-                        }
+                        //if (KeyPressed != null)
+                        //{
+                        //    KeyPressed(this, new RawInputEventArg(keyPressEvent));
+                        //}
                     }
                     break;
 

@@ -9,7 +9,8 @@
 
     partial class DeviceService
     {
-        public readonly Dictionary<IntPtr, KeyPressEvent> Devices = new Dictionary<IntPtr, KeyPressEvent>();
+        public readonly Dictionary<IntPtr, Tuple<object, KeyPressEvent>> Devices 
+            = new Dictionary<IntPtr, Tuple<object, KeyPressEvent>>();
 
         private void FindDevices()
         {
@@ -21,12 +22,12 @@
                 {
                     DeviceName = "Global Keyboard",
                     DeviceHandle = IntPtr.Zero,
-                    DeviceType = Win32.GetDeviceType(DeviceType.RimTypekeyboard),
+                    DeviceType = Enum.GetName(typeof(DeviceType), DeviceType.Keyboard),
                     Name = "Fake Keyboard. Some keys (ZOOM, MUTE, VOLUMEUP, VOLUMEDOWN) are sent to rawinput with a handle of zero.",
                     Source = keyboardNumber++.ToString(CultureInfo.InvariantCulture)
                 };
 
-                this.Devices.Add(globalDevice.DeviceHandle, globalDevice);
+                this.Devices.Add(globalDevice.DeviceHandle, new Tuple<object, KeyPressEvent>(null, globalDevice));
 
                 var numberOfDevices = 0;
                 uint deviceCount = 0;
@@ -34,6 +35,8 @@
 
                 if (Win32.GetRawInputDeviceList(IntPtr.Zero, ref deviceCount, (uint)dwSize) == 0)
                 {
+                    Debug.WriteLine($"RawInput: Found {deviceCount} devices.");
+
                     var pRawInputDeviceList = Marshal.AllocHGlobal((int)(dwSize * deviceCount));
                     Win32.GetRawInputDeviceList(pRawInputDeviceList, ref deviceCount, (uint)dwSize);
 
@@ -46,39 +49,45 @@
 
                         Win32.GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, IntPtr.Zero, ref pcbSize);
 
-                        if (pcbSize <= 0) continue;
+                        if (pcbSize <= 0)
+                            continue;
 
                         var pData = Marshal.AllocHGlobal((int)pcbSize);
                         Win32.GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, pData, ref pcbSize);
                         var deviceName = Marshal.PtrToStringAnsi(pData);
 
-                        if (rid.dwType == DeviceType.RimTypekeyboard || rid.dwType == DeviceType.RimTypeHid)
+                        switch ((DeviceType)rid.dwType)
                         {
-                            var deviceDesc = Win32.GetDeviceDescription(deviceName);
+                            case DeviceType.Mouse:
+                                Debug.WriteLine("Found Mouse!");
+                                break;
 
-                            var dInfo = new KeyPressEvent
-                            {
-                                DeviceName = Marshal.PtrToStringAnsi(pData),
-                                DeviceHandle = rid.hDevice,
-                                DeviceType = Win32.GetDeviceType(rid.dwType),
-                                Name = deviceDesc,
-                                Source = keyboardNumber++.ToString(CultureInfo.InvariantCulture)
-                            };
+                            case DeviceType.HID:
+                            case DeviceType.Keyboard:
+                                {
+                                    var deviceDesc = Win32.GetDeviceDescription(deviceName);
+                                    var dInfo = new KeyPressEvent
+                                    {
+                                        DeviceName = Marshal.PtrToStringAnsi(pData),
+                                        DeviceHandle = rid.hDevice,
+                                        DeviceType = Enum.GetName(typeof(DeviceType), rid.dwType),
+                                        Name = deviceDesc,
+                                        Source = keyboardNumber++.ToString(CultureInfo.InvariantCulture)
+                                    };
 
-                            if (!this.Devices.ContainsKey(rid.hDevice))
-                            {
-                                numberOfDevices++;
-                                this.Devices.Add(rid.hDevice, dInfo);
-                            }
+                                    if (!this.Devices.ContainsKey(rid.hDevice))
+                                    {
+                                        numberOfDevices++;
+                                        this.Devices.Add(rid.hDevice, new Tuple<object, KeyPressEvent>(null, dInfo));
+                                    }
+                                } break;
                         }
 
                         Marshal.FreeHGlobal(pData);
                     }
 
                     Marshal.FreeHGlobal(pRawInputDeviceList);
-
-                    //NumberOfKeyboards = numberOfDevices;
-                    Debug.WriteLine("EnumerateDevices() found {0} Keyboard(s)", numberOfDevices);
+                    Debug.WriteLine($"RawInput: Counted {numberOfDevices} devices.");
                 }
                 else
                 {

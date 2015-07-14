@@ -10,11 +10,11 @@
         RID_INPUT = 0x10000003
     }
 
-    static class DeviceType
+    enum DeviceType : uint
     {
-        public const int RimTypemouse = 0;
-        public const int RimTypekeyboard = 1;
-        public const int RimTypeHid = 2;
+        Mouse = 0,
+        Keyboard = 1,
+        HID = 2,
     }
 
     enum RawInputDeviceInfo : uint

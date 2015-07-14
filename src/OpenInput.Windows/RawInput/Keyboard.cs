@@ -1,20 +1,14 @@
 ﻿namespace OpenInput.RawInput
 {
     using System;
-    using System.Diagnostics;
     using System.Runtime.InteropServices;
 
-    delegate void DeviceEventHandler(object sender, RawInputEventArg e);
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class Keyboard : IKeyboard
     {
-        public string Name
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string Name => "RawInput Keyboard (WIP)";
 
         public ITextInput TextInput
         {
@@ -44,12 +38,12 @@
 
         public KeyboardState GetCurrentState()
         {
-            throw new NotImplementedException();
+            return new KeyboardState(new Keys[] { });
         }
 
         public void SetHandle(IntPtr handle)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

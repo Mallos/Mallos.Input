@@ -8,6 +8,8 @@
 
     static partial class Win32
     {
+        // TODO: Remove this method and create some better way of enumerating all devices.
+
         public static void DeviceAudit()
         {
             var file = new FileStream("DeviceAudit.txt", FileMode.Create, FileAccess.Write);
@@ -51,27 +53,34 @@
                     GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, pData, ref pcbSize);
                     var deviceName = Marshal.PtrToStringAnsi(pData);
 
-                    if (rid.dwType == DeviceType.RimTypekeyboard || rid.dwType == DeviceType.RimTypeHid)
+                    switch ((DeviceType)rid.dwType)
                     {
-                        var deviceDesc = GetDeviceDescription(deviceName);
+                        case DeviceType.Mouse:
+                            break;
 
-                        var dInfo = new KeyPressEvent
-                        {
-                            DeviceName = Marshal.PtrToStringAnsi(pData),
-                            DeviceHandle = rid.hDevice,
-                            DeviceType = GetDeviceType(rid.dwType),
-                            Name = deviceDesc,
-                            Source = keyboardNumber++.ToString(CultureInfo.InvariantCulture)
-                        };
+                        case DeviceType.HID:
+                        case DeviceType.Keyboard:
+                            {
+                                var deviceDesc = GetDeviceDescription(deviceName);
 
-                        sw.WriteLine(dInfo.ToString());
-                        sw.WriteLine(di.ToString());
-                        sw.WriteLine(di.KeyboardInfo.ToString());
-                        sw.WriteLine(di.HIDInfo.ToString());
-                        //sw.WriteLine(di.MouseInfo.ToString());
-                        sw.WriteLine("=========================================================================================================");
+                                var dInfo = new KeyPressEvent
+                                {
+                                    DeviceName = Marshal.PtrToStringAnsi(pData),
+                                    DeviceHandle = rid.hDevice,
+                                    DeviceType = Enum.GetName(typeof(DeviceType), rid.dwType),
+                                    Name = deviceDesc,
+                                    Source = keyboardNumber++.ToString(CultureInfo.InvariantCulture)
+                                };
+
+                                sw.WriteLine(dInfo.ToString());
+                                sw.WriteLine(di.ToString());
+                                sw.WriteLine(di.Keyboard.ToString());
+                                sw.WriteLine(di.HID.ToString());
+                                //sw.WriteLine(di.MouseInfo.ToString());
+                                sw.WriteLine("=========================================================================================================");
+                            } break;
                     }
-
+                    
                     Marshal.FreeHGlobal(pData);
                 }
 
@@ -86,21 +95,7 @@
 
             throw new Win32Exception(Marshal.GetLastWin32Error());
         }
-
-        public static string GetDeviceType(uint device)
-        {
-            string deviceType;
-            switch (device)
-            {
-                case DeviceType.RimTypemouse: deviceType = "MOUSE"; break;
-                case DeviceType.RimTypekeyboard: deviceType = "KEYBOARD"; break;
-                case DeviceType.RimTypeHid: deviceType = "HID"; break;
-                default: deviceType = "UNKNOWN"; break;
-            }
-
-            return deviceType;
-        }
-
+        
         public static string GetDeviceDescription(string device)
         {
             string deviceDesc;

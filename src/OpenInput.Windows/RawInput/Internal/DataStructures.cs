@@ -6,16 +6,11 @@
     [StructLayout(LayoutKind.Explicit)]
     struct DeviceInfo
     {
-        [FieldOffset(0)]
-        public int Size;
-        [FieldOffset(4)]
-        public int Type;
-        [FieldOffset(8)]
-        public DeviceInfoMouse MouseInfo;
-        [FieldOffset(8)]
-        public DeviceInfoKeyboard KeyboardInfo;
-        [FieldOffset(8)]
-        public DeviceInfoHid HIDInfo;
+        [FieldOffset(0)] public int Size;
+        [FieldOffset(4)] public int Type;
+        [FieldOffset(8)] public DeviceMouse Mouse;
+        [FieldOffset(8)] public DeviceKeyboard Keyboard;
+        [FieldOffset(8)] public DeviceHID HID;
 
         public override string ToString()
         {
@@ -23,7 +18,7 @@
         }
     }
 
-    struct DeviceInfoMouse
+    struct DeviceMouse
     {
         /// <summary> Identifier of the mouse device. </summary>
         public uint Id;
@@ -40,7 +35,7 @@
         }
     }
 
-    struct DeviceInfoKeyboard
+    struct DeviceKeyboard
     {
         /// <summary> Type of the keyboard. </summary>
         public uint Type;
@@ -62,7 +57,7 @@
         }
     }
 
-    struct DeviceInfoHid
+    struct DeviceHID
     {
         /// <summary> Vendor identifier for the HID. </summary>
         public uint VendorID;
@@ -83,9 +78,9 @@
 
     struct BroadcastDeviceInterface
     {
-        public Int32 DbccSize;
+        public int DbccSize;
         public BroadcastDeviceType BroadcastDeviceType;
-        public Int32 DbccReserved;
+        public int DbccReserved;
         public Guid DbccClassguid;
         public char DbccName;
     }
@@ -100,25 +95,25 @@
     [StructLayout(LayoutKind.Explicit)]
     struct RawData
     {
-        [FieldOffset(0)]
-        internal Rawmouse mouse;
-        [FieldOffset(0)]
-        internal Rawkeyboard keyboard;
-        [FieldOffset(0)]
-        internal Rawhid hid;
+        [FieldOffset(0)] public RawMouse mouse;
+        [FieldOffset(0)] public RawKeyboard keyboard;
+        [FieldOffset(0)] public RawHID hid;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     struct InputData
     {
-        /// <summary> 64 bit header size: 24  32 bit the header size: 16 </summary>
-        public Rawinputheader header;
+        /// <summary> 
+        /// 64 bit, header size: 24
+        /// 32 bit, header size: 16 
+        /// </summary>
+        public RawInputHeader header;
         /// <summary> Creating the rest in a struct allows the header size to align correctly for 32/64 bit. </summary>
         public RawData data;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Rawinputheader
+    struct RawInputHeader
     {
         /// <summary> Type of raw input (RIM_TYPEHID 2, RIM_TYPEKEYBOARD 1, RIM_TYPEMOUSE 0). </summary>
         public uint dwType;
@@ -136,7 +131,7 @@
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Rawhid
+    struct RawHID
     {
         public uint dwSizHid;
         public uint dwCount;
@@ -149,28 +144,20 @@
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    struct Rawmouse
+    struct RawMouse
     {
-        [FieldOffset(0)]
-        public ushort usFlags;
-        [FieldOffset(4)]
-        public uint ulButtons;
-        [FieldOffset(4)]
-        public ushort usButtonFlags;
-        [FieldOffset(6)]
-        public ushort usButtonData;
-        [FieldOffset(8)]
-        public uint ulRawButtons;
-        [FieldOffset(12)]
-        public int lLastX;
-        [FieldOffset(16)]
-        public int lLastY;
-        [FieldOffset(20)]
-        public uint ulExtraInformation;
+        [FieldOffset(0)] public ushort usFlags;
+        [FieldOffset(4)] public uint ulButtons;
+        [FieldOffset(4)] public ushort usButtonFlags;
+        [FieldOffset(6)] public ushort usButtonData;
+        [FieldOffset(8)] public uint ulRawButtons;
+        [FieldOffset(12)] public int lLastX;
+        [FieldOffset(16)] public int lLastY;
+        [FieldOffset(20)] public uint ulExtraInformation;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Rawkeyboard
+    struct RawKeyboard
     {
         /// <summary> Scan code from the key depression. </summary>
         public ushort Makecode;

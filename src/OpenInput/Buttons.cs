@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// 
+    /// Identifies keys on a GamePad. 
     /// </summary>
     [Flags]
     public enum Buttons

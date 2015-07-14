@@ -32,9 +32,9 @@
 
         public const int KEYBOARD_OVERRUN_MAKE_CODE = 0xFF;
         public const int WM_APPCOMMAND = 0x0319;
-        private const int FAPPCOMMANDMASK = 0xF000;
-        internal const int FAPPCOMMANDMOUSE = 0x8000;
-        internal const int FAPPCOMMANDOEM = 0x1000;
+        public const int FAPPCOMMANDMASK = 0xF000;
+        public const int FAPPCOMMANDMOUSE = 0x8000;
+        public const int FAPPCOMMANDOEM = 0x1000;
 
         public const int WM_KEYDOWN = 0x0100;
         public const int WM_KEYUP = 0x0101;

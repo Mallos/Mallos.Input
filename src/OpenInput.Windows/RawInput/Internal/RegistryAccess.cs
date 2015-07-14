@@ -18,7 +18,6 @@
         public static string GetClassType(string classGuid)
         {
             var classGuidKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + classGuid);
-
             return classGuidKey != null ? (string)classGuidKey.GetValue("Class") : string.Empty;
         }
     }
