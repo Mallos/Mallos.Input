@@ -1,6 +1,7 @@
 ﻿{
   "dependencies": {
-    "OpenInput.OpenTK": "1.0.0-*"
+    "OpenInput.OpenTK": "1.0.0-*",
+    "Nine.Injection": "1.2.0-*"
   },
   
   "frameworks": {

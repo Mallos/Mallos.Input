@@ -15,11 +15,9 @@
         private readonly object objectlock = new object();
         private static RawInputData rawBuffer;
 
-        //public readonly Dictionary<IntPtr, RawDeviceInfo> Devices;
         public readonly HashSet<OpenInput.Keys> Keys;
 
-        public MouseState MouseState => mouseState;
-        private MouseState mouseState;
+        public MouseState MouseState;
 
         private readonly IntPtr devNotifyHandle;
         private PreMessageFilter filter;
@@ -28,9 +26,8 @@
         {
             AssignHandle(handle);
 
-            //this.Devices = new Dictionary<IntPtr, RawDeviceInfo>();
             this.Keys = new HashSet<OpenInput.Keys>();
-            this.mouseState = new MouseState();
+            this.MouseState = new MouseState();
             this.devNotifyHandle = RegisterForDeviceNotifications(handle);
 
             FindDevices();
@@ -122,15 +119,15 @@
                         // TODO: Get the mouse initial position first
                         //       How does MoveAbsolute work? When does it get called and how?
 
-                        this.mouseState.X += rawBuffer.data.mouse.lLastX;
-                        this.mouseState.Y += rawBuffer.data.mouse.lLastY;
+                        this.MouseState.X += rawBuffer.data.mouse.lLastX;
+                        this.MouseState.Y += rawBuffer.data.mouse.lLastY;
 
                         var screenBounds = Screen.GetBounds(new System.Drawing.Point(0, 0));
 
-                        if (this.mouseState.X < screenBounds.X) this.mouseState.X = screenBounds.X;
-                        if (this.mouseState.Y < screenBounds.Y) this.mouseState.Y = screenBounds.Y;
-                        if (this.mouseState.X > screenBounds.Width) this.mouseState.X = screenBounds.Width;
-                        if (this.mouseState.Y > screenBounds.Height) this.mouseState.Y = screenBounds.Height;
+                        if (this.MouseState.X < screenBounds.X) this.MouseState.X = screenBounds.X;
+                        if (this.MouseState.Y < screenBounds.Y) this.MouseState.Y = screenBounds.Y;
+                        if (this.MouseState.X > screenBounds.Width) this.MouseState.X = screenBounds.Width;
+                        if (this.MouseState.Y > screenBounds.Height) this.MouseState.Y = screenBounds.Height;
                     }
                     break;
 
@@ -140,14 +137,19 @@
                     break;
             }
 
+            // TODO: I can only have one button down at the time
+            //       Is this my end or does RawInput not send all of them in one message?
+            
             var buttons = (MouseButtonsFlags)rawBuffer.data.mouse.ulButtons;
-            mouseState.LeftButton = (buttons & MouseButtonsFlags.LeftButtonDown) == MouseButtonsFlags.LeftButtonDown;
-            mouseState.MiddleButton = (buttons & MouseButtonsFlags.MiddleButtonDown) == MouseButtonsFlags.MiddleButtonDown;
-            mouseState.RightButton = (buttons & MouseButtonsFlags.RightButtonDown) == MouseButtonsFlags.RightButtonDown;
+            this.MouseState.LeftButton = (buttons & MouseButtonsFlags.LeftButtonDown) == MouseButtonsFlags.LeftButtonDown;
+            this.MouseState.MiddleButton = (buttons & MouseButtonsFlags.MiddleButtonDown) == MouseButtonsFlags.MiddleButtonDown;
+            this.MouseState.RightButton = (buttons & MouseButtonsFlags.RightButtonDown) == MouseButtonsFlags.RightButtonDown;
             
             // TODO: Add support for XButton1 & 2
-            mouseState.XButton1 = false; 
-            mouseState.XButton2 = false;
+            this.MouseState.XButton1 = false;
+            this.MouseState.XButton2 = false;
+
+            // TODO: Mouse Wheel
         }
 
         private void OnKeyboardEvent()
@@ -160,22 +162,6 @@
                 return;
 
             var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
-
-            //RawDeviceInfo rawDevice;
-
-            //if (Devices.ContainsKey(rawBuffer.header.hDevice))
-            //{
-            //    lock (objectlock)
-            //    {
-            //        rawDevice = Devices[rawBuffer.header.hDevice];
-            //    }
-            //}
-            //else
-            //{
-            //    Debug.WriteLine("RawInput: handle '{0}' was not in the device list.", rawBuffer.header.hDevice);
-            //    return;
-            //}
-
             var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
 
             var KeyPressState = isBreakBitSet ? "BREAK" : "MAKE";
@@ -189,6 +175,9 @@
             }
             else
             {
+                // NOTE: Here are some more code on this
+                // https://molecularmusings.wordpress.com/2011/09/05/properly-handling-keyboard-input/
+                Console.WriteLine($"RawInput: {WindowsInterop.GetKeyNameText(rawBuffer.data.keyboard.Makecode, isE0BitSet)}");
                 Keys.Add(KeyMapper.ToKey(VKey));
             }
 

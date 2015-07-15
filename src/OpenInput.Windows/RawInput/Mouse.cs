@@ -12,7 +12,7 @@
         public string Name => Service.MouseNames;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Keyboard"/> class.
+        /// Initializes a new instance of the <see cref="Mouse"/> class.
         /// </summary>
         public Mouse(IntPtr handle)
             : base(handle)

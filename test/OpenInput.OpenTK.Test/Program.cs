@@ -1,16 +1,25 @@
-﻿namespace OpenInput
+﻿using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+
+namespace OpenInput
 {
-    using OpenTK;
-    using OpenTK.Graphics;
-    using OpenTK.Graphics.OpenGL;
+    using Nine.Injection;
     using System;
 
     public class Program : GameWindow
     {
+        private IContainer container;
+
         public Program()
             : base(800, 600, GraphicsMode.Default, "GameWindow")
         {
             this.VSync = VSyncMode.On;
+
+            this.container = new Container();
+            this.container
+                .Map<IMouse>(new OpenTK.Mouse());
+                //.Map<IKeyboard>(new OpenInput.Keyboard());
         }
 
         protected override void OnLoad(EventArgs e)
@@ -34,6 +43,20 @@
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            var keyboard = container.Get<IKeyboard>();
+            if (keyboard != null)
+            {
+                var keyboardState = keyboard.GetCurrentState();
+                Console.WriteLine("Keyboard: " + keyboardState);
+            }
+
+            var mouse = container.Get<IMouse>();
+            if (mouse != null)
+            {
+                var mouseState = mouse.GetCurrentState();
+                Console.WriteLine("Mouse: " + mouseState);
+            }
+
             base.OnUpdateFrame(e);
         }
 

@@ -26,22 +26,7 @@
 
                 this.MouseCount = 0;
                 this.MouseNames = string.Empty;
-
-                // this.Devices.Clear();
-
-                // TODO: Do I need this?
-
-                //var globalDevice = new KeyPressEvent
-                //{
-                //    DeviceName = "Global Keyboard",
-                //    DeviceHandle = IntPtr.Zero,
-                //    DeviceType = Enum.GetName(typeof(DeviceType), DeviceType.Keyboard),
-                //    Name = "Fake Keyboard. Some keys (ZOOM, MUTE, VOLUMEUP, VOLUMEDOWN) are sent to rawinput with a handle of zero.",
-                //    Source = keyboardNumber++.ToString(CultureInfo.InvariantCulture)
-                //};
-
-                //this.Devices.Add(globalDevice.DeviceHandle, new Tuple<object, KeyPressEvent>(null, globalDevice));
-
+                
                 var dwSize = (Marshal.SizeOf(typeof(RawInputDeviceList)));
                 if (Win32.GetRawInputDeviceList(IntPtr.Zero, ref deviceCount, (uint)dwSize) == 0)
                 {
@@ -75,26 +60,13 @@
                                 this.MouseNames += ((this.MouseNames == string.Empty) ? "" : ", ") + deviceDesc;
                                 break;
 
-                            case DeviceType.HID:
-                                break;
-
                             case DeviceType.Keyboard:
                                 this.KeyboardCount++;
                                 this.KeyboardNames += ((this.KeyboardNames == string.Empty) ? "" : ", ") + deviceDesc;
                                 break;
 
-                                //{
-                                //    var rawDeviceInfo = new RawDeviceInfo
-                                //    {
-                                //        DeviceName = Marshal.PtrToStringAnsi(pData),
-                                //        DeviceHandle = rid.hDevice,
-                                //        DeviceType = Enum.GetName(typeof(DeviceType), rid.dwType),
-                                //        DeviceDescName = deviceDesc
-                                //    };
-
-                                //    if (!this.Devices.ContainsKey(rid.hDevice))
-                                //        this.Devices.Add(rid.hDevice, rawDeviceInfo);
-                                //} break;
+                            case DeviceType.HID:
+                                break;
                         }
 
                         Marshal.FreeHGlobal(pData);
