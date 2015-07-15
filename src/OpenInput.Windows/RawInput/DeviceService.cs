@@ -5,12 +5,17 @@
     using System.Diagnostics;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
-    
+
+    // TODO: Implement GamePad support
+    //       Unfortunately there is no reference ón how to do this on microsofts page
+    //       https://msdn.microsoft.com/en-us/library/windows/desktop/ms645546(v=vs.85).aspx
+
     partial class DeviceService : NativeWindow
     {
-        static readonly Guid DeviceInterfaceHid = new Guid("4D1E55B2-F16F-11CF-88CB-001111000030");
+        private readonly object objectlock = new object();
+        private static RawInputData rawBuffer;
 
-        public readonly Dictionary<IntPtr, RawDeviceInfo> Devices;
+        //public readonly Dictionary<IntPtr, RawDeviceInfo> Devices;
         public readonly HashSet<OpenInput.Keys> Keys;
 
         public MouseState MouseState => mouseState;
@@ -19,21 +24,16 @@
         private readonly IntPtr devNotifyHandle;
         private PreMessageFilter filter;
 
-        private readonly object objectlock = new object();
-        private static RawInputData rawBuffer;
-
         public DeviceService(IntPtr handle)
         {
             AssignHandle(handle);
 
-            this.Devices = new Dictionary<IntPtr, RawDeviceInfo>();
+            //this.Devices = new Dictionary<IntPtr, RawDeviceInfo>();
             this.Keys = new HashSet<OpenInput.Keys>();
             this.mouseState = new MouseState();
             this.devNotifyHandle = RegisterForDeviceNotifications(handle);
 
             FindDevices();
-
-            //Win32.DeviceAudit();
         }
 
         ~DeviceService()
@@ -42,6 +42,7 @@
             RemoveMessageFilter();
         }
 
+        #region MessageFilter
         public void AddMessageFilter()
         {
             if (filter != null)
@@ -58,10 +59,14 @@
 
             Application.RemoveMessageFilter(filter);
         }
+        #endregion
 
         protected override void WndProc(ref Message message)
         {
-            // TODO: Simplify this method!
+            // TODO: Support MSG_GETRIUFFER
+            //       This could be useful on the inital start
+            //       otherwise we are keeping track of all the keys
+
             switch (message.Msg)
             {
                 case Win32.WM_INPUT:
@@ -78,103 +83,119 @@
                             switch ((DeviceType)rawBuffer.header.dwType)
                             {
                                 case DeviceType.Mouse:
-                                    {
-                                        switch ((MouseFlags)rawBuffer.data.mouse.usFlags)
-                                        {
-                                            case MouseFlags.VirtualDesktop:
-                                                break;
-
-                                            case MouseFlags.AttributesChanged:
-                                                {
-                                                    var buttons = (MouseButtonsFlags)rawBuffer.data.mouse.ulRawButtons;
-                                                    mouseState.LeftButton = (buttons & MouseButtonsFlags.LeftButtonDown) == MouseButtonsFlags.LeftButtonDown;
-                                                    mouseState.MiddleButton = (buttons & MouseButtonsFlags.MiddleButtonDown) == MouseButtonsFlags.MiddleButtonDown;
-                                                    mouseState.RightButton = (buttons & MouseButtonsFlags.RightButtonDown) == MouseButtonsFlags.RightButtonDown;
-                                                    mouseState.XButton1 = false; // TODO: 
-                                                    mouseState.XButton2 = false;
-                                                } break;
-
-                                            case MouseFlags.MoveRelative:
-                                                {
-                                                    this.mouseState.X += rawBuffer.data.mouse.lLastX;
-                                                    this.mouseState.Y += rawBuffer.data.mouse.lLastY;
-
-                                                    var screenBounds = Screen.GetBounds(new System.Drawing.Point(0, 0));
-
-                                                    if (this.mouseState.X < screenBounds.X) this.mouseState.X = screenBounds.X;
-                                                    if (this.mouseState.Y < screenBounds.Y) this.mouseState.Y = screenBounds.Y;
-                                                    if (this.mouseState.X > screenBounds.Width) this.mouseState.X = screenBounds.Width;
-                                                    if (this.mouseState.Y > screenBounds.Height) this.mouseState.Y = screenBounds.Height;
-                                                } break;
-
-                                            case MouseFlags.MoveAbsolute:
-                                                mouseState.X = rawBuffer.data.mouse.lLastX;
-                                                mouseState.Y = rawBuffer.data.mouse.lLastY;
-                                                break;
-                                        }
-                                    } break;
+                                    OnMouseEvent();
+                                    break;
 
                                 case DeviceType.Keyboard:
-                                    {
-                                        int virtualKey = rawBuffer.data.keyboard.VKey;
-                                        int makeCode = rawBuffer.data.keyboard.Makecode;
-                                        int flags = rawBuffer.data.keyboard.Flags;
-
-                                        if (virtualKey == Win32.KEYBOARD_OVERRUN_MAKE_CODE)
-                                            return;
-
-                                        var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
-
-                                        //RawDeviceInfo rawDevice;
-
-                                        //if (Devices.ContainsKey(rawBuffer.header.hDevice))
-                                        //{
-                                        //    lock (objectlock)
-                                        //    {
-                                        //        rawDevice = Devices[rawBuffer.header.hDevice];
-                                        //    }
-                                        //}
-                                        //else
-                                        //{
-                                        //    Debug.WriteLine("RawInput: handle '{0}' was not in the device list.", rawBuffer.header.hDevice);
-                                        //    return;
-                                        //}
-
-                                        var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
-
-                                        var KeyPressState = isBreakBitSet ? "BREAK" : "MAKE";
-                                        var Message = rawBuffer.data.keyboard.Message;
-                                        var VKeyName = KeyMapper.GetKeyName(VirtualKeyCorrection(virtualKey, isE0BitSet, makeCode)).ToUpper();
-                                        var VKey = virtualKey;
-
-                                        if (isBreakBitSet)
-                                        {
-                                            Keys.Remove(KeyMapper.ToKey(VKey));
-                                        }
-                                        else
-                                        {
-                                            Keys.Add(KeyMapper.ToKey(VKey)); 
-                                        }
-
-                                        //Console.WriteLine($"RawInput: '{rawDevice.DeviceDescName}', {VKey}, '{VKeyName}', {KeyPressState}");
-                                    }
+                                    OnKeyboardEvent();
                                     break;
 
                                 case DeviceType.HID:
                                     break;
                             }
                         }
-                    } break;
+                    }
+                    break;
 
                 case Win32.WM_USB_DEVICECHANGE:
                     Debug.WriteLine("RawInput: USB Device Arrival / Removal");
-                    // TODO: Call event
+                    // TODO: Refresh all devices and call device connect / disconnect events
                     break;
             }
 
             base.WndProc(ref message);
         }
-        
+
+        #region WndProc Messages
+        private void OnMouseEvent()
+        {
+            switch ((MouseFlags)rawBuffer.data.mouse.usFlags)
+            {
+                case MouseFlags.VirtualDesktop:
+                    break;
+
+                case MouseFlags.AttributesChanged:
+                    break;
+
+                case MouseFlags.MoveRelative:
+                    {
+                        // TODO: Get the mouse initial position first
+                        //       How does MoveAbsolute work? When does it get called and how?
+
+                        this.mouseState.X += rawBuffer.data.mouse.lLastX;
+                        this.mouseState.Y += rawBuffer.data.mouse.lLastY;
+
+                        var screenBounds = Screen.GetBounds(new System.Drawing.Point(0, 0));
+
+                        if (this.mouseState.X < screenBounds.X) this.mouseState.X = screenBounds.X;
+                        if (this.mouseState.Y < screenBounds.Y) this.mouseState.Y = screenBounds.Y;
+                        if (this.mouseState.X > screenBounds.Width) this.mouseState.X = screenBounds.Width;
+                        if (this.mouseState.Y > screenBounds.Height) this.mouseState.Y = screenBounds.Height;
+                    }
+                    break;
+
+                case MouseFlags.MoveAbsolute:
+                    //mouseState.X = rawBuffer.data.mouse.lLastX;
+                    //mouseState.Y = rawBuffer.data.mouse.lLastY;
+                    break;
+            }
+
+            var buttons = (MouseButtonsFlags)rawBuffer.data.mouse.ulButtons;
+            mouseState.LeftButton = (buttons & MouseButtonsFlags.LeftButtonDown) == MouseButtonsFlags.LeftButtonDown;
+            mouseState.MiddleButton = (buttons & MouseButtonsFlags.MiddleButtonDown) == MouseButtonsFlags.MiddleButtonDown;
+            mouseState.RightButton = (buttons & MouseButtonsFlags.RightButtonDown) == MouseButtonsFlags.RightButtonDown;
+            
+            // TODO: Add support for XButton1 & 2
+            mouseState.XButton1 = false; 
+            mouseState.XButton2 = false;
+        }
+
+        private void OnKeyboardEvent()
+        {
+            int virtualKey = rawBuffer.data.keyboard.VKey;
+            int makeCode = rawBuffer.data.keyboard.Makecode;
+            int flags = rawBuffer.data.keyboard.Flags;
+
+            if (virtualKey == Win32.KEYBOARD_OVERRUN_MAKE_CODE)
+                return;
+
+            var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
+
+            //RawDeviceInfo rawDevice;
+
+            //if (Devices.ContainsKey(rawBuffer.header.hDevice))
+            //{
+            //    lock (objectlock)
+            //    {
+            //        rawDevice = Devices[rawBuffer.header.hDevice];
+            //    }
+            //}
+            //else
+            //{
+            //    Debug.WriteLine("RawInput: handle '{0}' was not in the device list.", rawBuffer.header.hDevice);
+            //    return;
+            //}
+
+            var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
+
+            var KeyPressState = isBreakBitSet ? "BREAK" : "MAKE";
+            var Message = rawBuffer.data.keyboard.Message;
+            var VKeyName = KeyMapper.GetKeyName(VirtualKeyCorrection(virtualKey, isE0BitSet, makeCode)).ToUpper();
+            var VKey = virtualKey;
+
+            if (isBreakBitSet)
+            {
+                Keys.Remove(KeyMapper.ToKey(VKey));
+            }
+            else
+            {
+                Keys.Add(KeyMapper.ToKey(VKey));
+            }
+
+            //Console.WriteLine($"RawInput: '{rawDevice.DeviceDescName}', {VKey}, '{VKeyName}', {KeyPressState}");
+        }
+        #endregion
+
         static IntPtr RegisterForDeviceNotifications(IntPtr parent)
         {
             var usbNotifyHandle = IntPtr.Zero;

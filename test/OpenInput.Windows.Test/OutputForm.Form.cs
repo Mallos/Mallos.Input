@@ -57,7 +57,7 @@
             this.keyboardGroupBox.Controls.Add(this.keyboardHistory);
             this.keyboardGroupBox.Location = new System.Drawing.Point(12, 118);
             this.keyboardGroupBox.Size = new System.Drawing.Size(460, 200);
-            this.keyboardGroupBox.Text = "Keyboard (count: {0})";
+            this.keyboardGroupBox.Text = "Keyboard";
             this.keyboardGroupBox.TabStop = false;
 
             this.keyboardHistory.FormattingEnabled = true;

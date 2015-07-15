@@ -7,8 +7,13 @@
 
     partial class DeviceService
     {
-        public string KeyboardNames => keyboardNames;
-        private string keyboardNames = string.Empty;
+        static readonly Guid DeviceInterfaceHid = new Guid("4D1E55B2-F16F-11CF-88CB-001111000030");
+
+        public ushort KeyboardCount = 0;
+        public string KeyboardNames = string.Empty;
+
+        public ushort MouseCount = 0;
+        public string MouseNames = string.Empty;
 
         private uint deviceCount = 0;
 
@@ -16,7 +21,13 @@
         {
             lock (objectlock)
             {
-                this.keyboardNames = string.Empty;
+                this.KeyboardCount = 0;
+                this.KeyboardNames = string.Empty;
+
+                this.MouseCount = 0;
+                this.MouseNames = string.Empty;
+
+                // this.Devices.Clear();
 
                 // TODO: Do I need this?
 
@@ -57,27 +68,33 @@
 
                         switch ((DeviceType)rid.dwType)
                         {
+                            // TODO: I should change the ", " addition to use the counts instead
+
                             case DeviceType.Mouse:
-                                Debug.WriteLine("Found Mouse!");
+                                this.MouseCount++;
+                                this.MouseNames += ((this.MouseNames == string.Empty) ? "" : ", ") + deviceDesc;
                                 break;
 
                             case DeviceType.HID:
                                 break;
 
                             case DeviceType.Keyboard:
-                                {
-                                    var rawDeviceInfo = new RawDeviceInfo
-                                    {
-                                        DeviceName = Marshal.PtrToStringAnsi(pData),
-                                        DeviceHandle = rid.hDevice,
-                                        DeviceType = Enum.GetName(typeof(DeviceType), rid.dwType),
-                                        DeviceDescName = deviceDesc
-                                    };
+                                this.KeyboardCount++;
+                                this.KeyboardNames += ((this.KeyboardNames == string.Empty) ? "" : ", ") + deviceDesc;
+                                break;
 
-                                    this.keyboardNames += ((this.keyboardNames == string.Empty) ? "" : ", ") + rawDeviceInfo.DeviceDescName;
-                                    if (!this.Devices.ContainsKey(rid.hDevice))
-                                        this.Devices.Add(rid.hDevice, rawDeviceInfo);
-                                } break;
+                                //{
+                                //    var rawDeviceInfo = new RawDeviceInfo
+                                //    {
+                                //        DeviceName = Marshal.PtrToStringAnsi(pData),
+                                //        DeviceHandle = rid.hDevice,
+                                //        DeviceType = Enum.GetName(typeof(DeviceType), rid.dwType),
+                                //        DeviceDescName = deviceDesc
+                                //    };
+
+                                //    if (!this.Devices.ContainsKey(rid.hDevice))
+                                //        this.Devices.Add(rid.hDevice, rawDeviceInfo);
+                                //} break;
                         }
 
                         Marshal.FreeHGlobal(pData);

@@ -9,7 +9,7 @@
     public class Mouse : RawDevice, IMouse
     {
         /// <inheritdoc />
-        public string Name => string.Empty;
+        public string Name => Service.MouseNames;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
@@ -17,6 +17,9 @@
         public Mouse(IntPtr handle)
             : base(handle)
         {
+            // I don't really like registering it here since there should only be one registered,
+            // What if the user creates two instances?
+
             var rid = new RawInputDevice[1];
             rid[0].UsagePage = HidUsagePage.GENERIC;
             rid[0].Usage = HidUsage.Mouse;

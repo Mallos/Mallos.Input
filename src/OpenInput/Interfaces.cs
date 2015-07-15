@@ -1,5 +1,16 @@
 ﻿namespace OpenInput
 {
+    // TODO: I have to make some changes so I can support multiple devices of one type
+    //       For example I should support multiple GamePads
+    //       with RawInput I can also support multiple mices and keyboards; currently it is all in one.
+
+    // TODO: I am not sure on how I should implement IDeviceService, the idea behind it is to give all
+    //       the capabilities of the devices and how many are connected. Maybe even events when a new
+    //       device is connected and disconnected!
+
+    // TODO: I also would like to support events for all the devices. 
+    //       Making it all thread-safe would also be a nice thing. 
+
     /// <summary>
     /// Interface for a basic device.
     /// </summary>
@@ -57,8 +68,6 @@
     /// </summary>
     public interface IGamePad: IDevice<GamePadState>
     {
-        // TODO: I need a better interface for GamePad's, since it can support multiple.
-
         /// <summary>
         /// Gets the current state --
         /// </summary>
