@@ -18,8 +18,8 @@ namespace OpenInput
 
             this.container = new Container();
             this.container
-                .Map<IMouse>(new OpenTK.Mouse());
-                //.Map<IKeyboard>(new OpenInput.Keyboard());
+                .Map<IMouse>(new OpenTK.Mouse())
+                .Map<IKeyboard>(new OpenTK.Keyboard());
         }
 
         protected override void OnLoad(EventArgs e)

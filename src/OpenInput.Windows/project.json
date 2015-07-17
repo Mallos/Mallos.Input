@@ -9,7 +9,8 @@
   "dependencies": {
     "OpenInput": "1.0.0-*",
     "SharpDX": "3.0.0-alpha02",
-    "SharpDX.DirectInput": "3.0.0-alpha02"
+    "SharpDX.DirectInput": "3.0.0-alpha02",
+    "SharpDX.XInput": "2.6.3"
   },
 
   "compilationOptions": {

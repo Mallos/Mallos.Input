@@ -15,8 +15,8 @@
         public string Name => Service.KeyboardNames;
 
         /// <inheritdoc />
-        public ITextInput TextInput => textInput;
-        private TextInput textInput = new TextInput();
+        public TextInput TextInput => textInput;
+        private TextInput textInput = new Empty.TextInput();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
@@ -38,38 +38,6 @@
         public KeyboardState GetCurrentState()
         {
             return new KeyboardState(Service.Keys.ToArray());
-        }
-    }
-
-    class TextInput : ITextInput
-    {
-        public bool Capture
-        {
-            get { return capture; }
-            set { capture = value; }
-        }
-
-        public string Result
-        {
-            get { return result; }
-            set { result = value; }
-        }
-
-        public bool AllowNewLine
-        {
-            get { return allowNewLine; }
-            set { allowNewLine = value; }
-        }
-
-        private bool capture;
-        private string result;
-        private bool allowNewLine;
-
-        public TextInput()
-        {
-            this.Capture = false;
-            this.Result = string.Empty;
-            this.allowNewLine = false;
         }
     }
 }

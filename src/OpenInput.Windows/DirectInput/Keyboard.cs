@@ -21,7 +21,7 @@
         public string Name => "Keyboard";
 
         /// <inheritdoc />
-        public ITextInput TextInput => textInput;
+        public TextInput TextInput => textInput;
 
         private TextInput textInput;
         private KeyboardState previusState;
@@ -38,19 +38,8 @@
             this.keyboard = new DirectInputKeyboard(directInput);
             this.keyboard.Acquire();
 
-            this.textInput = new TextInput();
+            this.textInput = new DirectInput_TextInput();
         }
-
-        //public void SetHandle(IntPtr handle)
-        //{
-        //    // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
-        //    //if (!keyboard.IsDisposed)
-        //    //{
-        //    //    keyboard.Unacquire();
-        //    //    keyboard.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.Exclusive);
-        //    //    keyboard.Acquire();
-        //    //}
-        //}
 
         /// <inheritdoc />
         public KeyboardState GetCurrentState()
@@ -102,37 +91,8 @@
         }
     }
 
-    class TextInput : ITextInput
+    public class DirectInput_TextInput : TextInput
     {
-        public bool Capture
-        {
-            get { return capture; }
-            set { capture = value; }
-        }
-
-        public string Result
-        {
-            get { return result; }
-            set { result = value; }
-        }
-
-        public bool AllowNewLine
-        {
-            get { return allowNewLine; }
-            set { allowNewLine = value; }
-        }
-
-        private bool capture;
-        private string result;
-        private bool allowNewLine;
-
-        public TextInput()
-        {
-            this.Capture = false;
-            this.Result = string.Empty;
-            this.allowNewLine = false;
-        }
-
         /*
         
             // TODO: I would like to add support to other letters/symbols like åäö and symbols from other languages

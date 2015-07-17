@@ -7,13 +7,17 @@ A portable way of accessing HID devices
 
 * Windows 
     * DirectInput
+    * XInput
     * RawInput
 * OpenTK
 
 ### Supported Devices
 
-* Mouse
+* [Mouse](#Mouse)
 * Keyboard
 * TouchDevice
 * GamePad
+
+### Getting Started
+
 

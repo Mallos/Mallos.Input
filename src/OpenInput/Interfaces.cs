@@ -36,6 +36,22 @@
     /// <summary>
     /// 
     /// </summary>
+    public interface IDevices<TState> : IDevice<TState> where TState : struct
+    {
+        /// <summary>
+        /// Get connected device count.
+        /// </summary>
+        int GetDevicesCount();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        TState GetCurrentState(int index);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IMouse : IDevice<MouseState>
     {
         /// <summary>
@@ -50,9 +66,9 @@
     public interface IKeyboard : IDevice<KeyboardState>
     {
         /// <summary>
-        /// Gets the <see cref="ITextInput"/>.
+        /// Gets the <see cref="TextInput"/>.
         /// </summary>
-        ITextInput TextInput { get; }
+        TextInput TextInput { get; }
     }
 
     /// <summary>
@@ -66,40 +82,8 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IGamePad: IDevice<GamePadState>
+    public interface IGamePad: IDevices<GamePadState>
     {
-        /// <summary>
-        /// Gets the current state --
-        /// </summary>
-        GamePadState GetCurrentState(int index);
-    }
 
-    /// <summary>
-    /// Interface that provides support for text input.
-    /// </summary>
-    public interface ITextInput
-    {
-        /// <summary>
-        /// Gets or sets the result.
-        /// </summary>
-        string Result { get; set; }
-
-        /// <summary>
-        /// Gets or sets, if capturing input.
-        /// </summary>
-        bool Capture { get; set; }
-        
-        /// <summary>
-        /// Gets or sets, if the capture should allow new lines.
-        /// </summary>
-        bool AllowNewLine { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IDeviceService
-    {
-        int NumberOfKeyboards { get; }
     }
 }

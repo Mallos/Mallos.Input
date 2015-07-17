@@ -5,12 +5,6 @@
     /// <summary>
     /// DirectInput Mouse
     /// </summary>
-    /// <remarks>
-    /// * You basically need to set the cursor position to (0,0) so you can get right coords.
-    /// "There's one occasion where it's acceptable to use DirectInput for mouse input, 
-    /// and that's if you need high DPI mouse input and you need to support pre-Win2k machine."
-    /// http://www.gamedev.net/blog/233/entry-1567278-reasons-not-to-use-directinput-for-keyboard-input/
-    /// </remarks>
     public class Mouse : IMouse
     {
         /// <inheritdoc />
@@ -31,20 +25,10 @@
             this.mouse = new DirectInputMouse(directInput);
             this.mouse.Acquire();
 
+            // TODO: Create a win32 method that sets the cursor to the middle of the screen or gets the coords
             this.SetPosition(0, 0);
         }
         
-        //public void SetHandle(IntPtr handle)
-        //{
-        //    // ApiCode: [DIERR_INPUTLOST/InputLost], Message: The system cannot read from the specified device.
-        //    //if (!mouse.IsDisposed)
-        //    //{
-        //    //    mouse.Unacquire();
-        //    //    mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
-        //    //    mouse.Acquire();
-        //    //}
-        //}
-
         /// <inheritdoc />
         public void SetPosition(int x, int y)
         {

@@ -20,7 +20,8 @@
                 //.Map<IMouse>(new DirectInput.Mouse())
                 //.Map<IKeyboard>(new DirectInput.Keyboard());
                 .Map<IMouse>(new RawInput.Mouse(this.Handle))
-                .Map<IKeyboard>(new RawInput.Keyboard(this.Handle));
+                .Map<IKeyboard>(new RawInput.Keyboard(this.Handle))
+                .Map<IGamePad>(new Empty.GamePad());
 
             this.timer = new Timer();
             this.timer.Interval = (int)TimeSpan.FromSeconds(1.0f / 12).TotalMilliseconds;

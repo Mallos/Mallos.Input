@@ -11,7 +11,7 @@
     {
         /// <summary> Gets all the currently pressed keys. </summary>
         public Keys[] Keys { get; internal set; }
-
+        
         public KeyboardState(Keys[] keys)
         {
             this.Keys = keys;
