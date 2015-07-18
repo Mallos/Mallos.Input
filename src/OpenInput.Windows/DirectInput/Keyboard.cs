@@ -1,7 +1,6 @@
 ﻿namespace OpenInput.DirectInput
 {
     using System;
-    using CooperativeLevel = SharpDX.DirectInput.CooperativeLevel;
     using DirectInputKeyboard = SharpDX.DirectInput.Keyboard;
 
     /// <summary>
@@ -13,7 +12,7 @@
     /// * No support for keymaps other than US-Englis.
     /// http://www.gamedev.net/blog/233/entry-1567278-reasons-not-to-use-directinput-for-keyboard-input/
     /// </remarks>
-    public class Keyboard : IKeyboard
+    public class Keyboard : BaseDevice, IKeyboard
     {
         /// <summary>
         /// [SharpDX.DirectInput] ApiCode: [E_NOTIMPL/Not implemented], Message: Not implemented
@@ -21,24 +20,28 @@
         public string Name => "Keyboard";
 
         /// <inheritdoc />
-        public TextInput TextInput => textInput;
+        public event EventHandler<KeyEventArgs> KeyDown;
 
+        /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyUp;
+
+        /// <inheritdoc />
+        public TextInput TextInput => textInput;
         private TextInput textInput;
-        private KeyboardState previusState;
 
         internal readonly DirectInputKeyboard keyboard;
+        private KeyboardState previusState;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
         /// </summary>
         public Keyboard()
+            : base()
         {
-            var directInput = DeviceService.Service.Value.directInput;
-
             this.keyboard = new DirectInputKeyboard(directInput);
             this.keyboard.Acquire();
 
-            this.textInput = new DirectInput_TextInput();
+            this.textInput = new Empty.EmptyTextInput();
         }
 
         /// <inheritdoc />
@@ -91,23 +94,20 @@
         }
     }
 
-    public class DirectInput_TextInput : TextInput
-    {
-        /*
-        
-            // TODO: I would like to add support to other letters/symbols like åäö and symbols from other languages
-            if (InputHelper.IsLetter(e.Key))
-                Result += e.KeyChar;
+    /*
 
-            if (e.Key == Keys.Back && Result.Length > 0)
-            {
-                Result = Result.Remove(Result.Length - 1);
-            }
+        // TODO: I would like to add support to other letters/symbols like åäö and symbols from other languages
+        if (InputHelper.IsLetter(e.Key))
+            Result += e.KeyChar;
 
-            if (AllowNewLine && e.Key == Keys.Enter)
-            {
-                Result += Environment.NewLine;
-            }
-        */
-    }
+        if (e.Key == Keys.Back && Result.Length > 0)
+        {
+            Result = Result.Remove(Result.Length - 1);
+        }
+
+        if (AllowNewLine && e.Key == Keys.Enter)
+        {
+            Result += Environment.NewLine;
+        }
+    */
 }

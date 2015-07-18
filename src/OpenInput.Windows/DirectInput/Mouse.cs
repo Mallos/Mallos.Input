@@ -1,26 +1,37 @@
 ﻿namespace OpenInput.DirectInput
 {
+    using System;
     using DirectInputMouse = SharpDX.DirectInput.Mouse;
 
     /// <summary>
     /// DirectInput Mouse
     /// </summary>
-    public class Mouse : IMouse
+    public class Mouse : BaseDevice, IMouse
     {
         /// <inheritdoc />
         public string Name => mouse.Information.ProductName.Trim('\0');
 
-        internal readonly DirectInputMouse mouse;
+        /// <inheritdoc />
+        public event EventHandler<MouseEventArgs> Move;
 
+        /// <inheritdoc />
+        public event EventHandler<MouseWheelEventArgs> MouseWheel;
+
+        /// <inheritdoc />
+        public event EventHandler<MouseButtonEventArgs> MouseDown;
+
+        /// <inheritdoc />
+        public event EventHandler<MouseButtonEventArgs> MouseUp;
+
+        internal readonly DirectInputMouse mouse;
         private MouseState state;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Mouse"/> class.
         /// </summary>
         public Mouse()
+            : base()
         {
-            var directInput = DeviceService.Service.Value.directInput;
-
             this.state = new MouseState();
             this.mouse = new DirectInputMouse(directInput);
             this.mouse.Acquire();
@@ -48,7 +59,6 @@
             this.state.X += state.X;
             this.state.Y += state.Y;
 
-            var screenBounds = DeviceService.Service.Value.ScreenBounds;
             if (this.state.X < screenBounds.X) this.state.X = screenBounds.X;
             if (this.state.Y < screenBounds.Y) this.state.Y = screenBounds.Y;
             if (this.state.X > screenBounds.Width) this.state.X = screenBounds.Width;
@@ -63,6 +73,11 @@
             this.state.XButton2 = state.Buttons[4];
             
             return this.state;
+        }
+
+        public void GetPosition(out int x, out int y)
+        {
+            throw new NotImplementedException();
         }
     }
 }
