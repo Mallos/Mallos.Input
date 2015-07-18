@@ -11,8 +11,14 @@ namespace OpenInput.Empty
         public string Name => "Empty Keyboard";
 
         /// <inheritdoc />
-        public OpenInput.TextInput TextInput => textInput;
-        private TextInput textInput = new TextInput();
+        public event EventHandler<KeyEventArgs> KeyDown;
+
+        /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyUp;
+
+        /// <inheritdoc />
+        public TextInput TextInput => textInput;
+        private TextInput textInput = new EmptyTextInput();
 
         /// <inheritdoc />
         public KeyboardState GetCurrentState()
