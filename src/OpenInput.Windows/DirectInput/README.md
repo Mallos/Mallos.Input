@@ -23,9 +23,9 @@ Also SharpDX haven't implemented all the functionalities of DirectInput.
 
 ## Supports
 
-- Mouse
-- Limited Keyboard
-- GamePad
+* Mouse
+* Limited Keyboard
+* GamePad
 
 ### Dependencies
 

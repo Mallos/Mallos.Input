@@ -13,7 +13,7 @@
         /// </summary>
         public bool PreFilterMessage(ref Message m)
         {
-            return m.Msg == Win32.WM_KEYDOWN;
+            return m.Msg == WindowsInterop.WM_KEYDOWN;
         }
     }
 }

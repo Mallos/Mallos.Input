@@ -9,9 +9,9 @@
 
 ## Supports
 
-- Mouse
-- Keyboard
-- GamePad
+* Mouse
+* Keyboard
+* GamePad
 
 ### Dependencies
 

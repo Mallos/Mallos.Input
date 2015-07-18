@@ -13,11 +13,17 @@ namespace OpenInput.OpenTK
         public string Name => "Keyboard";
 
         /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyDown;
+
+        /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyUp;
+
+        /// <inheritdoc />
         public TextInput TextInput => textInput;
-        private TextInput textInput = new Empty.TextInput();
+        private TextInput textInput = new Empty.EmptyTextInput();
 
         private static KeyboardState keyboardState = new KeyboardState();
-
+        
         /// <inheritdoc />
         public KeyboardState GetCurrentState()
         {

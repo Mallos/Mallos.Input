@@ -28,10 +28,10 @@
                 this.MouseNames = string.Empty;
                 
                 var dwSize = (Marshal.SizeOf(typeof(RawInputDeviceList)));
-                if (Win32.GetRawInputDeviceList(IntPtr.Zero, ref deviceCount, (uint)dwSize) == 0)
+                if (WindowsInterop.GetRawInputDeviceList(IntPtr.Zero, ref deviceCount, (uint)dwSize) == 0)
                 {
                     var rawInputDeviceList = Marshal.AllocHGlobal((int)(dwSize * deviceCount));
-                    Win32.GetRawInputDeviceList(rawInputDeviceList, ref deviceCount, (uint)dwSize);
+                    WindowsInterop.GetRawInputDeviceList(rawInputDeviceList, ref deviceCount, (uint)dwSize);
 
                     for (var i = 0; i < deviceCount; i++)
                     {
@@ -39,15 +39,15 @@
                         var rid = (RawInputDeviceList)Marshal.PtrToStructure(new IntPtr((rawInputDeviceList.ToInt64() + (dwSize * i))), typeof(RawInputDeviceList));
 
                         uint pcbSize = 0;
-                        Win32.GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, IntPtr.Zero, ref pcbSize);
+                        WindowsInterop.GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, IntPtr.Zero, ref pcbSize);
                         if (pcbSize <= 0)
                             continue;
 
                         var pData = Marshal.AllocHGlobal((int)pcbSize);
-                        Win32.GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, pData, ref pcbSize);
+                        WindowsInterop.GetRawInputDeviceInfo(rid.hDevice, RawInputDeviceInfo.RIDI_DEVICENAME, pData, ref pcbSize);
 
                         var deviceName = Marshal.PtrToStringAnsi(pData);
-                        var deviceDesc = Win32.GetDeviceDescription(deviceName);
+                        var deviceDesc = WindowsInterop.GetDeviceDescription(deviceName);
 
                         Debug.WriteLine($"RawInput: {deviceName}, {deviceDesc}, {Enum.GetName(typeof(DeviceType), rid.dwType)}");
 

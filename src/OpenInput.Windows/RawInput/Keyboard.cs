@@ -4,10 +4,10 @@
     using System.Linq;
     using System.Runtime.InteropServices;
 
-    // TODO: Implement ITextInput
+    // TODO: Implement TextInput
 
     /// <summary>
-    /// 
+    /// Class that represents a Keyboard, for RawInput.
     /// </summary>
     public class Keyboard : RawDevice, IKeyboard
     {
@@ -15,8 +15,14 @@
         public string Name => Service.KeyboardNames;
 
         /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyDown;
+
+        /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyUp;
+
+        /// <inheritdoc />
         public TextInput TextInput => textInput;
-        private TextInput textInput = new Empty.TextInput();
+        private TextInput textInput = new Empty.EmptyTextInput();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
@@ -30,7 +36,7 @@
             rid[0].Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY;
             rid[0].Target = handle;
 
-            if (!Win32.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0])))
+            if (!WindowsInterop.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0])))
                 throw new ApplicationException("Failed to register raw input device(s).");
         }
 

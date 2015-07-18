@@ -1,4 +1,5 @@
 ﻿using OpenTK.Input;
+using System;
 using tkMouse = OpenTK.Input.Mouse;
 
 namespace OpenInput.OpenTK
@@ -11,6 +12,18 @@ namespace OpenInput.OpenTK
         /// <inheritdoc />
         public string Name => "";
 
+        /// <inheritdoc />
+        public event EventHandler<MouseButtonEventArgs> MouseDown;
+
+        /// <inheritdoc />
+        public event EventHandler<MouseButtonEventArgs> MouseUp;
+
+        /// <inheritdoc />
+        public event EventHandler<MouseWheelEventArgs> MouseWheel;
+
+        /// <inheritdoc />
+        public event EventHandler<MouseEventArgs> Move;
+
         private static int wheelPrevius = 0;
         private static MouseState mouseState = new MouseState();
 
@@ -20,6 +33,18 @@ namespace OpenInput.OpenTK
         public Mouse()
         {
 
+        }
+
+        /// <inheritdoc />
+        public void SetPosition(int x, int y)
+        {
+            tkMouse.SetPosition(x, y);
+        }
+
+        /// <inheritdoc />
+        public void GetPosition(out int x, out int y)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -38,12 +63,6 @@ namespace OpenInput.OpenTK
             mouseState.XButton2 = state.XButton2 == ButtonState.Pressed;
 
             return mouseState;
-        }
-
-        /// <inheritdoc />
-        public void SetPosition(int x, int y)
-        {
-            tkMouse.SetPosition(x, y);
         }
     }
 }

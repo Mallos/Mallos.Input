@@ -45,22 +45,33 @@
         MAPVK_VK_TO_VSC_EX = 0x04
     }
 
-    static class WindowsInterop
+    static partial class WindowsInterop
     {
-        [DllImport("user32.dll")]
-        public static extern uint MapVirtualKey(uint uCode, uint uMapType);
+        #region Helper Methods
+        public static int LoWord(int dwValue)
+        {
+            return (dwValue & 0xFFFF);
+        }
 
-        [DllImport("user32.dll")]
-        public static extern int MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
+        public static int HiWord(Int64 dwValue)
+        {
+            return (int)(dwValue >> 16) & ~FAPPCOMMANDMASK;
+        }
 
-        [DllImport("user32.dll")]
-        public static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
+        public static ushort LowWord(uint val)
+        {
+            return (ushort)val;
+        }
 
-        [DllImport("user32.dll")]
-        public static extern uint MapVirtualKeyEx(uint uCode, MapVirtualKeyMapTypes uMapType, IntPtr dwhkl);
+        public static ushort HighWord(uint val)
+        {
+            return (ushort)(val >> 16);
+        }
 
-        [DllImport("user32.dll")]
-        public static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString, int nSize);
+        public static uint BuildWParam(ushort low, ushort high)
+        {
+            return ((uint)high << 16) | low;
+        }
 
         public static string GetKeyNameText(int keycode, bool isE0BitSet)
         {
@@ -76,5 +87,62 @@
 
             return stringBuilder.ToString();
         }
+        #endregion
+
+        #region Constant Values
+        public const int KEYBOARD_OVERRUN_MAKE_CODE = 0xFF;
+        public const int WM_APPCOMMAND = 0x0319;
+        public const int FAPPCOMMANDMASK = 0xF000;
+        public const int FAPPCOMMANDMOUSE = 0x8000;
+        public const int FAPPCOMMANDOEM = 0x1000;
+
+        public const int WM_KEYDOWN = 0x0100;
+        public const int WM_KEYUP = 0x0101;
+        public const int WM_SYSKEYDOWN = 0x0104;
+        public const int WM_INPUT = 0x00FF;
+        public const int WM_USB_DEVICECHANGE = 0x0219;
+
+        public const int VK_SHIFT = 0x10;
+
+        /// <summary> Key Down </summary>
+        public const int RI_KEY_MAKE = 0x00;
+        /// <summary> Key Up </summary>
+        public const int RI_KEY_BREAK = 0x01;
+        /// <summary> Left version of the key </summary>
+        public const int RI_KEY_E0 = 0x02;
+        /// <summary> Right version of the key. Only seems to be set for the Pause/Break key. </summary>
+        public const int RI_KEY_E1 = 0x04;
+
+        public const int VK_CONTROL = 0x11;
+        public const int VK_MENU = 0x12;
+        public const int VK_ZOOM = 0xFB;
+        public const int VK_LSHIFT = 0xA0;
+        public const int VK_RSHIFT = 0xA1;
+        public const int VK_LCONTROL = 0xA2;
+        public const int VK_RCONTROL = 0xA3;
+        public const int VK_LMENU = 0xA4;
+        public const int VK_RMENU = 0xA5;
+
+        public const int SC_SHIFT_R = 0x36;
+        public const int SC_SHIFT_L = 0x2a;
+        public const int RIM_INPUT = 0x00;
+        #endregion
+
+        #region Windows Methods
+        [DllImport("user32.dll")]
+        public static extern uint MapVirtualKey(uint uCode, uint uMapType);
+
+        [DllImport("user32.dll")]
+        public static extern int MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
+
+        [DllImport("user32.dll")]
+        public static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
+
+        [DllImport("user32.dll")]
+        public static extern uint MapVirtualKeyEx(uint uCode, MapVirtualKeyMapTypes uMapType, IntPtr dwhkl);
+
+        [DllImport("user32.dll")]
+        public static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString, int nSize);
+        #endregion
     }
 }

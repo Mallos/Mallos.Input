@@ -7,6 +7,7 @@
 
 ## Supports
 
-- Mouse
-- Keyboard
-- GamePad
+* Mouse
+* Keyboard
+* TouchDevice
+* GamePad

@@ -35,7 +35,7 @@
 
         ~DeviceService()
         {
-            Win32.UnregisterDeviceNotification(devNotifyHandle);
+            WindowsInterop.UnregisterDeviceNotification(devNotifyHandle);
             RemoveMessageFilter();
         }
 
@@ -66,12 +66,12 @@
 
             switch (message.Msg)
             {
-                case Win32.WM_INPUT:
+                case WindowsInterop.WM_INPUT:
                     {
                         var dwSize = 0;
                         var hdevice = message.LParam;
-                        Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, IntPtr.Zero, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader)));
-                        if (dwSize != Win32.GetRawInputData(hdevice, DataCommand.RID_INPUT, out rawBuffer, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader))))
+                        WindowsInterop.GetRawInputData(hdevice, DataCommand.RID_INPUT, IntPtr.Zero, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader)));
+                        if (dwSize != WindowsInterop.GetRawInputData(hdevice, DataCommand.RID_INPUT, out rawBuffer, ref dwSize, Marshal.SizeOf(typeof(RawInputHeader))))
                         {
                             Debug.WriteLine("RawInput: Failed to get the buffer.");
                         }
@@ -94,7 +94,7 @@
                     }
                     break;
 
-                case Win32.WM_USB_DEVICECHANGE:
+                case WindowsInterop.WM_USB_DEVICECHANGE:
                     Debug.WriteLine("RawInput: USB Device Arrival / Removal");
                     // TODO: Refresh all devices and call device connect / disconnect events
                     break;
@@ -158,11 +158,11 @@
             int makeCode = rawBuffer.data.keyboard.Makecode;
             int flags = rawBuffer.data.keyboard.Flags;
 
-            if (virtualKey == Win32.KEYBOARD_OVERRUN_MAKE_CODE)
+            if (virtualKey == WindowsInterop.KEYBOARD_OVERRUN_MAKE_CODE)
                 return;
 
-            var isE0BitSet = ((flags & Win32.RI_KEY_E0) != 0);
-            var isBreakBitSet = ((flags & Win32.RI_KEY_BREAK) != 0);
+            var isE0BitSet = ((flags & WindowsInterop.RI_KEY_E0) != 0);
+            var isBreakBitSet = ((flags & WindowsInterop.RI_KEY_BREAK) != 0);
 
             var KeyPressState = isBreakBitSet ? "BREAK" : "MAKE";
             var Message = rawBuffer.data.keyboard.Message;
@@ -198,7 +198,7 @@
             {
                 mem = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(BroadcastDeviceInterface)));
                 Marshal.StructureToPtr(bdi, mem, false);
-                usbNotifyHandle = Win32.RegisterDeviceNotification(parent, mem, DeviceNotification.DEVICE_NOTIFY_WINDOW_HANDLE);
+                usbNotifyHandle = WindowsInterop.RegisterDeviceNotification(parent, mem, DeviceNotification.DEVICE_NOTIFY_WINDOW_HANDLE);
             }
             catch (Exception e)
             {
@@ -225,9 +225,9 @@
             if (rawBuffer.header.hDevice == IntPtr.Zero)
             {
                 // When hDevice is 0 and the vkey is VK_CONTROL indicates the ZOOM key
-                if (rawBuffer.data.keyboard.VKey == Win32.VK_CONTROL)
+                if (rawBuffer.data.keyboard.VKey == WindowsInterop.VK_CONTROL)
                 {
-                    correctedVKey = Win32.VK_ZOOM;
+                    correctedVKey = WindowsInterop.VK_ZOOM;
                 }
             }
             else
@@ -235,15 +235,18 @@
                 switch (virtualKey)
                 {
                     // Right-hand CTRL and ALT have their e0 bit set 
-                    case Win32.VK_CONTROL:
-                        correctedVKey = isE0BitSet ? Win32.VK_RCONTROL : Win32.VK_LCONTROL;
+                    case WindowsInterop.VK_CONTROL:
+                        correctedVKey = isE0BitSet ? WindowsInterop.VK_RCONTROL : WindowsInterop.VK_LCONTROL;
                         break;
-                    case Win32.VK_MENU:
-                        correctedVKey = isE0BitSet ? Win32.VK_RMENU : Win32.VK_LMENU;
+
+                    case WindowsInterop.VK_MENU:
+                        correctedVKey = isE0BitSet ? WindowsInterop.VK_RMENU : WindowsInterop.VK_LMENU;
                         break;
-                    case Win32.VK_SHIFT:
-                        correctedVKey = makeCode == Win32.SC_SHIFT_R ? Win32.VK_RSHIFT : Win32.VK_LSHIFT;
+
+                    case WindowsInterop.VK_SHIFT:
+                        correctedVKey = makeCode == WindowsInterop.SC_SHIFT_R ? WindowsInterop.VK_RSHIFT : WindowsInterop.VK_LSHIFT;
                         break;
+
                     default:
                         correctedVKey = virtualKey;
                         break;

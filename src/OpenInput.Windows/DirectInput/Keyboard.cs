@@ -4,7 +4,7 @@
     using DirectInputKeyboard = SharpDX.DirectInput.Keyboard;
 
     /// <summary>
-    /// DirectInput Keyboard.
+    /// Class that represents a Keyboard, for DirectInput.
     /// </summary>
     /// <remarks>
     /// * Bad for GUI-style text input.
@@ -14,9 +14,7 @@
     /// </remarks>
     public class Keyboard : BaseDevice, IKeyboard
     {
-        /// <summary>
-        /// [SharpDX.DirectInput] ApiCode: [E_NOTIMPL/Not implemented], Message: Not implemented
-        /// </summary>
+        /// <summary> [SharpDX.DirectInput] ApiCode: [E_NOTIMPL/Not implemented], Message: Not implemented </summary>
         public string Name => "Keyboard";
 
         /// <inheritdoc />

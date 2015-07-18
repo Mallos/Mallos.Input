@@ -4,7 +4,7 @@
     using DirectInputMouse = SharpDX.DirectInput.Mouse;
 
     /// <summary>
-    /// DirectInput Mouse
+    /// Class that represents a mouse, for DirectInput.
     /// </summary>
     public class Mouse : BaseDevice, IMouse
     {
@@ -47,6 +47,12 @@
         }
 
         /// <inheritdoc />
+        public void GetPosition(out int x, out int y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
         public MouseState GetCurrentState()
         {
             if (mouse.IsDisposed)
@@ -73,11 +79,6 @@
             this.state.XButton2 = state.Buttons[4];
             
             return this.state;
-        }
-
-        public void GetPosition(out int x, out int y)
-        {
-            throw new NotImplementedException();
         }
     }
 }
