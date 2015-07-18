@@ -1,18 +1,36 @@
 ﻿namespace OpenInput
 {
+    /// <summary>
+    /// Represents specific state of a controller, including the current state of buttons and sticks.
+    /// </summary>
     public struct GamePadState
     {
+        /// <summary> Indicates whether the controller is connected. </summary>
+        public bool IsConnected { get; internal set; }
+
+        /// <summary> Returns a structure that indicates the position of the thumbsticks. </summary>
         public GamePadThumbSticks ThumbSticks { get; internal set; }
+
+        /// <summary> Returns a structure that identifies the position of triggers are. </summary>
         public GamePadTriggers Triggers { get; internal set; }
+
+        /// <summary> Returns a structure that identifies what buttons are pressed. </summary>
         public GamePadButtons Buttons { get; internal set; }
+
+        /// <summary> Returns a structure that identifies what directions of the directional pad are pressed. </summary>
         public GamePadDPad DPad { get; internal set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GamePadState"/> struct.
+        /// </summary>
         public GamePadState(
+            bool isConnected,
             GamePadThumbSticks thumbSticks,
             GamePadTriggers triggers,
             GamePadButtons buttons,
             GamePadDPad dPad)
         {
+            this.IsConnected = isConnected;
             this.ThumbSticks = thumbSticks;
             this.Triggers = triggers;
             this.Buttons = buttons;
@@ -20,14 +38,26 @@
         }
     }
 
+    /// <summary>
+    /// Structure that represents the position of left and right sticks (thumbsticks) on an controller.
+    /// </summary>
     public struct GamePadThumbSticks
     {
+        /// <summary> Gets the x-position of the left controller stick. </summary>
         public float LeftThumbstickX { get; internal set; }
+
+        /// <summary> Gets the y-position of the left controller stick. </summary>
         public float LeftThumbstickY { get; internal set; }
 
+        /// <summary> Gets the x-position of the right controller stick. </summary>
         public float RightThumbstickX { get; internal set; }
+
+        /// <summary> Gets the y-position of the right controller stick. </summary>
         public float RightThumbstickY { get; internal set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GamePadThumbSticks"/> struct.
+        /// </summary>
         public GamePadThumbSticks(
             float leftThumbstickX, float leftThumbstickY,
             float rightThumbstickX, float rightThumbstickY)
@@ -40,23 +70,82 @@
         }
     }
 
+    /// <summary>
+    /// Structure that defines the position of the left and right triggers on an controller.
+    /// </summary>
     public struct GamePadTriggers
     {
+        /// <summary> Identifies the position of the left trigger on the controller. </summary>
+        public float Left { get; internal set; }
 
+        /// <summary> Identifies the position of the right trigger on the controller. </summary>
+        public float Right { get; internal set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GamePadTriggers"/> struct.
+        /// </summary>
+        public GamePadTriggers(float leftTrigger, float rightTrigger)
+        {
+            this.Left = leftTrigger;
+            this.Right = rightTrigger;
+        }
     }
 
+    /// <summary>
+    /// Structure that defines the what buttons of the controller are being pressed.
+    /// </summary>
     public struct GamePadButtons
     {
+        /// <summary> Gets all the pressed buttons as a flagged enum. </summary>
         public Buttons Buttons { get; internal set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GamePadButtons"/> struct.
+        /// </summary>
         public GamePadButtons(Buttons buttons)
         {
             this.Buttons = buttons;
         }
+
+        /// <summary>
+        /// Returns whether a specified button is currently being pressed.
+        /// </summary>
+        public bool IsButtonDown(Buttons button)
+        {
+            return (Buttons & button) == 0;
+        }
     }
 
+    /// <summary>
+    /// Structure that defines the directions on the directional pad of a controller are being pressed.
+    /// </summary>
     public struct GamePadDPad
     {
+        /// <summary> Identifies whether the Down direction on the controller directional pad is pressed. </summary>
+        public bool Down { get; internal set; }
 
+        /// <summary> Identifies whether the Left direction on the controller directional pad is pressed. </summary>
+        public bool Left { get; internal set; }
+
+        /// <summary> Identifies whether the Right direction on the controller directional pad is pressed. </summary>
+        public bool Right { get; internal set; }
+
+        /// <summary> Identifies whether the Up direction on the controller directional pad is pressed. </summary>
+        public bool Up { get; internal set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GamePadDPad"/> struct.
+        /// </summary>
+        public GamePadDPad(
+            bool upValue,
+            bool downValue,
+            bool leftValue,
+            bool rightValue)
+        {
+            this.Up = upValue;
+            this.Down = downValue;
+            this.Left = leftValue;
+            this.Right = rightValue;
+        }
     }
 }

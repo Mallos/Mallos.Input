@@ -6,14 +6,14 @@ A portable way of accessing HID devices
 ## Supported Platforms
 
 * Windows 
-    * DirectInput
-    * XInput
-    * RawInput
+    * [DirectInput](src\OpenInput.Windows\DirectInput\README.md)
+    * [XInput](src\OpenInput.Windows\XInput\README.md)
+    * [RawInput](src\OpenInput.Windows\RawInput\README.md)
 * OpenTK
 
 ### Supported Devices
 
-* [Mouse](#Mouse)
+* Mouse
 * Keyboard
 * TouchDevice
 * GamePad

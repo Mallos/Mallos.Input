@@ -1,5 +1,8 @@
 ﻿namespace OpenInput
 {
+    /// <summary>
+    /// Represents specific state of a mouse.
+    /// </summary>
     public struct MouseState
     {
         /// <summary> Gets the mouse x coords. </summary>
@@ -20,7 +23,10 @@
 
         public bool XButton1 { get; internal set; }
         public bool XButton2 { get; internal set; }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MouseState"/> struct.
+        /// </summary>
         public MouseState(int x, int y, 
             int scrollWheel, int scrollWheelDelta,
             bool leftButton, bool middleButton, bool rightButton,

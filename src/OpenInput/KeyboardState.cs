@@ -5,33 +5,44 @@
     using System.Linq;
 
     /// <summary>
-    /// 
+    /// Represents specific state of a keyboard.
     /// </summary>
     public struct KeyboardState
     {
         /// <summary> Gets all the currently pressed keys. </summary>
         public Keys[] Keys { get; internal set; }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyboardState"/> struct.
+        /// </summary>
         public KeyboardState(Keys[] keys)
         {
             this.Keys = keys;
         }
-
-        public Keys[] GetPressedKeys()
-        {
-            return Keys;
-        }
-
+        
+        /// <summary>
+        /// Returns whether a specified key is currently being pressed.
+        /// </summary>
         public bool IsKeyDown(Keys key)
         {
             return Keys.Where(e => e == key).Count() == 1;
         }
 
+        /// <summary>
+        /// Returns whether a specified key is currently being released.
+        /// </summary>
         public bool IsKeyUp(Keys key)
         {
             return Keys.Where(e => e == key).Count() == 0;
         }
 
+        /// <summary>
+        /// Compares two KeyboardStates and returns the compared keys.
+        /// </summary>
+        /// <returns>
+        /// Item1: Keys that are in this state and not the other.
+        /// Item2: Keys that are in state, but not in this one. 
+        /// </returns>
         public Tuple<Keys[], Keys[]> Compare(KeyboardState state)
         {
             if (state.Keys == null)
