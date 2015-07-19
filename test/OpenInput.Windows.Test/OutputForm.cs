@@ -4,6 +4,7 @@
     using System.Windows.Forms;
     using System;
     using System.Text;
+    using OpenInput.Touch;
 
     public partial class OutputForm : Form
     {
@@ -63,6 +64,29 @@
 
                 //if (mouseState.LeftButton && keyboard != null)
                 //    keyboard.TextInput.Capture = !keyboard.TextInput.Capture;
+            }
+
+            var touchDevice = container.Get<ITouchDevice>();
+            if (touchDevice != null)
+            {
+                var touchCollection = touchDevice.GetCurrentState();
+
+                // Get all the touch location
+                foreach (TouchLocation tl in touchCollection)
+                {
+                    if (tl.State == TouchLocationState.Pressed
+                        || tl.State == TouchLocationState.Moved)
+                    {
+                        Console.WriteLine($"TouchLocation; X: {tl.X}, Y: {tl.Y}");
+                    }
+                }
+
+                // Get all the touch gestures
+                while (touchDevice.IsGestureAvailable)
+                {
+                    var gs = touchDevice.ReadGesture();
+                    Console.WriteLine($"TouchGesture: {Enum.GetName(typeof(GestureType), gs.GestureType)}");
+                }
             }
         }
     }

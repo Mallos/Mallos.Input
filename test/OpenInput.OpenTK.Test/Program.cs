@@ -56,7 +56,7 @@ namespace OpenInput
                 var mouseState = mouse.GetCurrentState();
                 Console.WriteLine("Mouse: " + mouseState);
             }
-
+            
             base.OnUpdateFrame(e);
         }
 
