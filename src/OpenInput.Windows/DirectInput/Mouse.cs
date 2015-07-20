@@ -70,7 +70,7 @@
             if (this.state.X > screenBounds.Width) this.state.X = screenBounds.Width;
             if (this.state.Y > screenBounds.Height) this.state.Y = screenBounds.Height;
 
-            this.state.ScrollWheelDelta = state.Z;
+            //this.state.ScrollWheelDelta = state.Z;
             this.state.ScrollWheelValue += state.Z;
             this.state.LeftButton = state.Buttons[0];
             this.state.MiddleButton = state.Buttons[2];

@@ -1,7 +1,6 @@
 ﻿namespace OpenInput.RawInput
 {
     using System;
-    using System.Runtime.InteropServices;
 
     /// <summary>
     /// Class that represents a mouse, for RawInput.

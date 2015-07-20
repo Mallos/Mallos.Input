@@ -2,9 +2,6 @@
 {
     using System;
     using System.Linq;
-    using System.Runtime.InteropServices;
-
-    // TODO: Implement TextInput
 
     /// <summary>
     /// Class that represents a Keyboard, for RawInput.
@@ -23,6 +20,8 @@
         /// <inheritdoc />
         public TextInput TextInput => textInput;
         private TextInput textInput = new Empty.EmptyTextInput();
+
+        // TODO: Implement TextInput
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.

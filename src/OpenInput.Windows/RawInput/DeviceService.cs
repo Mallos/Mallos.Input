@@ -158,16 +158,7 @@
             switch ((MouseButtonsFlags)rawBuffer.data.mouse.usButtonFlags)
             {
                 case MouseButtonsFlags.MouseWheel:
-                    if (rawBuffer.data.mouse.usButtonData == 120)
-                    {
-                        this.MouseState.ScrollWheelValue += 1;
-                        this.MouseState.ScrollWheelDelta = 1;
-                    }
-                    else if (rawBuffer.data.mouse.usButtonData == 65416)
-                    {
-                        this.MouseState.ScrollWheelValue -= 1;
-                        this.MouseState.ScrollWheelDelta = -1;
-                    }
+                    this.MouseState.ScrollWheelValue += (rawBuffer.data.mouse.usButtonData == 120) ? 1 : -1;
                     break;
 
                 case MouseButtonsFlags.LeftButtonDown: this.MouseState.LeftButton = true; break;

@@ -19,8 +19,8 @@
 
     public abstract class RawDevice
     {
-        // TODO: This limits the program to only use one handle
-        //       We do capture global input, this is is not needed
+        // TODO: This limits the program to only use one handle.
+        //       We do capture global input, so this is is not required.
         internal static DeviceService Service { get; private set; }
 
         protected RawDevice(IntPtr handle)

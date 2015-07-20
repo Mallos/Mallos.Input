@@ -24,7 +24,6 @@ namespace OpenInput.OpenTK
         /// <inheritdoc />
         public event EventHandler<MouseEventArgs> Move;
 
-        private static int wheelPrevius = 0;
         private static MouseState mouseState = new MouseState();
 
         /// <summary>
@@ -54,7 +53,6 @@ namespace OpenInput.OpenTK
 
             mouseState.X = state.X;
             mouseState.Y = state.Y;
-            mouseState.ScrollWheelDelta = wheelPrevius - state.ScrollWheelValue;
             mouseState.ScrollWheelValue = state.ScrollWheelValue;
             mouseState.LeftButton = state.LeftButton == ButtonState.Pressed;
             mouseState.MiddleButton = state.MiddleButton == ButtonState.Pressed;

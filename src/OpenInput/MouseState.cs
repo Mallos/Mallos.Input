@@ -13,10 +13,7 @@
 
         /// <summary> Gets the scroll wheel value. </summary>
         public int ScrollWheelValue { get; internal set; }
-
-        /// <summary> Gets the scroll wheel delta. </summary>
-        public int ScrollWheelDelta { get; internal set; }
-
+        
         public bool LeftButton { get; internal set; }
         public bool MiddleButton { get; internal set; }
         public bool RightButton { get; internal set; }
@@ -28,14 +25,13 @@
         /// Initializes a new instance of the <see cref="MouseState"/> struct.
         /// </summary>
         public MouseState(int x, int y, 
-            int scrollWheel, int scrollWheelDelta,
+            int scrollWheel, 
             bool leftButton, bool middleButton, bool rightButton,
             bool xButton1, bool xButton2)
         {
             this.X = x;
             this.Y = y;
             this.ScrollWheelValue = scrollWheel;
-            this.ScrollWheelDelta = scrollWheelDelta;
 
             this.LeftButton = leftButton;
             this.MiddleButton = middleButton;

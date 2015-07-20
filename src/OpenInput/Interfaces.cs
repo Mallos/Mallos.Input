@@ -2,10 +2,7 @@
 {
     using OpenInput.Touch;
     using System;
-
-    // TODO: Write documentation over all the devices 'Keyboard, mouse, gamepad etc' for standard outputs, 
-    //       that should match every platform. Standardization.
-
+    
     // TODO: I have to make some changes so I can support multiple devices of one type
     //       For example I should support multiple GamePads
     //       with RawInput I can also support multiple mices and keyboards; currently it is all in one.
