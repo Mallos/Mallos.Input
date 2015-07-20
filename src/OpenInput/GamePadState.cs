@@ -1,7 +1,7 @@
-﻿using System.Numerics;
-
-namespace OpenInput
+﻿namespace OpenInput
 {
+    using System.Numerics;
+
     /// <summary>
     /// Represents specific state of a controller, including the current state of buttons and sticks.
     /// </summary>

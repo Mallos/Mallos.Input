@@ -1,17 +1,16 @@
-﻿using OpenTK;
+﻿using Nine.Injection;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace OpenInput
 {
-    using Nine.Injection;
-    using System;
-
-    public class Program : GameWindow
+    public class tkGameWindow :  GameWindow
     {
         private IContainer container;
 
-        public Program()
+        public tkGameWindow()
             : base(800, 600, GraphicsMode.Default, "GameWindow")
         {
             this.VSync = VSyncMode.On;
@@ -25,7 +24,7 @@ namespace OpenInput
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
+
             GL.ClearColor(0.1f, 0.2f, 0.5f, 0.0f);
             GL.Enable(EnableCap.DepthTest);
         }
@@ -56,7 +55,7 @@ namespace OpenInput
                 var mouseState = mouse.GetCurrentState();
                 Console.WriteLine("Mouse: " + mouseState);
             }
-            
+
             base.OnUpdateFrame(e);
         }
 
@@ -79,14 +78,6 @@ namespace OpenInput
             GL.End();
 
             SwapBuffers();
-        }
-
-        public void Main(string[] args)
-        {
-            using (var game = new Program())
-            {
-                game.Run(30.0);
-            }
         }
     }
 }

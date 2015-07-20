@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "Microsoft.Framework.CommandLineUtils": { "version": "1.0.0-*", "type": "build" },
     "OpenInput.Windows": "1.0.0-*",
-    "Nine.Injection": "1.2.0-*",
-    "Nine.Hosting": "1.0.0"
+    "OpenInput.OpenTK": "1.0.0-*",
+    "OpenTK": "1.1.1589.5942",
+    "Nine.Injection": "1.2.0-*"
   },
 
   "frameworks": {
@@ -14,7 +16,8 @@
   },
 
   "commands": {
-    "dev": "OpenInput.Windows.Test --pin",
-    "run": "OpenInput.Windows.Test"
+    "OpenTK": "OpenInput.Windows.Test -p OpenTK",
+    "DirectInput": "OpenInput.Windows.Test -p DirectInput",
+    "RawInput": "OpenInput.Windows.Test -p RawInput"
   }
 }

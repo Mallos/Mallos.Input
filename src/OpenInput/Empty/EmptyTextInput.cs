@@ -1,6 +1,6 @@
 ﻿namespace OpenInput.Empty
 {
-    class EmptyTextInput : TextInput
+    public class EmptyTextInput : TextInput
     {
     }
 }

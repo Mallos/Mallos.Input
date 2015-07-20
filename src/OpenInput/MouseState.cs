@@ -7,24 +7,24 @@
     /// </summary>
     public struct MouseState
     {
-        /// <summary> Gets the mouse x coords. </summary>
-        public int X { get; internal set; }
+        /// <summary> Gets or sets the mouse x coords of this state. </summary>
+        public int X { get; set; }
 
-        /// <summary> Gets the mouse y coords. </summary>
-        public int Y { get; internal set; }
+        /// <summary> Gets or sets the mouse y coords of this state. </summary>
+        public int Y { get; set; }
 
         /// <summary> Gets a <see cref="Vector2"/> of the cursor position. </summary>
         public Vector2 Position => new Vector2(X, Y);
 
-        /// <summary> Gets the scroll wheel value. </summary>
-        public int ScrollWheelValue { get; internal set; }
+        /// <summary> Gets or sets the scroll wheel value of this state. </summary>
+        public int ScrollWheelValue { get; set; }
         
-        public bool LeftButton { get; internal set; }
-        public bool MiddleButton { get; internal set; }
-        public bool RightButton { get; internal set; }
+        public bool LeftButton { get; set; }
+        public bool MiddleButton { get; set; }
+        public bool RightButton { get; set; }
 
-        public bool XButton1 { get; internal set; }
-        public bool XButton2 { get; internal set; }
+        public bool XButton1 { get; set; }
+        public bool XButton2 { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseState"/> struct.

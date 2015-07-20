@@ -9,19 +9,17 @@
     public partial class OutputForm : Form
     {
         private IContainer container;
+        private Func<IntPtr, IContainer> createContainer;
+
         private Timer timer;
 
-        public OutputForm()
+        public OutputForm(Func<IntPtr, IContainer> createContainer)
         {
+            if (createContainer == null) throw new ArgumentNullException(nameof(createContainer));
+            this.createContainer = createContainer;
+
             this.Text = "OpenInput";
             this.InitializeComponent();
-
-            this.container = new Container();
-            this.container
-                //.Map<IMouse>(new DirectInput.Mouse())
-                //.Map<IKeyboard>(new DirectInput.Keyboard());
-                .Map<IMouse>(new RawInput.Mouse(this.Handle))
-                .Map<IKeyboard>(new RawInput.Keyboard(this.Handle));
 
             this.timer = new Timer();
             this.timer.Interval = (int)TimeSpan.FromSeconds(1.0f / 12).TotalMilliseconds;
@@ -31,7 +29,9 @@
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            timer.Start();
+
+            this.container = createContainer(this.Handle);
+            this.timer.Start();
         }
 
         private void TimerElapsed(object sender, EventArgs e)
