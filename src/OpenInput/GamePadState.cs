@@ -1,4 +1,6 @@
-﻿namespace OpenInput
+﻿using System.Numerics;
+
+namespace OpenInput
 {
     /// <summary>
     /// Represents specific state of a controller, including the current state of buttons and sticks.
@@ -43,18 +45,12 @@
     /// </summary>
     public struct GamePadThumbSticks
     {
-        /// <summary> Gets the x-position of the left controller stick. </summary>
-        public float LeftThumbstickX { get; internal set; }
-
-        /// <summary> Gets the y-position of the left controller stick. </summary>
-        public float LeftThumbstickY { get; internal set; }
-
-        /// <summary> Gets the x-position of the right controller stick. </summary>
-        public float RightThumbstickX { get; internal set; }
-
-        /// <summary> Gets the y-position of the right controller stick. </summary>
-        public float RightThumbstickY { get; internal set; }
-
+        /// <summary> Gets the position of the left controller stick. </summary>
+        public Vector2 LeftThumbstick { get; internal set; }
+        
+        /// <summary> Gets the position of the right controller stick. </summary>
+        public Vector2 RightThumbstick { get; internal set; }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="GamePadThumbSticks"/> struct.
         /// </summary>
@@ -62,11 +58,8 @@
             float leftThumbstickX, float leftThumbstickY,
             float rightThumbstickX, float rightThumbstickY)
         {
-            this.LeftThumbstickX = leftThumbstickX;
-            this.LeftThumbstickY = leftThumbstickY;
-
-            this.RightThumbstickX = rightThumbstickX;
-            this.RightThumbstickY = rightThumbstickY;
+            this.LeftThumbstick = new Vector2(leftThumbstickX, leftThumbstickY);
+            this.RightThumbstick = new Vector2(rightThumbstickX, rightThumbstickY);
         }
     }
 

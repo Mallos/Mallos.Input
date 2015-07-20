@@ -10,9 +10,7 @@
     //       and how many are connected. Maybe even events when a new device is connected and disconnected!
 
     // TODO: Making it all thread-safe would also be a nice thing, but that is more a platform thing.
-
-    // TODO: I should add System.Numerics.Vectors
-
+    
     /// <summary>
     /// Interface for a basic device.
     /// </summary>

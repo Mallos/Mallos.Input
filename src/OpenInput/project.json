@@ -7,6 +7,7 @@
   "licenseUrl": "",
 
   "dependencies": {
+    "System.Numerics.Vectors": "4.0.0"
   },
 
   "compilationOptions": {

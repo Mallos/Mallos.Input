@@ -1,5 +1,7 @@
 ﻿namespace OpenInput
 {
+    using System.Numerics;
+
     /// <summary>
     /// Represents specific state of a mouse.
     /// </summary>
@@ -10,6 +12,9 @@
 
         /// <summary> Gets the mouse y coords. </summary>
         public int Y { get; internal set; }
+
+        /// <summary> Gets a <see cref="Vector2"/> of the cursor position. </summary>
+        public Vector2 Position => new Vector2(X, Y);
 
         /// <summary> Gets the scroll wheel value. </summary>
         public int ScrollWheelValue { get; internal set; }

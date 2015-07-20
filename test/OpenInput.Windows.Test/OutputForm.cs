@@ -77,7 +77,7 @@
                     if (tl.State == TouchLocationState.Pressed
                         || tl.State == TouchLocationState.Moved)
                     {
-                        Console.WriteLine($"TouchLocation; X: {tl.X}, Y: {tl.Y}");
+                        Console.WriteLine($"TouchLocation; X: {tl.Position.X}, Y: {tl.Position.Y}");
                     }
                 }
 
