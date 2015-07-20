@@ -30,14 +30,7 @@
         public Keyboard(IntPtr handle, bool captureInBackground = false)
             : base(handle)
         {
-            var rid = new RawInputDevice[1];
-            rid[0].UsagePage = HidUsagePage.GENERIC;
-            rid[0].Usage = HidUsage.Keyboard;
-            rid[0].Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY;
-            rid[0].Target = handle;
 
-            if (!WindowsInterop.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0])))
-                throw new ApplicationException("Failed to register raw input device(s).");
         }
 
         /// <inheritdoc />

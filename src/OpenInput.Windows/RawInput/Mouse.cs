@@ -22,25 +22,14 @@
 
         /// <inheritdoc />
         public event EventHandler<MouseButtonEventArgs> MouseUp;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="Mouse"/> class.
         /// </summary>
         public Mouse(IntPtr handle)
             : base(handle)
         {
-            // TODO: Move device register location
-            //       I don't really like registering it here since there should only be one registered,
-            //       What if the user creates two instances?
 
-            var rid = new RawInputDevice[1];
-            rid[0].UsagePage = HidUsagePage.GENERIC;
-            rid[0].Usage = HidUsage.Mouse;
-            rid[0].Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY;
-            rid[0].Target = handle;
-
-            if (!WindowsInterop.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0])))
-                throw new ApplicationException("Failed to register raw input device(s).");
         }
 
         /// <inheritdoc />

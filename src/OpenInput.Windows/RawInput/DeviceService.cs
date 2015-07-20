@@ -31,6 +31,32 @@
             this.devNotifyHandle = RegisterForDeviceNotifications(handle);
 
             FindDevices();
+
+            // Set the mouse initial position
+            MouseState.X = Cursor.Position.X;
+            MouseState.Y = Cursor.Position.Y;
+            
+            // Register devices
+            var rids = new RawInputDevice[]
+            {
+                new RawInputDevice // Mouse
+                {
+                    UsagePage = HidUsagePage.GENERIC,
+                    Usage = HidUsage.Mouse,
+                    Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY,
+                    Target = handle
+                },
+                new RawInputDevice // Keyboard
+                {
+                    UsagePage = HidUsagePage.GENERIC,
+                    Usage = HidUsage.Keyboard,
+                    Flags = RawInputDeviceFlags.INPUTSINK | RawInputDeviceFlags.DEVNOTIFY,
+                    Target = handle
+                },
+            };
+
+            if (!WindowsInterop.RegisterRawInputDevices(rids, (uint)rids.Length, (uint)Marshal.SizeOf(rids[0])))
+                throw new ApplicationException("RawInput: Failed to register devices.");
         }
 
         ~DeviceService()
@@ -60,10 +86,6 @@
 
         protected override void WndProc(ref Message message)
         {
-            // TODO: Support MSG_GETRIUFFER
-            //       This could be useful on the inital start
-            //       otherwise we are keeping track of all the keys
-
             switch (message.Msg)
             {
                 case WindowsInterop.WM_INPUT:
@@ -116,9 +138,6 @@
 
                 case MouseFlags.MoveRelative:
                     {
-                        // TODO: Get the mouse initial position first
-                        //       How does MoveAbsolute work? When does it get called and how?
-
                         this.MouseState.X += rawBuffer.data.mouse.lLastX;
                         this.MouseState.Y += rawBuffer.data.mouse.lLastY;
 
@@ -128,8 +147,7 @@
                         if (this.MouseState.Y < screenBounds.Y) this.MouseState.Y = screenBounds.Y;
                         if (this.MouseState.X > screenBounds.Width) this.MouseState.X = screenBounds.Width;
                         if (this.MouseState.Y > screenBounds.Height) this.MouseState.Y = screenBounds.Height;
-                    }
-                    break;
+                    } break;
 
                 case MouseFlags.MoveAbsolute:
                     //mouseState.X = rawBuffer.data.mouse.lLastX;
@@ -137,23 +155,44 @@
                     break;
             }
 
-            // TODO: I can only have one button down at the time
-            //       Is this my end or does RawInput not send all of them in one message?
-            
-            var buttons = (MouseButtonsFlags)rawBuffer.data.mouse.ulButtons;
-            this.MouseState.LeftButton = (buttons & MouseButtonsFlags.LeftButtonDown) == MouseButtonsFlags.LeftButtonDown;
-            this.MouseState.MiddleButton = (buttons & MouseButtonsFlags.MiddleButtonDown) == MouseButtonsFlags.MiddleButtonDown;
-            this.MouseState.RightButton = (buttons & MouseButtonsFlags.RightButtonDown) == MouseButtonsFlags.RightButtonDown;
-            
-            // TODO: Add support for XButton1 & 2
-            this.MouseState.XButton1 = false;
-            this.MouseState.XButton2 = false;
+            switch ((MouseButtonsFlags)rawBuffer.data.mouse.usButtonFlags)
+            {
+                case MouseButtonsFlags.MouseWheel:
+                    if (rawBuffer.data.mouse.usButtonData == 120)
+                    {
+                        this.MouseState.ScrollWheelValue += 1;
+                        this.MouseState.ScrollWheelDelta = 1;
+                    }
+                    else if (rawBuffer.data.mouse.usButtonData == 65416)
+                    {
+                        this.MouseState.ScrollWheelValue -= 1;
+                        this.MouseState.ScrollWheelDelta = -1;
+                    }
+                    break;
 
-            // TODO: Mouse Wheel
+                case MouseButtonsFlags.LeftButtonDown: this.MouseState.LeftButton = true; break;
+                case MouseButtonsFlags.LeftButtonUp: this.MouseState.LeftButton = false; break;
+
+                case MouseButtonsFlags.MiddleButtonDown: this.MouseState.MiddleButton = true; break;
+                case MouseButtonsFlags.MiddleButtonUp: this.MouseState.MiddleButton = false; break;
+
+                case MouseButtonsFlags.RightButtonDown: this.MouseState.RightButton = true; break;
+                case MouseButtonsFlags.RightButtonUp: this.MouseState.RightButton = false; break;
+
+                case MouseButtonsFlags.Button4Down: this.MouseState.XButton1 = true; break;
+                case MouseButtonsFlags.Button4Up: this.MouseState.XButton1 = false; break;
+
+                case MouseButtonsFlags.Button5Down: this.MouseState.XButton2 = true; break;
+                case MouseButtonsFlags.Button5Up: this.MouseState.XButton2 = false; break;
+            }
         }
 
         private void OnKeyboardEvent()
         {
+            // TODO: Support MSG_GETRIUFFER
+            //       This could be useful on the inital start
+            //       otherwise we are keeping track of all the keys
+
             int virtualKey = rawBuffer.data.keyboard.VKey;
             int makeCode = rawBuffer.data.keyboard.Makecode;
             int flags = rawBuffer.data.keyboard.Flags;
