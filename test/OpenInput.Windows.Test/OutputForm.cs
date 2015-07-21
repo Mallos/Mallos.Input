@@ -13,12 +13,12 @@
 
         private Timer timer;
 
-        public OutputForm(Func<IntPtr, IContainer> createContainer)
+        public OutputForm(string title, Func<IntPtr, IContainer> createContainer)
         {
             if (createContainer == null) throw new ArgumentNullException(nameof(createContainer));
             this.createContainer = createContainer;
 
-            this.Text = "OpenInput";
+            this.Text = $"OpenInput: Running {title}";
             this.InitializeComponent();
 
             this.timer = new Timer();
@@ -39,7 +39,7 @@
             var keyboard = container.Get<IKeyboard>();
             if (keyboard != null)
             {
-                this.keyboardNamesLabel.Text = $"Name/s: '{keyboard.Name}', Type: {keyboard.GetType().FullName}";
+                this.keyboardNamesLabel.Text = $"Name/s: '{keyboard.Name}'";
 
                 var keyboardState = keyboard.GetCurrentState();
                 if (keyboardState.Keys.Length > 0)
@@ -53,7 +53,7 @@
             {
                 var mouseState = mouse.GetCurrentState();
 
-                this.mouseNamesLabel.Text = $"Name/s: '{mouse.Name}', Type: {mouse.GetType().FullName}";
+                this.mouseNamesLabel.Text = $"Name/s: '{mouse.Name}'";
 
                 var sb = new StringBuilder();
                 sb.AppendLine($"Position: {mouseState.X}, {mouseState.Y}, MouseWheel: {mouseState.ScrollWheelValue}");

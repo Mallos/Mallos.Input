@@ -29,10 +29,12 @@
                 target = platform.Value().ToLower();
             
             Func<IntPtr, IContainer> createContainer;
+            string title = string.Empty;
 
             switch (target)
             {
                 case "directinput":
+                    title = "DirectInput";
                     createContainer = (handle) =>
                     {
                         var container = new Container();
@@ -45,6 +47,7 @@
 
                 default:
                 case "rawinput":
+                    title = "RawInput";
                     createContainer = (handle) =>
                     {
                         var container = new Container();
@@ -56,6 +59,7 @@
                     break;
 
                 case "opentk":
+                    title = "OpenTK";
 
                     throw new NotImplementedException();
 
@@ -78,7 +82,7 @@
                     break;
             }
 
-            var form = new OutputForm(createContainer);
+            var form = new OutputForm(title, createContainer);
             Application.Run(form);
         }
     }

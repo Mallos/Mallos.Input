@@ -22,8 +22,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OpenInput.OpenTK", "src\Ope
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OpenInput.Windows.Test", "test\OpenInput.Windows.Test\OpenInput.Windows.Test.xproj", "{C503A7BB-5A74-457F-986C-F5E6EFED4F8B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OpenInput.OpenTK.Test", "test\OpenInput.OpenTK.Test\OpenInput.OpenTK.Test.xproj", "{4383A9F8-0628-487C-B119-ACCC9807945A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,10 +44,6 @@ Global
 		{C503A7BB-5A74-457F-986C-F5E6EFED4F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C503A7BB-5A74-457F-986C-F5E6EFED4F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C503A7BB-5A74-457F-986C-F5E6EFED4F8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4383A9F8-0628-487C-B119-ACCC9807945A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4383A9F8-0628-487C-B119-ACCC9807945A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4383A9F8-0628-487C-B119-ACCC9807945A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4383A9F8-0628-487C-B119-ACCC9807945A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +53,5 @@ Global
 		{A06F803F-45BF-4053-A8DB-91DF29D44E3E} = {4FB0816A-AD8E-448E-928A-774A64FC1C30}
 		{AFA72CCD-912F-45D4-8190-ABD0F3D932DA} = {4FB0816A-AD8E-448E-928A-774A64FC1C30}
 		{C503A7BB-5A74-457F-986C-F5E6EFED4F8B} = {5B5230D7-AC2B-4BCB-9FFC-3BD26DB61F44}
-		{4383A9F8-0628-487C-B119-ACCC9807945A} = {5B5230D7-AC2B-4BCB-9FFC-3BD26DB61F44}
 	EndGlobalSection
 EndGlobal
