@@ -42,7 +42,7 @@
                 this.keyboardNamesLabel.Text = $"Name/s: '{keyboard.Name}'";
 
                 var keyboardState = keyboard.GetCurrentState();
-                if (keyboardState.Keys.Length > 0)
+                if (keyboardState.Keys != null && keyboardState.Keys.Length > 0)
                 {
                     AddKeyboardHistory(keyboard.TextInput.Capture ? keyboard.TextInput.Result : keyboardState.ToString());
                 }

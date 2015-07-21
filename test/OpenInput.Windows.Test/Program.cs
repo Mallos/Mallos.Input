@@ -9,7 +9,6 @@
     public class Program
     {
         static Thread gameWindowThread;
-        static tkGameWindow gameWindow;
 
         public void Main(string[] args)
         {
@@ -61,15 +60,12 @@
                 case "opentk":
                     title = "OpenTK";
 
-                    throw new NotImplementedException();
-
-                    gameWindowThread = new Thread(() =>
-                        {
-                            using (var game = gameWindow = new tkGameWindow())
-                            {
-                                game.Run(30.0);
-                            }
-                        });
+                    // Not sure if I have to create a opentk window or how it works
+                    gameWindowThread = new Thread(() => {
+                        using (var game = new tkGameWindow())
+                            game.Run(30.0);
+                    });
+                    gameWindowThread.Start();
 
                     createContainer = (handle) =>
                     {

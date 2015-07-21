@@ -69,6 +69,9 @@
 
         public override string ToString()
         {
+            if (Keys == null)
+                return base.ToString();
+
             return JoinKeysToString(Keys);
         }
 
