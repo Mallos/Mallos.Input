@@ -1,9 +1,10 @@
 ﻿using OpenTK.Input;
-using System;
 using tkMouse = OpenTK.Input.Mouse;
 
 namespace OpenInput.OpenTK
 {
+    using System;
+    
     /// <summary>
     /// 
     /// </summary>

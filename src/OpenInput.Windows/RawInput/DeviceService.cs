@@ -5,11 +5,7 @@
     using System.Diagnostics;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
-
-    // TODO: Implement GamePad support
-    //       Unfortunately there is no reference ón how to do this on microsofts page
-    //       https://msdn.microsoft.com/en-us/library/windows/desktop/ms645546(v=vs.85).aspx
-
+    
     partial class DeviceService : NativeWindow
     {
         private readonly object objectlock = new object();

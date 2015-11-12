@@ -1,9 +1,10 @@
-﻿using System;
-using OpenTK.Input;
+﻿using OpenTK.Input;
 using tkKeyboard = OpenTK.Input.Keyboard;
 
 namespace OpenInput.OpenTK
 {
+    using System;
+    
     /// <summary>
     /// 
     /// </summary>
@@ -22,7 +23,7 @@ namespace OpenInput.OpenTK
         public TextInput TextInput => textInput;
         private TextInput textInput = new Empty.EmptyTextInput();
 
-        private static KeyboardState keyboardState = new KeyboardState();
+        private static KeyboardState keyboardState = new KeyboardState(new Keys[] { });
         
         /// <inheritdoc />
         public KeyboardState GetCurrentState()

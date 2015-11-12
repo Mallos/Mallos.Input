@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace OpenInput.Empty
+﻿namespace OpenInput.Empty
 {
+    using System;
+
     /// <summary>
     /// Empty Mouse, does nothing.
     /// </summary>

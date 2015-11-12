@@ -3,14 +3,6 @@
     using OpenInput.Touch;
     using System;
     
-    // TODO: I have to make some changes so I can support multiple devices of one type
-    //       For example I should support multiple GamePads
-    //       with RawInput I can also support multiple mices and keyboards; currently it is all in one.
-    //       I also want to support functions like accessing the capabilities of the devices 
-    //       and how many are connected. Maybe even events when a new device is connected and disconnected!
-
-    // TODO: Making it all thread-safe would also be a nice thing, but that is more a platform thing.
-    
     /// <summary>
     /// Interface for a basic device.
     /// </summary>
@@ -33,9 +25,7 @@
         /// </summary>
         TState GetCurrentState();
     }
-
-    // TODO: Change IDevices to something more boundle interface
-
+    
     /// <summary>
     /// Interface for multiple devices.
     /// </summary>

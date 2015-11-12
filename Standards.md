@@ -1,4 +1,4 @@
-# Standardization
+# Standards
 
 The output from all the devices should be the same 
 and provider the same values.
@@ -8,7 +8,7 @@ and provider the same values.
 * __Position__: 
     
     The position should be relative to the window.
-    This is not yet implemented, so currently it is global position.
+    This is not yet implemented, so currently it's global position.
 
 * __ScrollWheel__:
 
