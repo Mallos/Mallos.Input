@@ -6,8 +6,6 @@ A portable way of accessing HID devices cross-platform
 ## Supported Platforms
 
 * Windows 
-    * [DirectInput](src/OpenInput.Windows/DirectInput/README.md)
-    * [XInput](src/OpenInput.Windows/XInput/README.md)
     * [RawInput](src/OpenInput.Windows/RawInput/README.md)
 * OpenTK
 

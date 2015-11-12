@@ -32,17 +32,17 @@
 
             switch (target)
             {
-                case "directinput":
-                    title = "DirectInput";
-                    createContainer = (handle) =>
-                    {
-                        var container = new Container();
-                        container
-                            .Map<IMouse>(new DirectInput.Mouse())
-                            .Map<IKeyboard>(new DirectInput.Keyboard());
-                        return container;
-                    };
-                    break;
+                //case "directinput":
+                //    title = "DirectInput";
+                //    createContainer = (handle) =>
+                //    {
+                //        var container = new Container();
+                //        container
+                //            .Map<IMouse>(new DirectInput.Mouse())
+                //            .Map<IKeyboard>(new DirectInput.Keyboard());
+                //        return container;
+                //    };
+                //    break;
 
                 default:
                 case "rawinput":
