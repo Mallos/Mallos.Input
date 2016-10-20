@@ -5,7 +5,7 @@
     using System.Diagnostics;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
-    
+
     partial class DeviceService : NativeWindow
     {
         private readonly object objectlock = new object();
@@ -14,6 +14,8 @@
         public readonly HashSet<OpenInput.Keys> Keys;
 
         public MouseState MouseState;
+
+        private int MouseX, MouseY;
 
         private readonly IntPtr devNotifyHandle;
         private PreMessageFilter filter;
@@ -29,8 +31,8 @@
             FindDevices();
 
             // Set the mouse initial position
-            MouseState.X = Cursor.Position.X;
-            MouseState.Y = Cursor.Position.Y;
+            MouseX = Cursor.Position.X;
+            MouseY = Cursor.Position.Y;
             
             // Register devices
             var rids = new RawInputDevice[]
@@ -134,15 +136,29 @@
 
                 case MouseFlags.MoveRelative:
                     {
-                        this.MouseState.X += rawBuffer.data.mouse.lLastX;
-                        this.MouseState.Y += rawBuffer.data.mouse.lLastY;
+                        this.MouseX += rawBuffer.data.mouse.lLastX;
+                        this.MouseY += rawBuffer.data.mouse.lLastY;
 
                         var screenBounds = Screen.GetBounds(new System.Drawing.Point(0, 0));
 
-                        if (this.MouseState.X < screenBounds.X) this.MouseState.X = screenBounds.X;
-                        if (this.MouseState.Y < screenBounds.Y) this.MouseState.Y = screenBounds.Y;
-                        if (this.MouseState.X > screenBounds.Width) this.MouseState.X = screenBounds.Width;
-                        if (this.MouseState.Y > screenBounds.Height) this.MouseState.Y = screenBounds.Height;
+                        if (this.MouseX < screenBounds.X) this.MouseX = screenBounds.X;
+                        if (this.MouseY < screenBounds.Y) this.MouseY = screenBounds.Y;
+                        if (this.MouseX > screenBounds.Width)  this.MouseX = screenBounds.Width;
+                        if (this.MouseY > screenBounds.Height) this.MouseY = screenBounds.Height;
+
+                        // Set mouse position relative to window
+                        RECT rect = new RECT();
+                        if (WindowsInterop.GetWindowRect(Handle, ref rect))
+                        {
+                            this.MouseState.X = this.MouseX - rect.Left;
+                            this.MouseState.Y = this.MouseY - rect.Top;
+                        }
+                        else
+                        {
+                            this.MouseState.X = this.MouseX;
+                            this.MouseState.Y = this.MouseY;
+                        }
+
                     } break;
 
                 case MouseFlags.MoveAbsolute:
@@ -203,7 +219,7 @@
             {
                 // NOTE: Here are some more code on this
                 // https://molecularmusings.wordpress.com/2011/09/05/properly-handling-keyboard-input/
-                Console.WriteLine($"RawInput: {WindowsInterop.GetKeyNameText(rawBuffer.data.keyboard.Makecode, isE0BitSet)}");
+                //Console.WriteLine($"RawInput: {WindowsInterop.GetKeyNameText(rawBuffer.data.keyboard.Makecode, isE0BitSet)}");
                 Keys.Add(KeyMapper.ToKey(VKey));
             }
 

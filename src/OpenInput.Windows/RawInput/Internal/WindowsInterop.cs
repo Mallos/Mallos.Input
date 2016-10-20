@@ -3,9 +3,17 @@
     using System;
     using System.Runtime.InteropServices;
 
+    [StructLayout(LayoutKind.Sequential)]
+    struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
     static partial class WindowsInterop
     {
-        #region Helper Methods
         public static string GetDeviceDescription(string device)
         {
             string deviceDesc;
@@ -22,7 +30,6 @@
             
             return deviceDesc;
         }
-        #endregion
 
         [DllImport("User32.dll", SetLastError = true)]
         public static extern int GetRawInputData(IntPtr hRawInput, RawInput.DataCommand command, [Out] out RawInput.RawInputData buffer, [In, Out] ref int size, int cbSizeHeader);
@@ -47,5 +54,9 @@
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool UnregisterDeviceNotification(IntPtr handle);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
     }
 }

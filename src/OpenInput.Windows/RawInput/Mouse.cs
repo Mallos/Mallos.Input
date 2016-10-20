@@ -25,8 +25,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Mouse"/> class.
         /// </summary>
-        public Mouse(IntPtr handle)
-            : base(handle)
+        public Mouse(IntPtr windowHandle)
+            : base(windowHandle)
         {
 
         }

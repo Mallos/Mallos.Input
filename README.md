@@ -3,6 +3,9 @@ A portable way of accessing HID devices cross-platform
 
 > This project is still in development!
 
+> I have put this project to rest, will 
+> probably pick it up once I have a reason to use it.
+
 ## Supported Platforms
 
 * Windows 
