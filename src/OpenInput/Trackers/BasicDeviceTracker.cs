@@ -22,7 +22,7 @@
             this.Device = device ?? throw new ArgumentNullException(nameof(device));
         }
 
-        public void Update()
+        public void Update(float elapsedTime)
         {
             var newState = Device.GetCurrentState();
             Track(newState, oldState);

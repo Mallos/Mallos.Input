@@ -24,7 +24,7 @@
             this.Device.Device.KeyUp += KeyboardDevice_KeyUp;
         }
 
-        public void Update()
+        public void Update(float elapsedTime)
         {
             // We are not using this
         }

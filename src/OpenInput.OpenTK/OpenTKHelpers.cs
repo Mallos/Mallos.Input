@@ -8,6 +8,9 @@
         {
             switch (key)
             {
+                default: return Keys.Unknown;
+
+                /* Keys we are not using */
                 case Key.F13: case Key.F14: case Key.F15:
                 case Key.F16: case Key.F17: case Key.F18:
                 case Key.F19: case Key.F20: case Key.F21:
@@ -42,176 +45,66 @@
                 case Key.Left: return Keys.Left;
                 case Key.Right: return Keys.Right;
 
-                case Key.Enter:
-                    break;
-                case Key.Escape:
-                    break;
-                case Key.Space:
-                    break;
-                case Key.Tab:
-                    break;
-                case Key.BackSpace:
-                    break;
-                case Key.Insert:
-                    break;
-                case Key.Delete:
-                    break;
-                case Key.PageUp:
-                    break;
-                case Key.PageDown:
-                    break;
-                case Key.Home:
-                    break;
-                case Key.End:
-                    break;
-                case Key.CapsLock:
-                    break;
-                case Key.ScrollLock:
-                    break;
-                case Key.PrintScreen:
-                    break;
-                case Key.Pause:
-                    break;
-                case Key.NumLock:
-                    break;
-                case Key.Clear:
-                    break;
-                case Key.Sleep:
-                    break;
+                /* */
+                case Key.Enter: return Keys.Enter;
+                case Key.KeypadEnter: return Keys.Enter;
+                case Key.Escape: return Keys.Escape;
+                case Key.Space: return Keys.Space;
+                case Key.Tab: return Keys.Tab;
+                case Key.BackSpace: return Keys.BackSpace;
+                case Key.Insert: return Keys.Insert;
+                case Key.Delete: return Keys.Delete;
+                case Key.PageUp: return Keys.PageUp;
+                case Key.PageDown: return Keys.PageDown;
+                case Key.Home: return Keys.Home;
+                case Key.End: return Keys.End;
+                case Key.CapsLock: return Keys.CapsLock;
+                case Key.ScrollLock: return Keys.ScrollLock;
+                case Key.PrintScreen: return Keys.PrintScreen;
+                case Key.Pause: return Keys.Pause;
+                case Key.NumLock: return Keys.NumLock;
+
+                /* Keypad keys */
                 case Key.Keypad0:
-                    break;
-                case Key.Keypad1:
-                    break;
-                case Key.Keypad2:
-                    break;
-                case Key.Keypad3:
-                    break;
-                case Key.Keypad4:
-                    break;
-                case Key.Keypad5:
-                    break;
-                case Key.Keypad6:
-                    break;
-                case Key.Keypad7:
-                    break;
-                case Key.Keypad8:
-                    break;
-                case Key.Keypad9:
-                    break;
-                case Key.KeypadDivide:
-                    break;
-                case Key.KeypadMultiply:
-                    break;
-                case Key.KeypadSubtract:
-                    break;
-                case Key.KeypadAdd:
-                    break;
-                case Key.KeypadDecimal:
-                    break;
-                case Key.KeypadEnter:
-                    break;
-                case Key.A:
-                    break;
-                case Key.B:
-                    break;
-                case Key.C:
-                    break;
-                case Key.D:
-                    break;
-                case Key.E:
-                    break;
-                case Key.F:
-                    break;
-                case Key.G:
-                    break;
-                case Key.H:
-                    break;
-                case Key.I:
-                    break;
-                case Key.J:
-                    break;
-                case Key.K:
-                    break;
-                case Key.L:
-                    break;
-                case Key.M:
-                    break;
-                case Key.N:
-                    break;
-                case Key.O:
-                    break;
-                case Key.P:
-                    break;
-                case Key.Q:
-                    break;
-                case Key.R:
-                    break;
-                case Key.S:
-                    break;
-                case Key.T:
-                    break;
-                case Key.U:
-                    break;
-                case Key.V:
-                    break;
-                case Key.W:
-                    break;
-                case Key.X:
-                    break;
-                case Key.Y:
-                    break;
-                case Key.Z:
-                    break;
+                case Key.Keypad1: case Key.Keypad2: case Key.Keypad3:
+                case Key.Keypad4: case Key.Keypad5: case Key.Keypad6:
+                case Key.Keypad7: case Key.Keypad8: case Key.Keypad9:
+                    return (Keys)((int)Keys.NumPad0 + ((int)key - (int)Key.Keypad0));
+
+                /* Numbers */
                 case Key.Number0:
-                    break;
-                case Key.Number1:
-                    break;
-                case Key.Number2:
-                    break;
-                case Key.Number3:
-                    break;
-                case Key.Number4:
-                    break;
-                case Key.Number5:
-                    break;
-                case Key.Number6:
-                    break;
-                case Key.Number7:
-                    break;
-                case Key.Number8:
-                    break;
-                case Key.Number9:
-                    break;
-                case Key.Tilde:
-                    break;
-                case Key.Minus:
-                    break;
-                case Key.Plus:
-                    break;
-                case Key.BracketLeft:
-                    break;
-                case Key.BracketRight:
-                    break;
-                case Key.Semicolon:
-                    break;
-                case Key.Quote:
-                    break;
-                case Key.Comma:
-                    break;
-                case Key.Period:
-                    break;
-                case Key.Slash:
-                    break;
-                case Key.BackSlash:
-                    break;
-                case Key.NonUSBackSlash:
-                    break;
-                case Key.LastKey:
-                    break;
-                default:
-                    break;
+                case Key.Number1: case Key.Number2: case Key.Number3:
+                case Key.Number4: case Key.Number5: case Key.Number6:
+                case Key.Number7: case Key.Number8: case Key.Number9:
+                    return (Keys)((int)Keys.D0 + ((int)key - (int)Key.Number0));
+
+                /* Letters */
+                case Key.A: case Key.B:
+                case Key.C: case Key.D: case Key.E:
+                case Key.F: case Key.G: case Key.H:
+                case Key.I: case Key.J: case Key.K:
+                case Key.L: case Key.M: case Key.N:
+                case Key.O: case Key.P: case Key.Q:
+                case Key.R: case Key.S: case Key.T:
+                case Key.U: case Key.V: case Key.W:
+                case Key.X: case Key.Y: case Key.Z:
+                    return (Keys)((int)Keys.A + ((int)key - (int)Key.A));
+
+                /* Symbols */
+                case Key.KeypadDivide: return Keys.Divide;
+                case Key.KeypadMultiply: return Keys.Multiply;
+                case Key.KeypadSubtract: return Keys.Subtract;
+                case Key.KeypadAdd: return Keys.Add;
+                case Key.KeypadDecimal: return Keys.Decimal;
+                case Key.Tilde: return Keys.OemTilde;
+                case Key.Minus: return Keys.Minus;
+                case Key.Plus: return Keys.Add;
+                case Key.Semicolon: return Keys.OemSemicolon;
+                case Key.Quote: return Keys.OemQuotes;
+                case Key.Comma: return Keys.OemComma;
+                case Key.Period: return Keys.OemPeriod;
+                case Key.BackSlash: return Keys.OemBackslash;
             }
-            return Keys.Unknown;
         }
     }
 }

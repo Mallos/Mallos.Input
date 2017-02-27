@@ -131,7 +131,7 @@
         F11 = 122,
         F12 = 123,
 
-        // Keypad keys
+        /* Keypad keys */
         NumPad0 = 96,
         NumPad1 = 97,
         NumPad2 = 98,
@@ -151,7 +151,7 @@
         Decimal = 110,
         Divide = 111,
 
-        // Numbers
+        /* Numbers */
         D0 = 48,
         D1 = 49,
         D2 = 50,
@@ -163,7 +163,7 @@
         D8 = 56,
         D9 = 57,
 
-        // Letters (Uppercase 97-122)
+        /* Letters (Uppercase 97-122) */
         A = 65,
         B = 66,
         C = 67,
@@ -191,7 +191,7 @@
         Y = 89,
         Z = 90,
 
-        // Symbols
+        /* Symbols */
         OemSemicolon = 186,
         OemGrave = OemTilde,
         OemPlus = 187,
@@ -208,54 +208,3 @@
         OemClear = 254,
     }
 }
-
-/*
-        // Should I support any other keys?
-    
-        None = 0,
-        Cancel = 3,
-        LineFeed = 10,
-        Clear = 12,
-        ShiftKey = 16,
-        ControlKey = 17,
-        Capital = 20,
-        KanaMode = 21,
-        HanguelMode = 21,
-        HangulMode = 21,
-        JunjaMode = 23,
-        FinalMode = 24,
-        HanjaMode = 25,
-        KanjiMode = 25,
-        IMEConvert = 28,
-        IMENonconvert = 29,
-        IMEAccept = 30,
-        IMEAceept = 30,
-        IMEModeChange = 31,
-        Prior = 33,
-        Next = 34,
-        Select = 41,
-        Print = 42,
-        Execute = 43,
-        Snapshot = 44,
-        Help = 47,
-        Oem1 = 186,
-        Oem2 = 191,
-        Oem3 = 192,
-        Oem4 = 219,
-        Oem5 = 220,
-        Oem6 = 221,
-        Oem7 = 222,
-        Oem8 = 223,
-        Oem102 = 226,
-        ProcessKey = 229,
-        Packet = 231,
-        Attn = 246,
-        Crsel = 247,
-        Exsel = 248,
-        EraseEof = 249,
-        Play = 250,
-        Zoom = 251,
-        NoName = 252,
-        Pa1 = 253,
-
-*/

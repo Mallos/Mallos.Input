@@ -10,7 +10,7 @@
         /// <summary>
         /// Update the tracker.
         /// </summary>
-        void Update();
+        void Update(float elapsedTime);
     }
 
     /// <summary>
