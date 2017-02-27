@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OpenInput.OpenTK\OpenInput.OpenTK.csproj" />
-    <ProjectReference Include="..\..\src\OpenInput\OpenInput.csproj" />
+    <ProjectReference Include="..\src\OpenInput.OpenTK\OpenInput.OpenTK.csproj" />
+    <ProjectReference Include="..\src\OpenInput\OpenInput.csproj" />
   </ItemGroup>
 
 </Project>
