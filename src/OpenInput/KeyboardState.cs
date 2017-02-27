@@ -9,7 +9,11 @@
     /// </summary>
     public struct KeyboardState
     {
-        /// <summary> Gets all the currently pressed keys. </summary>
+        public static readonly KeyboardState Empty = new KeyboardState(null);
+
+        /// <summary> 
+        /// Gets all the currently pressed keys. 
+        /// </summary>
         public Keys[] Keys { get; internal set; }
 
         /// <summary>
@@ -17,7 +21,7 @@
         /// </summary>
         public KeyboardState(Keys[] keys)
         {
-            this.Keys = keys;
+            this.Keys = keys ?? new Keys[0];
         }
         
         /// <summary>
@@ -43,9 +47,9 @@
         /// Item1: Keys that are in this state and not the other.
         /// Item2: Keys that are in state, but not in this one. 
         /// </returns>
-        public Tuple<Keys[], Keys[]> Compare(KeyboardState state)
+        public Tuple<Keys[], Keys[]> CompareBoth(KeyboardState state)
         {
-            if (state.Keys == null)
+            if (Keys == null || state.Keys == null)
                 return new Tuple<Keys[], Keys[]>(new Keys[] { }, new Keys[] { });
 
             // Would it be faster to assume the size of the array? then resize it.
@@ -67,12 +71,30 @@
             return new Tuple<Keys[], Keys[]>(odds1.ToArray(), odds2.ToArray());
         }
 
+        /// <summary>
+        /// Compares two KeyboardStates and returns the compared keys.
+        /// </summary>
+        /// <returns> Keys that are in this state and not the other. </returns>
+        public Keys[] Compare(KeyboardState state)
+        {
+            if (Keys == null || state.Keys == null)
+                return new Keys[] { };
+
+            // Would it be faster to assume the size of the array? then resize it.
+            var odds1 = new List<Keys>();
+
+            foreach (var key in Keys)
+            {
+                if (Array.IndexOf(state.Keys, key) == -1)
+                    odds1.Add(key);
+            }
+            
+            return odds1.ToArray();
+        }
+
         public override string ToString()
         {
-            if (Keys == null)
-                return base.ToString();
-
-            return JoinKeysToString(Keys);
+            return (Keys == null) ? "[]" : JoinKeysToString(Keys);
         }
 
         public static string JoinKeysToString(Keys[] keys)

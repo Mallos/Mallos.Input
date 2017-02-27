@@ -20,13 +20,22 @@
             }
         }
 
-        // OpenTK requires a window to exists.
-        public static InputContext CreateOpenTK()
+        public static InputContext CreateEmpty()
+        {
+            return new InputContext(
+                "Empty",
+                new OpenInput.Dummy.DummyKeyboard(),
+                new OpenInput.Dummy.DummyMouse()
+            );
+        }
+
+        // OpenTK input requires a window created somewhere to work.
+        public static InputContext CreateOpenTK(OpenTK.GameWindow window = null)
         {
             return new InputContext(
                 "OpenTK",
-                new OpenInput.OpenTK.Keyboard(),
-                new OpenInput.OpenTK.Mouse()
+                new OpenInput.OpenTKKeyboard((window != null) ? window.Keyboard : null),
+                new OpenInput.OpenTKMouse((window != null) ? window.Mouse : null)
             );
         }
 

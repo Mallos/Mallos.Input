@@ -7,6 +7,8 @@
     /// </summary>
     public struct GamePadState
     {
+        public static readonly GamePadState Empty = new GamePadState(); // TODO: 
+
         /// <summary> Indicates whether the controller is connected. </summary>
         public bool IsConnected { get; internal set; }
 

@@ -7,6 +7,8 @@
     /// </summary>
     public struct MouseState
     {
+        public static readonly MouseState Empty = new MouseState(0, 0, 0, false, false, false, false, false);
+
         /// <summary> Gets or sets the mouse x coords of this state. </summary>
         public int X { get; set; }
 

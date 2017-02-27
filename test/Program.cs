@@ -24,7 +24,8 @@ namespace OpenInput.Test
 
             this.inputContexts = new List<InputContext>(new[]
             {
-                InputContext.CreateOpenTK(),
+                InputContext.CreateEmpty(),
+                InputContext.CreateOpenTK(this),
             });
 
             this.renderContext = new RenderContext(this);
@@ -67,9 +68,13 @@ namespace OpenInput.Test
             {
                 if (inputContext.Keyboard != null)
                 {
+                    var keyboardState = inputContext.Keyboard.GetCurrentState();
                     if (ImGui.CollapsingHeader($"Keyboard (Name: \"{ inputContext.Keyboard.Name }\")", TreeNodeFlags.CollapsingHeader))
                     {
-                        ImGui.Text("Hello World!");
+                        foreach (var item in keyboardState.Keys)
+                        {
+                            ImGui.Text(item.ToString());
+                        }
                     }
                 }
 

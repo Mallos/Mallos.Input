@@ -1,38 +1,34 @@
-﻿using OpenTK.Input;
-using tkMouse = OpenTK.Input.Mouse;
-
-namespace OpenInput.OpenTK
+﻿namespace OpenInput
 {
+    using OpenTK.Input;
     using System;
-    
+    using tkMouse = OpenTK.Input.Mouse;
+    using OpenInput.Trackers;
+
     /// <summary>
-    /// 
+    /// OpenTK Mouse.
     /// </summary>
-    public class Mouse : IMouse
+    public class OpenTKMouse : OpenTKDevice<MouseDevice>, IMouse
     {
         /// <inheritdoc />
-        public string Name => "";
-
-        /// <inheritdoc />
-        public event EventHandler<MouseButtonEventArgs> MouseDown;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseButtonEventArgs> MouseUp;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseWheelEventArgs> MouseWheel;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseEventArgs> Move;
-
+        public string Name => HasDevice ? Device.Description : "OpenTK Mouse";
+        
         private static MouseState mouseState = new MouseState();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mouse"/> class.
+        /// Initializes a new instance of the <see cref="OpenTKMouse"/> class.
         /// </summary>
-        public Mouse()
+        /// <param name="mouseDevice"></param>
+        public OpenTKMouse(MouseDevice mouseDevice = null)
+            : base(mouseDevice)
         {
 
+        }
+
+        /// <inheritdoc />
+        public IMouseTracker CreateTracker()
+        {
+            return new BasicMouseTracker(this);
         }
 
         /// <inheritdoc />
@@ -50,7 +46,7 @@ namespace OpenInput.OpenTK
         /// <inheritdoc />
         public MouseState GetCurrentState()
         {
-            var state = tkMouse.GetState();
+            var state = HasDevice ? Device.GetState() : tkMouse.GetState();
 
             mouseState.X = state.X;
             mouseState.Y = state.Y;

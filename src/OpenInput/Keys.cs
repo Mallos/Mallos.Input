@@ -41,13 +41,13 @@
     {
         Unknown = 0,
 
-        // Direction arrows
+        /* Direction arrows */
         Left = 37,
         Up = 38,
         Right = 39,
         Down = 40,
 
-        // 
+        /* */
         Tab = 9,
         Return = 13,
         Enter = Return,
@@ -102,7 +102,7 @@
         MediaStop = 178,
         MediaPlayPause = 179,
 
-        // Modifiers
+        /* Modifiers */
         LShiftKey = 160,
         RShiftKey = 161,
         LeftShift = LShiftKey,
@@ -116,11 +116,8 @@
         LeftAlt = LAltKey,
         RightAlt = RAltKey,
         Menu = 18,
-        LMenu = 164,
-        RMenu = 165,
 
-        // Function keys 
-        // <keysymdef.h> on X11 reports up to 35 function keys.
+        /* Function keys */
         F1 = 112,
         F2 = 113,
         F3 = 114,
@@ -133,18 +130,6 @@
         F10 = 121,
         F11 = 122,
         F12 = 123,
-        F13 = 124,
-        F14 = 125,
-        F15 = 126,
-        F16 = 127,
-        F17 = 128,
-        F18 = 129,
-        F19 = 130,
-        F20 = 131,
-        F21 = 132,
-        F22 = 133,
-        F23 = 134,
-        F24 = 135,
 
         // Keypad keys
         NumPad0 = 96,
