@@ -2,8 +2,7 @@
 {
     using System;
     using System.Numerics;
-
-
+    
     /// <summary>
     /// Provides methods and properties for interacting with a touch location 
     /// on a touch screen device.
