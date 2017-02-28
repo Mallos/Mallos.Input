@@ -41,7 +41,31 @@
 
         protected override void Track(MouseState newState, MouseState oldState)
         {
-            throw new NotImplementedException();
+            if (newState.Position != oldState.Position)
+            {
+                Move?.Invoke(this, new MouseEventArgs(newState));
+            }
+
+            if (newState.ScrollWheelValue != oldState.ScrollWheelValue)
+            {
+                MouseWheel?.Invoke(this, new MouseWheelEventArgs(newState));
+            }
+
+            IsMouseDown(newState, newState.LeftButton, oldState.LeftButton);
+            IsMouseDown(newState, newState.MiddleButton, oldState.MiddleButton);
+            IsMouseDown(newState, newState.RightButton, oldState.RightButton);
+
+            IsMouseDown(newState, newState.XButton1, oldState.XButton1);
+            IsMouseDown(newState, newState.XButton2, oldState.XButton2);
+        }
+
+        private void IsMouseDown(MouseState state, bool value1, bool value2)
+        {
+            if (value1 != value2)
+            {
+                if (value1) MouseDown?.Invoke(this, new MouseButtonEventArgs(state));
+                else        MouseUp?.Invoke(this, new MouseButtonEventArgs(state));
+            }
         }
     }
 }

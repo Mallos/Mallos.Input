@@ -25,7 +25,7 @@
             AssignHandle(handle);
 
             this.Keys = new HashSet<OpenInput.Keys>();
-            this.MouseState = new MouseState();
+            this.MouseState = MouseState.Empty;
             this.devNotifyHandle = RegisterForDeviceNotifications(handle);
 
             FindDevices();

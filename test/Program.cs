@@ -15,12 +15,10 @@ namespace OpenInput.Test
     {
         private readonly RenderContext renderContext;
 
-        private readonly List<InputContext> inputContexts;
+        private readonly List<DeviceSet> deviceSets;
         private readonly StringBuilder sb = new StringBuilder();
 
         private InputSystem inputSystem;
-
-        private IKeyboardTracker keyboardTracker;
         private ComboTracker comboTracker;
 
         private List<string> comboHistory = new List<string>();
@@ -31,22 +29,20 @@ namespace OpenInput.Test
             Keyboard.KeyDown += Keyboard_KeyDown;
 
             // Add the different types of input context.
-            this.inputContexts = new List<InputContext>(new[]
+            this.deviceSets = new List<DeviceSet>(new[]
             {
-                InputContext.CreateOpenTK(this),
-                InputContext.CreateEmpty(),
+                DeviceSets.CreateOpenTK(this),
+                new OpenInput.Dummy.DummyDeviceSet()
             });
 
-            keyboardTracker = inputContexts[0].Keyboard.CreateTracker();
-
             // Create a input system and register a few inputs.
-            inputSystem = new InputSystem(inputContexts[0].Keyboard, inputContexts[0].Mouse);
+            inputSystem = new InputSystem(deviceSets[0].Keyboard, deviceSets[0].Mouse);
             inputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
             inputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
             inputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
 
             // Create a combo tracker and register a few combos.
-            comboTracker = new ComboTracker(keyboardTracker, 0.25f);
+            comboTracker = new ComboTracker(deviceSets[0].KeyboardTracker, 0.5f, 4);
             comboTracker.OnComboCalled += ComboTracker_OnComboCalled;
             comboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
             comboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
@@ -62,7 +58,7 @@ namespace OpenInput.Test
 
             if (comboHistory.Count > 10)
             {
-                comboHistory.RemoveRange(10, comboHistory.Count - 10);
+                comboHistory.RemoveRange(0, comboHistory.Count - 10);
             }
         }
 
@@ -82,8 +78,12 @@ namespace OpenInput.Test
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            foreach (var item in deviceSets)
+            {
+                item.Update((float)e.Time);
+            }
+
             inputSystem.Update((float)e.Time);
-            keyboardTracker.Update((float)e.Time);
             comboTracker.Update((float)e.Time);
 
             // Begin the frame
@@ -92,7 +92,7 @@ namespace OpenInput.Test
 
             // Add all the ImGui items
             {
-                foreach (var item in inputContexts)
+                foreach (var item in deviceSets)
                 {
                     TestWindwow_Input(item);
                 }
@@ -106,7 +106,7 @@ namespace OpenInput.Test
             this.SwapBuffers();
         }
         
-        private void TestWindwow_Input(InputContext inputContext)
+        private void TestWindwow_Input(DeviceSet inputContext)
         {
             string windowTitle = inputContext.Name + " Input";
             ImGui.BeginWindow(windowTitle);
@@ -142,15 +142,46 @@ namespace OpenInput.Test
                         sb.Clear();
                     }
                 }
+                
+                if (ImGui.CollapsingHeader("GamePads", TreeNodeFlags.CollapsingHeader))
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (ImGui.CollapsingHeader($"GamePad [{ i }]", TreeNodeFlags.CollapsingHeader))
+                        {
+                            var gamepadState = inputContext.GamePads[i].GetCurrentState();
 
-                //if (inputContext.GamePad != null)
-                //{
-                //    if (ImGui.CollapsingHeader("GamePad", TreeNodeFlags.CollapsingHeader))
-                //    {
-                //        ImGui.Text("Hello World!");
-                //    }
-                //}
-                //
+                            ImGui.Text($"Name: { inputContext.GamePads[i].Name }");
+                            ImGui.Text($"IsConnected: { gamepadState.IsConnected }");
+
+                            ImGui.BeginChild($"GamePad.{i}.Child1", true);
+                            if (ImGui.CollapsingHeader("Buttons", TreeNodeFlags.CollapsingHeader))
+                            {
+                                var buttonValues = Enum.GetValues(typeof(Buttons));
+                                for (int i2 = 0; i2 < buttonValues.Length; i2++)
+                                {
+                                    Buttons button = (Buttons)buttonValues.GetValue(i2);
+                                    var buttonDown = gamepadState.Buttons.IsButtonDown(button);
+                                    ImGui.Text($"{ button } = { buttonDown }");
+                                }
+                            }
+
+                            if (ImGui.CollapsingHeader("ThumbSticks", TreeNodeFlags.CollapsingHeader))
+                            {
+                                ImGui.Text($"Left: { gamepadState.ThumbSticks.LeftThumbstick.X }, { gamepadState.ThumbSticks.LeftThumbstick.Y }");
+                                ImGui.Text($"Right: { gamepadState.ThumbSticks.RightThumbstick.X }, { gamepadState.ThumbSticks.RightThumbstick.Y }");
+                            }
+
+                            if (ImGui.CollapsingHeader("Triggers", TreeNodeFlags.CollapsingHeader))
+                            {
+                                ImGui.Text($"Left: { gamepadState.Triggers.Left }");
+                                ImGui.Text($"Right: { gamepadState.Triggers.Right }");
+                            }
+                            ImGui.EndChild();
+                        }
+                    }
+                }
+                
                 //if (ImGui.CollapsingHeader("Touch", TreeNodeFlags.CollapsingHeader))
                 //{
                 //    ImGui.Text("Hello World!");
@@ -181,10 +212,26 @@ namespace OpenInput.Test
         {
             ImGui.BeginWindow("ComboTracker");
             {
-                foreach (var item in comboHistory)
+                ImGui.Text("# Combos:");
+                foreach (var item in comboTracker.SequenceCombos)
                 {
-                    ImGui.Text(item);
+                    ImGui.Text($"{ item.Name } = [{ string.Join(", ", item.Keys) }]");
                 }
+
+                ImGui.Separator();
+                ImGui.Text($"Current: { comboTracker.GetHistoryString() }");
+
+                ImGui.Separator();
+                ImGui.Text("# History:");
+
+                ImGui.BeginChild("ComboTrackerChild1", true);
+                {
+                    foreach (var item in comboHistory)
+                    {
+                        ImGui.Text(item);
+                    }
+                }
+                ImGui.EndChild();
             }
             ImGui.EndWindow();
         }

@@ -1,34 +1,29 @@
-﻿namespace OpenInput.RawInput
+﻿namespace OpenInput
 {
+    using OpenInput.RawInput;
+    using OpenInput.Trackers;
     using System;
 
     /// <summary>
     /// Class that represents a mouse, for RawInput.
     /// </summary>
-    public class Mouse : RawDevice, IMouse
+    public class RawMouse : RawDevice, IMouse
     {
         /// <inheritdoc />
         public string Name => Service.MouseNames;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseEventArgs> Move;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseWheelEventArgs> MouseWheel;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseButtonEventArgs> MouseDown;
-
-        /// <inheritdoc />
-        public event EventHandler<MouseButtonEventArgs> MouseUp;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mouse"/> class.
+        /// Initializes a new instance of the <see cref="RawMouse"/> class.
         /// </summary>
-        public Mouse(IntPtr windowHandle)
+        public RawMouse(IntPtr windowHandle)
             : base(windowHandle)
         {
 
+        }
+
+        public IMouseTracker CreateTracker()
+        {
+            return new BasicMouseTracker(this);
         }
 
         /// <inheritdoc />

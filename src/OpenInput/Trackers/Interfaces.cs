@@ -54,4 +54,17 @@
         /// </summary>
         event EventHandler<MouseButtonEventArgs> MouseUp;
     }
+
+    public interface IGamePadTracker : ITracker
+    {
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
+        /// </summary>
+        event EventHandler<GamePadEventArgs> ButtonDown;
+
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been released.
+        /// </summary>
+        event EventHandler<GamePadEventArgs> ButtonUp;
+    }
 }

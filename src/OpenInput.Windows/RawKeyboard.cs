@@ -1,12 +1,14 @@
-﻿namespace OpenInput.RawInput
+﻿namespace OpenInput
 {
+    using OpenInput.RawInput;
     using System;
     using System.Linq;
+    using OpenInput.Trackers;
 
     /// <summary>
     /// Class that represents a Keyboard, for RawInput.
     /// </summary>
-    public class Keyboard : RawDevice, IKeyboard
+    public class RawKeyboard : RawDevice, IKeyboard
     {
         /// <inheritdoc />
         public string Name => Service.KeyboardNames;
@@ -19,17 +21,23 @@
 
         /// <inheritdoc />
         public TextInput TextInput => textInput;
-        private TextInput textInput = new Empty.EmptyTextInput();
+        
+        private TextInput textInput = new Dummy.DummyTextInput();
 
         // TODO: Implement TextInput
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Keyboard"/> class.
         /// </summary>
-        public Keyboard(IntPtr handle, bool captureInBackground = false)
+        public RawKeyboard(IntPtr handle, bool captureInBackground = false)
             : base(handle)
         {
 
+        }
+
+        public IKeyboardTracker CreateTracker()
+        {
+            return new BasicKeyboardTracker(this);
         }
 
         /// <inheritdoc />

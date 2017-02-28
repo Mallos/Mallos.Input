@@ -79,7 +79,7 @@
     /// <summary>
     /// Interface that represents a gamepad.
     /// </summary>
-    public interface IGamePad : IDevice<ITracker, GamePadState>
+    public interface IGamePad : IDevice<IGamePadTracker, GamePadState>
     {
         /// <summary>
         /// Gets the gamepad index.
