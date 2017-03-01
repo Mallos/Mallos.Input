@@ -3,6 +3,10 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
 
+#if net461
+using System.Drawing;
+#endif
+
 namespace ImGuiNET.OpenTK
 {
     public class RenderContext

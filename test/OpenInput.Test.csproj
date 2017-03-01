@@ -5,6 +5,7 @@
     <TargetFrameworks>netcoreapp1.0; net461</TargetFrameworks>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net461'">win10-x64</RuntimeIdentifier>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net461'">net461</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
