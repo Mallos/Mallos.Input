@@ -11,7 +11,7 @@ using System.Text;
 
 namespace OpenInput.Test
 {
-    class Program : GameWindow
+    public class Program : GameWindow
     {
         private readonly RenderContext renderContext;
 
@@ -89,7 +89,7 @@ namespace OpenInput.Test
             // Begin the frame
             GL.Clear(ClearBufferMask.ColorBufferBit);
             renderContext.BeginFrame((float)e.Time);
-
+            
             // Add all the ImGui items
             {
                 foreach (var item in deviceSets)
@@ -248,7 +248,7 @@ namespace OpenInput.Test
         }
 
         [STAThread]
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             using (var game = new Program())
                 game.Run(30.0);
