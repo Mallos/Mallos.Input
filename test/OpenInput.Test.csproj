@@ -4,10 +4,13 @@
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp1.0; net461</TargetFrameworks>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net461'">win10-x64</RuntimeIdentifier>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net461'">net461</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <DefineConstants>net461</DefineConstants>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="ImGui.NET" Version="0.1.6" />
     <PackageReference Include="OpenTK.NETCore" Version="1.1.2571.6431" Condition="'$(TargetFramework)' == 'netcoreapp1.0'" />
@@ -15,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\OpenInput.OpenTK\OpenInput.OpenTK.csproj" />
+    <ProjectReference Include="..\src\OpenInput.Portable\OpenInput.Portable.csproj" />
     <ProjectReference Include="..\src\OpenInput\OpenInput.csproj" />
   </ItemGroup>
 

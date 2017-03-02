@@ -24,7 +24,16 @@
         protected RawDevice(IntPtr windowHandle)
         {
             if (Service == null)
-                Service = new DeviceService(windowHandle);
+            {
+                try
+                {
+                    Service = new DeviceService(windowHandle);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.ToString());
+                }
+            }
         }
     }
 }

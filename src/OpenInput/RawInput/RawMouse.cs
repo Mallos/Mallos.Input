@@ -41,6 +41,10 @@
         /// <inheritdoc />
         public MouseState GetCurrentState()
         {
+            if (Service == null)
+            {
+                return MouseState.Empty;
+            }
             return Service.MouseState;
         }
     }

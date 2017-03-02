@@ -32,7 +32,10 @@ namespace OpenInput.Test
             this.deviceSets = new List<DeviceSet>(new[]
             {
                 DeviceSets.CreateOpenTK(this),
-                new OpenInput.Dummy.DummyDeviceSet()
+                new OpenInput.Dummy.DummyDeviceSet(),
+#if net461
+                new RawDeviceSet() // There is no way to get the window handle
+#endif
             });
 
             // Create a input system and register a few inputs.
@@ -47,11 +50,11 @@ namespace OpenInput.Test
             comboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
             comboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
             comboTracker.SequenceCombos.Add(new SequenceCombo("Attack3", Buttons.A, Buttons.B, Buttons.X));
-
+            
             // Initialize ImGui render context.
             this.renderContext = new RenderContext(this);
         }
-
+        
         private void ComboTracker_OnComboCalled(SequenceCombo obj)
         {
             comboHistory.Add(obj.Name);

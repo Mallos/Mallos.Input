@@ -5,7 +5,7 @@ A portable way of accessing HID devices cross-platform
 
 ## Supported Platforms
 
-* ~~Windows ([RawInput](src/OpenInput.Windows/RawInput/README.md))~~
+* Windows ([RawInput](src/OpenInput/RawInput/README.md))
 * OpenTK
 
 ### Supported Devices
@@ -13,4 +13,4 @@ A portable way of accessing HID devices cross-platform
 * Mouse
 * Keyboard
 * ~~TouchDevice~~
-* ~~GamePad~~
+* GamePad

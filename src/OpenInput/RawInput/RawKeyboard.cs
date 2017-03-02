@@ -43,6 +43,10 @@
         /// <inheritdoc />
         public KeyboardState GetCurrentState()
         {
+            if (Service == null)
+            {
+                return KeyboardState.Empty;
+            }
             return new KeyboardState(Service.Keys.ToArray());
         }
     }

@@ -47,7 +47,6 @@
 
     static partial class WindowsInterop
     {
-        #region Helper Methods
         public static int LoWord(int dwValue)
         {
             return (dwValue & 0xFFFF);
@@ -87,9 +86,7 @@
 
             return stringBuilder.ToString();
         }
-        #endregion
 
-        #region Constant Values
         public const int KEYBOARD_OVERRUN_MAKE_CODE = 0xFF;
         public const int WM_APPCOMMAND = 0x0319;
         public const int FAPPCOMMANDMASK = 0xF000;
@@ -126,9 +123,7 @@
         public const int SC_SHIFT_R = 0x36;
         public const int SC_SHIFT_L = 0x2a;
         public const int RIM_INPUT = 0x00;
-        #endregion
 
-        #region Windows Methods
         [DllImport("user32.dll")]
         public static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
@@ -143,6 +138,5 @@
 
         [DllImport("user32.dll")]
         public static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString, int nSize);
-        #endregion
     }
 }

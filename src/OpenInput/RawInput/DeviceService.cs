@@ -244,8 +244,8 @@
             }
             catch (Exception e)
             {
-                Debug.Print("RawInput: Registration for device notifications Failed. Error: {0}", Marshal.GetLastWin32Error());
-                Debug.Print(e.StackTrace);
+                Debug.WriteLine($"RawInput: Registration for device notifications Failed. Error: { Marshal.GetLastWin32Error() }");
+                Debug.WriteLine(e.StackTrace);
             }
             finally
             {
@@ -254,7 +254,7 @@
 
             if (usbNotifyHandle == IntPtr.Zero)
             {
-                Debug.Print("RawInput: Registration for device notifications Failed. Error: {0}", Marshal.GetLastWin32Error());
+                Debug.WriteLine($"RawInput: Registration for device notifications Failed. Error: { Marshal.GetLastWin32Error() }");
             }
 
             return usbNotifyHandle;
