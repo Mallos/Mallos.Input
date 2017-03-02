@@ -8,16 +8,6 @@
 
     public class Program : GameWindow
     {
-        public static DeviceSet CreateOpenTK(OpenTK.GameWindow window = null)
-        {
-            return new DeviceSet(
-                "OpenTK",
-                new OpenInput.OpenTKKeyboard((window != null) ? window.Keyboard : null),
-                new OpenInput.OpenTKMouse((window != null) ? window.Mouse : null),
-                (int index) => { return new OpenInput.OpenTKGamePad(index); }
-            );
-        }
-
         private readonly ImGuiRenderContext renderContext;
 
         private readonly TestContext TestContext;
@@ -27,7 +17,7 @@
         {
             Keyboard.KeyDown += Keyboard_KeyDown;
 
-            this.TestContext = new TestContext(CreateOpenTK(this));
+            this.TestContext = new TestContext(new OpenTKDeviceSet(this));
 
             // Initialize ImGui render context.
             this.renderContext = new ImGuiRenderContext(this);
