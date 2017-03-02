@@ -5,7 +5,7 @@ A portable way of accessing HID devices cross-platform
 
 ## Supported Platforms
 
-* Windows ([RawInput](src/OpenInput/RawInput/README.md))
+* Windows (RawInput)
 * OpenTK
 
 ### Supported Devices

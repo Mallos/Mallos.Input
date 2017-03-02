@@ -1,22 +1,22 @@
-﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-using System;
+﻿namespace ImGuiNET
+{
+    using OpenTK;
+    using OpenTK.Graphics.OpenGL;
+    using OpenTK.Input;
+    using System;
 
 #if net461
-using System.Drawing;
+    using System.Drawing;
 #endif
 
-namespace ImGuiNET.OpenTK
-{
-    public class RenderContext
+    public class ImGuiRenderContext
     {
         public readonly NativeWindow Window;
 
         private int s_fontTexture;
         private float wheelPosition;
 
-        public RenderContext(NativeWindow window)
+        public ImGuiRenderContext(NativeWindow window)
         {
             this.Window = window ?? throw new ArgumentNullException(nameof(window));
 

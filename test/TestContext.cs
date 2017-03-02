@@ -1,114 +1,78 @@
-﻿using ImGuiNET;
-using ImGuiNET.OpenTK;
-using OpenInput.Mechanics;
-using OpenInput.Trackers;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace OpenInput.Test
 {
-    public class Program : GameWindow
+    using ImGuiNET;
+    using OpenInput.Mechanics;
+    using System.Collections.Generic;
+    using System.Text;
+
+    class TestContext
     {
-        private readonly RenderContext renderContext;
+        public readonly List<DeviceSet> DeviceSets;
 
-        private readonly List<DeviceSet> deviceSets;
+        public readonly InputSystem InputSystem;
+        public readonly ComboTracker ComboTracker;
+
+        public readonly List<string> ComboHistory = new List<string>();
+        public readonly int ComboHistoryMax = 10;
+
         private readonly StringBuilder sb = new StringBuilder();
-
-        private InputSystem inputSystem;
-        private ComboTracker comboTracker;
-
-        private List<string> comboHistory = new List<string>();
-
-        public Program()
-            : base(1280, 800, null, "OpenInput.Test")
+        
+        public TestContext(DeviceSet defaultSet)
         {
-            Keyboard.KeyDown += Keyboard_KeyDown;
-
+            //new OpenInput.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
+            
             // Add the different types of input context.
-            this.deviceSets = new List<DeviceSet>(new[]
+            DeviceSets = new List<DeviceSet>(new[]
             {
-                DeviceSets.CreateOpenTK(this),
+                defaultSet,
                 new OpenInput.Dummy.DummyDeviceSet(),
-#if net461
-                new RawDeviceSet() // There is no way to get the window handle
-#endif
             });
-
+            
             // Create a input system and register a few inputs.
-            inputSystem = new InputSystem(deviceSets[0].Keyboard, deviceSets[0].Mouse);
-            inputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
-            inputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
-            inputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
+            InputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
+            InputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
+            InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
+            InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
 
             // Create a combo tracker and register a few combos.
-            comboTracker = new ComboTracker(deviceSets[0].KeyboardTracker, 0.5f, 4);
-            comboTracker.OnComboCalled += ComboTracker_OnComboCalled;
-            comboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
-            comboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
-            comboTracker.SequenceCombos.Add(new SequenceCombo("Attack3", Buttons.A, Buttons.B, Buttons.X));
-            
-            // Initialize ImGui render context.
-            this.renderContext = new RenderContext(this);
+            ComboTracker = new ComboTracker(defaultSet.KeyboardTracker, 0.5f, 4);
+            ComboTracker.OnComboCalled += ComboTracker_OnComboCalled;
+            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
+            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
+            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack3", Buttons.A, Buttons.B, Buttons.X));
         }
-        
+
+        public void Update(float elapsedTime)
+        {
+            foreach (var item in DeviceSets)
+            {
+                item.Update(elapsedTime);
+            }
+
+            InputSystem.Update(elapsedTime);
+            ComboTracker.Update(elapsedTime);
+        }
+
+        public void AddImGuiStuff()
+        {
+            foreach (var item in DeviceSets)
+            {
+                TestWindwow_Input(item);
+            }
+
+            TestWindow_InputSystem(InputSystem);
+            TestWindow_ComboTracker(ComboTracker, ComboHistory);
+        }
+
         private void ComboTracker_OnComboCalled(SequenceCombo obj)
         {
-            comboHistory.Add(obj.Name);
-
-            if (comboHistory.Count > 10)
+            ComboHistory.Add(obj.Name);
+            if (ComboHistory.Count > ComboHistoryMax)
             {
-                comboHistory.RemoveRange(0, comboHistory.Count - 10);
+                ComboHistory.RemoveRange(0, ComboHistory.Count - ComboHistoryMax);
             }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            GL.ClearColor(114f / 255f, 144f / 255f, 154f / 255f, 1.0f);
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            GL.Viewport(0, 0, Width, Height);
-
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
-        }
-
-        protected override void OnRenderFrame(FrameEventArgs e)
-        {
-            foreach (var item in deviceSets)
-            {
-                item.Update((float)e.Time);
-            }
-
-            inputSystem.Update((float)e.Time);
-            comboTracker.Update((float)e.Time);
-
-            // Begin the frame
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            renderContext.BeginFrame((float)e.Time);
-            
-            // Add all the ImGui items
-            {
-                foreach (var item in deviceSets)
-                {
-                    TestWindwow_Input(item);
-                }
-
-                TestWindow_InputSystem();
-                TestWindow_ComboTracker();
-            }
-
-            // End the frame
-            renderContext.EndFrame();
-            this.SwapBuffers();
-        }
-        
         private void TestWindwow_Input(DeviceSet inputContext)
         {
             string windowTitle = inputContext.Name + " Input";
@@ -145,7 +109,7 @@ namespace OpenInput.Test
                         sb.Clear();
                     }
                 }
-                
+
                 if (ImGui.CollapsingHeader("GamePads", TreeNodeFlags.CollapsingHeader))
                 {
                     for (int i = 0; i < 4; i++)
@@ -160,7 +124,7 @@ namespace OpenInput.Test
                             ImGui.BeginChild($"GamePad.{i}.Child1", true);
                             if (ImGui.CollapsingHeader("Buttons", TreeNodeFlags.CollapsingHeader))
                             {
-                                var buttonValues = Enum.GetValues(typeof(Buttons));
+                                var buttonValues = System.Enum.GetValues(typeof(Buttons));
                                 for (int i2 = 0; i2 < buttonValues.Length; i2++)
                                 {
                                     Buttons button = (Buttons)buttonValues.GetValue(i2);
@@ -184,7 +148,7 @@ namespace OpenInput.Test
                         }
                     }
                 }
-                
+
                 //if (ImGui.CollapsingHeader("Touch", TreeNodeFlags.CollapsingHeader))
                 //{
                 //    ImGui.Text("Hello World!");
@@ -193,7 +157,7 @@ namespace OpenInput.Test
             ImGui.EndWindow();
         }
 
-        private void TestWindow_InputSystem()
+        private void TestWindow_InputSystem(InputSystem inputSystem)
         {
             ImGui.BeginWindow("InputSystem");
             {
@@ -211,7 +175,7 @@ namespace OpenInput.Test
             ImGui.EndWindow();
         }
 
-        private void TestWindow_ComboTracker()
+        private void TestWindow_ComboTracker(ComboTracker comboTracker, IList<string> comboHistory)
         {
             ImGui.BeginWindow("ComboTracker");
             {
@@ -237,24 +201,6 @@ namespace OpenInput.Test
                 ImGui.EndChild();
             }
             ImGui.EndWindow();
-        }
-
-        private void Keyboard_KeyDown(object sender, KeyboardKeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-                this.Exit();
-
-            if (e.Key == Key.F11)
-            {
-                this.WindowState = (this.WindowState == WindowState.Fullscreen) ? WindowState.Normal : WindowState.Fullscreen;
-            }
-        }
-
-        [STAThread]
-        public static void Main(string[] args)
-        {
-            using (var game = new Program())
-                game.Run(30.0);
         }
     }
 }
