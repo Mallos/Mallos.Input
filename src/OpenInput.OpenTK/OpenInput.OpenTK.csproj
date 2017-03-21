@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0; net461</TargetFrameworks>
-    <RootNamespace>OpenInput</RootNamespace>
+    <TargetFramework>netstandard1.3</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTK.NETCore" Version="1.1.2571.6431" Condition="'$(TargetFramework)' == 'netcoreapp1.0'" />
-    <PackageReference Include="OpenTK" Version="2.0.0" Condition="'$(TargetFramework)' == 'net461'" />
+    <PackageReference Include="OpenTK.NETCore" Version="1.1.2571.6431" />
   </ItemGroup>
 
   <ItemGroup>
