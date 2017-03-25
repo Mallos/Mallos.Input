@@ -22,7 +22,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenTKKeyboard"/> class.
         /// </summary>
-        public OpenTKKeyboard(KeyboardDevice keyboardDevice = null)
+        public OpenTKKeyboard(KeyboardDevice keyboardDevice)
             : base(keyboardDevice)
         {
             if (HasDevice)
@@ -41,8 +41,7 @@
             }
             else
             {
-                //OpenTK.Input.Keyboard
-                throw new NotImplementedException();
+                return KeyboardState.Empty;
             }
         }
 

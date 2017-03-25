@@ -4,6 +4,7 @@
     using System;
     using tkMouse = OpenTK.Input.Mouse;
     using OpenInput.Trackers;
+    using OpenTK;
 
     /// <summary>
     /// OpenTK Mouse.
@@ -13,16 +14,18 @@
         /// <inheritdoc />
         public string Name => HasDevice ? Device.Description : "OpenTK Mouse";
         
+        public NativeWindow Window { get; }
+
         private static MouseState mouseState = new MouseState();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenTKMouse"/> class.
         /// </summary>
         /// <param name="mouseDevice"></param>
-        public OpenTKMouse(MouseDevice mouseDevice = null)
+        public OpenTKMouse(NativeWindow window, MouseDevice mouseDevice = null)
             : base(mouseDevice)
         {
-
+            this.Window = window ?? throw new ArgumentNullException(nameof(window));
         }
 
         /// <inheritdoc />
@@ -46,10 +49,11 @@
         /// <inheritdoc />
         public MouseState GetCurrentState()
         {
-            var state = HasDevice ? Device.GetState() : tkMouse.GetState();
+            var state = HasDevice ? Device.GetCursorState() : tkMouse.GetCursorState();
 
-            mouseState.X = state.X;
-            mouseState.Y = state.Y;
+            // TODO: Check if we have window instead?
+            mouseState.X = state.X - Window.Location.X;
+            mouseState.Y = state.Y - Window.Location.Y;
             mouseState.ScrollWheelValue = state.ScrollWheelValue;
             mouseState.LeftButton = state.LeftButton == ButtonState.Pressed;
             mouseState.MiddleButton = state.MiddleButton == ButtonState.Pressed;
