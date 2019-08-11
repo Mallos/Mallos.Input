@@ -7,12 +7,6 @@
     /// </summary>
     public class BasicKeyboardTracker : BasicDeviceTracker<IKeyboardTracker, KeyboardState>, IKeyboardTracker
     {
-        /// <inheritdoc />
-        public event EventHandler<KeyEventArgs> KeyDown;
-
-        /// <inheritdoc />
-        public event EventHandler<KeyEventArgs> KeyUp;
-
         /// <summary>
         /// Initialize a new <see cref="KeyboardTracker"/> class.
         /// </summary>
@@ -20,7 +14,6 @@
         public BasicKeyboardTracker(IKeyboard keyboard)
             : base(keyboard)
         {
-
         }
 
         /// <summary>
@@ -30,8 +23,13 @@
         public BasicKeyboardTracker(IDevice<IKeyboardTracker, KeyboardState> keyboard)
             : base(keyboard)
         {
-
         }
+
+        /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyDown;
+
+        /// <inheritdoc />
+        public event EventHandler<KeyEventArgs> KeyUp;
 
         protected override void Track(KeyboardState newState, KeyboardState oldState)
         {

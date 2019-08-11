@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>OpenInput.Test</RootNamespace>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\TestContext.Veldrid.cs" Link="TestContext.Veldrid.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Veldrid" Version="4.6.1" />
+    <PackageReference Include="Veldrid.ImGui" Version="5.69.0" />
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpenInput.Veldrid.SDL2\OpenInput.Veldrid.SDL2.csproj" />
+    <ProjectReference Include="..\..\src\OpenInput\OpenInput.csproj" />
+  </ItemGroup>
+
+</Project>
