@@ -1,10 +1,11 @@
-# OpenInput [![NuGet Version](http://img.shields.io/nuget/v/OpenInput.svg)](https://www.nuget.org/packages/OpenInput)
+# OpenInput
 A portable way of accessing HID devices cross-platform
 
 ## Supported Platforms
 
 * Windows (RawInput)
 * OpenTK
+* Veldrid
 
 ### Supported Devices
 
