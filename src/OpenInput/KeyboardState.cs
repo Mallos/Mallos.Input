@@ -14,7 +14,7 @@
         /// <summary> 
         /// Gets all the currently pressed keys. 
         /// </summary>
-        public Keys[] Keys { get; internal set; } // TODO: Change to flags
+        public Keys[] Keys { get; internal set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyboardState"/> struct.
