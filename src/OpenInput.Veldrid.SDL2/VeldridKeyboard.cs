@@ -7,6 +7,7 @@
 
     public class VeldridKeyboard : VeldridDevice, IKeyboard
     {
+        private readonly HashSet<Key> pressedKeys = new HashSet<Key>();
         private KeyboardState currentState = new KeyboardState();
 
         /// <inheritdoc />
@@ -23,25 +24,20 @@
 
         internal override void UpdateSnapshot(InputSnapshot snapshot)
         {
-            var pressedKeys = GetPressedKeys(snapshot.KeyEvents);
-            this.currentState = new KeyboardState(pressedKeys);
-        }
-
-        private Keys[] GetPressedKeys(IReadOnlyList<KeyEvent> keyEvents)
-        {
-            var pressedKeys = keyEvents.Where(key => key.Down).ToArray();
-            if (pressedKeys.Length == 0)
+            foreach (var key in snapshot.KeyEvents)
             {
-                return new Keys[0];
+                if (key.Down)
+                {
+                    this.pressedKeys.Add(key.Key);
+                }
+                else
+                {
+                    this.pressedKeys.Remove(key.Key);
+                }
             }
 
-            var result = new Keys[pressedKeys.Length];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = pressedKeys[i].Key.ConvertKey();
-            }
-
-            return result;
+            var newKeys = this.pressedKeys.Select(key => key.ConvertKey()).ToArray();
+            this.currentState = new KeyboardState(newKeys);
         }
     }
 }
