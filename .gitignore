@@ -200,3 +200,4 @@ FakesAssemblies/
 *.opt
 
 test/imgui.ini
+*.ini

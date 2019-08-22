@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "src/OpenInput"
+		},
+		{
+			"path": "src/OpenInput.Veldrid.SDL2"
+		},
+		{
+			"path": "test/OpenInput.Veldrid.SDL.Test"
+		}
+	],
+  "settings": {}
+}
