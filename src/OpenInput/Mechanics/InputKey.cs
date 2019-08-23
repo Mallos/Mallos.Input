@@ -54,32 +54,13 @@
 
         public override string ToString()
         {
-            switch (Type)
+            switch (this.Type)
             {
-                case InputKeyType.Keyboard: return $"[Keyboard] { Key }";
-                case InputKeyType.GamePad: return $"[GamePad] { Button }";
+                case InputKeyType.Keyboard: return $"[Keyboard] {this.Key}";
+                case InputKeyType.GamePad: return $"[GamePad] {this.Button}";
             }
 
             return base.ToString();
-        }
-    }
-
-    public static class InputExtensions
-    {
-        public static bool IsKeyDown(this KeyboardState state, InputKey key)
-        {
-            if (key.Type != InputKeyType.Keyboard)
-                return false;
-
-            return state.IsKeyDown(key.Key);
-        }
-
-        public static bool IsButtonDown(this GamePadState state, InputKey key)
-        {
-            if (key.Type != InputKeyType.GamePad)
-                return false;
-
-            return state.Buttons.IsButtonDown(key.Button);
         }
     }
 }
