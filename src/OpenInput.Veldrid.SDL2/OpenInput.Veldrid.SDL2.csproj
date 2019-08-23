@@ -10,7 +10,7 @@
     <Copyright>Copyright © 2019 Eric Tuvesson (erictuvesson)</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>OpenInput.Veldrid.SDL2</PackageId>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <RepositoryUrl>https://github.com/erictuvesson/OpenInput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
