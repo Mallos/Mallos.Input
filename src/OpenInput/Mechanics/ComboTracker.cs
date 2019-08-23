@@ -42,6 +42,7 @@
         {
             this.KeyboardTracker = keyboardTracker ?? throw new ArgumentNullException(nameof(keyboardTracker));
             this.KeyboardTracker.KeyDown += KeyboardTracker_KeyDown;
+            this.history = new InputKey[MaxCombo + 1];
         }
 
         /// <summary>

@@ -16,18 +16,18 @@ namespace OpenInput.Test
         public readonly int ComboHistoryMax = 10;
 
         private readonly StringBuilder sb = new StringBuilder();
-        
+
         public TestContext(DeviceSet defaultSet)
         {
             //new OpenInput.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
-            
+
             // Add the different types of input context.
             DeviceSets = new List<DeviceSet>(new[]
             {
                 defaultSet,
                 new OpenInput.Dummy.DummyDeviceSet(),
             });
-            
+
             // Create a input system and register a few inputs.
             InputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
             InputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
@@ -35,7 +35,7 @@ namespace OpenInput.Test
             InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
 
             // Create a combo tracker and register a few combos.
-            ComboTracker = new ComboTracker(defaultSet.KeyboardTracker, 0.5f, 4);
+            ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
             ComboTracker.OnComboCalled += ComboTracker_OnComboCalled;
             ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
             ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
