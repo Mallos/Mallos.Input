@@ -28,59 +28,8 @@
         /// </summary>
         public readonly List<SequenceCombo> SequenceCombos = new List<SequenceCombo>();
 
-        /// <summary>
-        /// Gets the current button history. This array is bigger then the 
-        /// history use <see cref="HistoryCount"/> to see how many buttons there are.
-        /// </summary>
-        public InputKey[] History => history;
-
-        /// <summary>
-        /// Gets the current button history count.
-        /// </summary>
-        public int HistoryCount => historyIndex;
-
-        /// <summary>
-        /// Gets or sets the button history timeout.
-        /// </summary>
-        public float ComboTimeout
-        {
-            get { return comboTimeout; }
-            set
-            {
-                if (comboTimeout != value)
-                {
-                    if (value < 0.1f) throw new ArgumentException("How is that fair? Atleast give them some time!");
-                    comboTimeout = value;
-                }
-            }
-        }
         private float comboTimeout = 0.5f;
-
-        /// <summary>
-        /// Gets or sets the max button combo history.
-        /// </summary>
-        public int MaxCombo
-        {
-            get { return maxCombo; }
-            set
-            {
-                if (maxCombo != value)
-                {
-                    if (value <= 1) throw new ArgumentException("Atleast give them some combos.");
-                    maxCombo = value;
-
-                    history = new InputKey[MaxCombo + 1];
-                    historyIndex = 0;
-                }
-            }
-        }
-        private int maxCombo;
-
-        /// <summary>
-        /// Occures when a new combo is called.
-        /// </summary>
-        public event Action<SequenceCombo> OnComboCalled;
-
+        private int maxCombo = 4;
         private float timeSincelast = 0.0f;
         private InputKey[] history = null;
         private int historyIndex = 0;
@@ -88,17 +37,71 @@
         /// <summary>
         /// Initialize a new <see cref="ComboTracker"/> class.
         /// </summary>
-        /// <param name="keyboardTracker"></param>
-        /// <param name="comboTimeout"></param>
-        /// <param name="maxCombo"></param>
-        public ComboTracker(IKeyboardTracker keyboardTracker, float comboTimeout = 0.5f, int maxCombo = 4) // TODO: IKeyboardTracker
+        /// <param name="keyboardTracker">The keyboard we are going to track.</param>
+        public ComboTracker(IKeyboardTracker keyboardTracker)
         {
             this.KeyboardTracker = keyboardTracker ?? throw new ArgumentNullException(nameof(keyboardTracker));
             this.KeyboardTracker.KeyDown += KeyboardTracker_KeyDown;
-
-            this.ComboTimeout = comboTimeout;
-            this.MaxCombo = maxCombo;
+            this.history = new InputKey[MaxCombo + 1];
         }
+
+        /// <summary>
+        /// Gets the current button history. This array is bigger then the
+        /// history use <see cref="HistoryCount"/> to see how many buttons there are.
+        /// </summary>
+        public InputKey[] History => this.history;
+
+        /// <summary>
+        /// Gets the current button history count.
+        /// </summary>
+        public int HistoryCount => this.historyIndex;
+
+        /// <summary>
+        /// Gets or sets the button history timeout.
+        /// </summary>
+        public float ComboTimeout
+        {
+            get { return this.comboTimeout; }
+            set
+            {
+                if (this.comboTimeout != value)
+                {
+                    if (value < 0.1f)
+                    {
+                        throw new ArgumentException("How is that fair? At least give them some time!");
+                    }
+
+                    this.comboTimeout = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the max button combo history.
+        /// </summary>
+        public int MaxCombo
+        {
+            get { return this.maxCombo; }
+            set
+            {
+                if (this.maxCombo != value)
+                {
+                    if (value <= 1)
+                    {
+                        throw new ArgumentException($"{nameof(this.MaxCombo)} needs to be higher then 1.");
+                    }
+
+                    this.maxCombo = value;
+                    this.history = new InputKey[this.MaxCombo + 1];
+                    this.historyIndex = 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Occures when a new combo is called.
+        /// </summary>
+        public event Action<SequenceCombo> OnComboCalled;
 
         public void Update(float elapsedTime)
         {
@@ -137,14 +140,14 @@
 
         private void KeyboardTracker_KeyDown(object sender, KeyEventArgs e)
         {
-            if (historyIndex >= MaxCombo)
+            if (this.historyIndex >= this.MaxCombo)
             {
-                historyIndex = 0;
+                this.historyIndex = 0;
             }
             else
             {
-                history[historyIndex++] = new InputKey(e.Key);
-                timeSincelast = 0;
+                this.history[this.historyIndex++] = new InputKey(e.Key);
+                this.timeSincelast = 0;
             }
         }
 

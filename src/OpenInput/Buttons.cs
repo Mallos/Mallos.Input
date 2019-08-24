@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Identifies keys on a GamePad. 
+    /// Identifies keys on a GamePad.
     /// </summary>
     [Flags]
     public enum Buttons
@@ -32,7 +32,7 @@
         /// <summary> Right bumper (shoulder) button </summary>
         RightShoulder = 512,
 
-        /// <summary> Big button
+        /// <summary> Big button</summary>
         BigButton = 2048,
 
         /// <summary> A button </summary>
@@ -44,9 +44,14 @@
         /// <summary> Y button </summary>
         Y = 32768,
 
-        /// <summary> Right trigger
+        /// <summary>
+        /// Right trigger.
+        /// </summary>
         RightTrigger = 4194304,
-        /// <summary> Left trigger
+
+        /// <summary>
+        /// Left trigger.
+        /// </summary>
         LeftTrigger = 8388608,
 
         /// <summary> Right stick is towards up </summary>

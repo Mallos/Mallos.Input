@@ -7,32 +7,25 @@
     /// </summary>
     public struct MouseState
     {
-        public static readonly MouseState Empty = new MouseState(0, 0, 0, false, false, false, false, false);
-
-        /// <summary> Gets or sets the mouse x coords of this state. </summary>
-        public int X { get; set; }
-
-        /// <summary> Gets or sets the mouse y coords of this state. </summary>
-        public int Y { get; set; }
-
-        /// <summary> Gets a <see cref="Vector2"/> of the cursor position. </summary>
-        public Vector2 Position => new Vector2(X, Y);
-
-        /// <summary> Gets or sets the scroll wheel value of this state. </summary>
-        public int ScrollWheelValue { get; set; }
-        
-        public bool LeftButton { get; set; }
-        public bool MiddleButton { get; set; }
-        public bool RightButton { get; set; }
-
-        public bool XButton1 { get; set; }
-        public bool XButton2 { get; set; }
+        public static readonly MouseState Empty = new MouseState(0, 0, 0, MouseButtons.Empty);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseState"/> struct.
         /// </summary>
-        public MouseState(int x, int y, 
-            int scrollWheel, 
+        public MouseState(int x, int y, int scrollWheel, MouseButtons buttons)
+        {
+            this.X = x;
+            this.Y = y;
+            this.ScrollWheelValue = scrollWheel;
+            this.PressedButtons = buttons;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MouseState"/> struct.
+        /// </summary>
+        [System.Obsolete("This will be removed in future versions.")]
+        public MouseState(int x, int y,
+            int scrollWheel,
             bool leftButton, bool middleButton, bool rightButton,
             bool xButton1, bool xButton2)
         {
@@ -40,13 +33,64 @@
             this.Y = y;
             this.ScrollWheelValue = scrollWheel;
 
-            this.LeftButton = leftButton;
-            this.MiddleButton = middleButton;
-            this.RightButton = rightButton;
+            this.PressedButtons = MouseButtons.Empty;
 
-            this.XButton1 = xButton1;
-            this.XButton2 = xButton2;
+            if (leftButton) this.PressedButtons |= MouseButtons.Left;
+            if (middleButton) this.PressedButtons |= MouseButtons.Middle;
+            if (rightButton) this.PressedButtons |= MouseButtons.Right;
+            if (xButton1) this.PressedButtons |= MouseButtons.XButton1;
+            if (xButton2) this.PressedButtons |= MouseButtons.XButton2;
         }
+
+        /// <summary>
+        /// Gets the mouse x coords of this state.
+        /// </summary>
+        public int X { get; }
+
+        /// <summary>
+        /// Gets the mouse y coords of this state.
+        /// </summary>
+        public int Y { get; }
+
+        /// <summary>
+        /// Gets a <see cref="Vector2"/> of the cursor position.
+        /// </summary>
+        public Vector2 Position => new Vector2(X, Y);
+
+        /// <summary>
+        /// Gets or sets the scroll wheel value of this state.
+        /// </summary>
+        public int ScrollWheelValue { get; }
+
+        /// <summary>
+        /// Gets all the pressed buttons.
+        /// </summary>
+        public MouseButtons PressedButtons { get; }
+
+        /// <summary>
+        /// Gets wether the left button is pressed.
+        /// </summary>
+        public bool LeftButton => this.PressedButtons.HasFlag(MouseButtons.Left);
+
+        /// <summary>
+        /// Gets wether the middle button is pressed.
+        /// </summary>
+        public bool MiddleButton => this.PressedButtons.HasFlag(MouseButtons.Middle);
+
+        /// <summary>
+        /// Gets wether the right button is pressed.
+        /// </summary>
+        public bool RightButton => this.PressedButtons.HasFlag(MouseButtons.Right);
+
+        /// <summary>
+        /// Gets wether the extra button 1 is pressed.
+        /// </summary>
+        public bool XButton1 => this.PressedButtons.HasFlag(MouseButtons.XButton1);
+
+        /// <summary>
+        /// Gets wether the extra button 2 is pressed.
+        /// </summary>
+        public bool XButton2 => this.PressedButtons.HasFlag(MouseButtons.XButton2);
 
         public override string ToString()
         {
