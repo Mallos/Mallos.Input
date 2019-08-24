@@ -40,7 +40,7 @@ namespace OpenInput.Test
             VeldridStartup.CreateWindowAndGraphicsDevice(
                 windowCreateInfo,
                 options,
-                GraphicsBackend.Vulkan,
+                GetSupportedGraphicsBackend(),
                 out this.window,
                 out this.graphicsDevice);
 
@@ -98,6 +98,20 @@ namespace OpenInput.Test
                     this.graphicsDevice.WaitForIdle();
                 }
             }
+        }
+
+        private GraphicsBackend GetSupportedGraphicsBackend()
+        {
+#if DEBUG && WINDOWS
+            return GraphicsBackend.Direct3D11;
+#elif WINDOWS
+            return GraphicsBackend.Vulkan;
+#elif OSX
+            return GraphicsBackend.Metal;
+#else
+            // FIXME: OSX DefineConstants
+            return GraphicsBackend.Metal; // GraphicsBackend.OpenGL
+#endif
         }
     }
 }
