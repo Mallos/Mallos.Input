@@ -1,0 +1,7 @@
+# Layout
+
+## Example
+
+```cs
+// WIP
+```
