@@ -11,6 +11,10 @@
     },
     {
       "path": "test/OpenInput.Test"
+    },
+    {
+      "path": "docs"
     }
-  ]
+  ],
+  "settings": {}
 }
