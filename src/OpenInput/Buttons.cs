@@ -8,18 +8,34 @@
     [Flags]
     public enum Buttons
     {
-        /// <summary> Directional pad down </summary>
+        /// <summary>
+        /// Directional pad down.
+        /// </summary>
         DPadUp = 1,
-        /// <summary> Directional pad up </summary>
+
+        /// <summary>
+        /// Directional pad up.
+        /// </summary>
         DPadDown = 2,
-        /// <summary> Directional pad left </summary>
+
+        /// <summary>
+        /// Directional pad left.
+        /// </summary>
         DPadLeft = 4,
-        /// <summary> Directional pad right </summary>
+
+        /// <summary>
+        /// Directional pad right.
+        /// </summary>
         DPadRight = 8,
 
-        /// <summary> START button </summary>
+        /// <summary>
+        /// START button.
+        /// </summary>
         Start = 16,
-        /// <summary> BACK button </summary>
+
+        /// <summary>
+        /// BACK button.
+        /// </summary>
         Back = 32,
 
         /// <summary> Left stick button (pressing the left stick) </summary>

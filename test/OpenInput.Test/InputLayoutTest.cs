@@ -3,13 +3,12 @@ namespace OpenInput.Test
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Layout;
 
-    public class KeyboardLayoutTest : Layout
+    public class LayoutTest : Layout
     {
-        public override string LayoutId => "KeyboardLayoutTest";
-
-        public override string LayoutName => "Keyboard Layout Test";
-
-        public override string LayoutDescription => "My Layout Description";
+        public LayoutTest(string layoutId)
+            : base(layoutId)
+        {
+        }
 
         [LayoutItem("Move Forwards", group: "Movement")]
         [AxisTrigger("MoveForward", 1)]
@@ -31,13 +30,31 @@ namespace OpenInput.Test
         [ActionTrigger("Jump")]
         public InputKeys Jump { get; set; }
 
-        public static readonly KeyboardLayoutTest DefaultLayout = new KeyboardLayoutTest()
+        [ActionTrigger("Pause", locked = true)]
+        public InputKeys Pause { get; set; }
+
+        public static readonly LayoutTest DefaultLayout = new LayoutTest("KeyboardLayout")
         {
-            MoveForwards = new InputKeys(Keys.W),
-            MoveBackwards = new InputKeys(Keys.S),
-            MoveLeft = new InputKeys(Keys.A),
-            MoveRight = new InputKeys(Keys.D),
-            Jump = new InputKeys(Keys.Space)
+            LayoutName      = "Default Keyboard Layout",
+            LayoutDescription = "The default keyboard layout.",
+            MoveForwards    = new InputKeys(Keys.W, Keys.Up),
+            MoveBackwards   = new InputKeys(Keys.S, Keys.Down),
+            MoveLeft        = new InputKeys(Keys.A, Keys.Left),
+            MoveRight       = new InputKeys(Keys.D, Keys.Right),
+            Jump            = new InputKeys(Keys.Space),
+            Pause           = new InputKeys(Keys.Escape),
+        };
+
+        public static readonly LayoutTest DefaultGamePadLayout = new LayoutTest("GamePadLayout")
+        {
+            LayoutName      = "Default GamePad Layout",
+            LayoutDescription = "The default GamePad layout.",
+            MoveForwards    = new InputKeys(Buttons.DPadUp),
+            MoveBackwards   = new InputKeys(Buttons.DPadDown),
+            MoveLeft        = new InputKeys(Buttons.DPadLeft),
+            MoveRight       = new InputKeys(Buttons.DPadRight),
+            Jump            = new InputKeys(Buttons.A),
+            Pause           = new InputKeys(Buttons.Start),
         };
     }
 

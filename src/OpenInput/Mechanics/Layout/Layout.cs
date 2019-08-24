@@ -8,20 +8,25 @@ namespace OpenInput.Mechanics.Layout
     /// </summary>
     public abstract class Layout
     {
-        /// <summary>
-        /// Gets the id of the layout.
-        /// </summary>
-        public abstract string LayoutId { get; }
+        public Layout(string layoutId)
+        {
+            this.LayoutId = layoutId;
+        }
 
         /// <summary>
-        /// Gets the name of the layout.
+        /// Gets or sets the id of the layout.
         /// </summary>
-        public abstract string LayoutName { get; }
+        public string LayoutId { get; set; }
 
         /// <summary>
-        /// Gets the description of the layout.
+        /// Gets or sets the name of the layout.
         /// </summary>
-        public abstract string LayoutDescription { get; }
+        public string LayoutName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the layout.
+        /// </summary>
+        public string LayoutDescription { get; set; }
 
         /// <summary>
         /// Gets the amount of triggers that exist on this layout.
