@@ -12,12 +12,12 @@ namespace OpenInput.Mechanics.Layout
         /// <summary>
         /// Gets wether of not this trigger is readonly and not allowed to be rebinded.
         /// </summary>
-        public bool Locked { get; }
+        public bool IsReadOnly { get; }
 
-        public TriggerAttribute(string name, bool locked)
+        public TriggerAttribute(string name, bool isReadOnly)
         {
             this.Name = name;
-            this.Locked = locked;
+            this.IsReadOnly = isReadOnly;
         }
     }
 
