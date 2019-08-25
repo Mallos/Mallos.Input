@@ -10,5 +10,10 @@ namespace OpenInput.Mechanics
         {
             this.Keys = keys.Select(key => new InputKey(key)).ToArray();
         }
+
+        public InputKeys(params Buttons[] keys)
+        {
+            this.Keys = keys.Select(key => new InputKey(key)).ToArray();
+        }
     }
 }

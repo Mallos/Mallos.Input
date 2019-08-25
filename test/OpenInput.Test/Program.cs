@@ -3,11 +3,11 @@ namespace OpenInput.Test
     using System;
 
     class Program
-    { 
+    {
         private static void Main()
         {
-            var layout = KeyboardLayoutTest.DefaultLayout;
-            Console.WriteLine($"{layout.TriggerCount()} settings");
+            var layout = LayoutTest.DefaultLayout;
+            Console.WriteLine($"{layout.SettingsCount} settings");
 
             Console.WriteLine("Hello World");
         }

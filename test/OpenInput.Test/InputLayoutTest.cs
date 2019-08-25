@@ -30,7 +30,7 @@ namespace OpenInput.Test
         [ActionTrigger("Jump")]
         public InputKeys Jump { get; set; }
 
-        [ActionTrigger("Pause", locked = true)]
+        [ActionTrigger("Pause", locked: true)]
         public InputKeys Pause { get; set; }
 
         public static readonly LayoutTest DefaultLayout = new LayoutTest("KeyboardLayout")

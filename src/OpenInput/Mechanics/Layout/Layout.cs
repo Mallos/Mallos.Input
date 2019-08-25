@@ -2,19 +2,30 @@ namespace OpenInput.Mechanics.Layout
 {
     using System.Linq;
     using System.Reflection;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A class that makes it easier to handle input layouts for your players.
     /// </summary>
+    /// <note>
+    /// All settings are required to have a trigger attribute.
+    /// </note>
     public abstract class Layout
     {
+        private readonly PropertyInfo[] settingsProperties;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="Layout"/>.
+        /// </summary>
+        /// <param name="layoutId">The id of the current layout.</param>
         public Layout(string layoutId)
         {
             this.LayoutId = layoutId;
+            this.settingsProperties = GetSettingProperties();
         }
 
         /// <summary>
-        /// Gets or sets the id of the layout.
+        /// Gets or sets the id of the layout. Makes it easier when saving the layout.
         /// </summary>
         public string LayoutId { get; set; }
 
@@ -29,32 +40,79 @@ namespace OpenInput.Mechanics.Layout
         public string LayoutDescription { get; set; }
 
         /// <summary>
-        /// Gets the amount of triggers that exist on this layout.
+        /// Gets the amount of settings that exist on this layout.
         /// </summary>
-        public int TriggerCount() => this.GetTriggerProperties().Length;
+        public int SettingsCount => this.settingsProperties.Length;
 
         /// <summary>
-        /// Returns wether there is multiple keys that have the same bindings.
+        /// Clear and apply the current layout to the <see cref="InputSystem"/>.
         /// </summary>
-        public bool CheckDoubleAssigned()
+        public void Apply(InputSystem inputSystem)
         {
-            throw new System.NotImplementedException();
+            inputSystem.Clear();
+
+            foreach (var setting in this.settingsProperties)
+            {
+                var value = (InputKeys)setting.GetValue(this);
+                var triggerAttr = setting.GetCustomAttribute<TriggerAttribute>();
+
+                if (triggerAttr is ActionTriggerAttribute actionAttr)
+                {
+                    foreach (var key in value.Keys)
+                    {
+                        inputSystem.Actions.Add(new InputAction(actionAttr.Name, key));
+                    }
+                }
+
+                if (triggerAttr is AxisTriggerAttribute axisAttr)
+                {
+                    foreach (var key in value.Keys)
+                    {
+                        inputSystem.Axis.Add(new InputAxis(axisAttr.Name, key, axisAttr.Value));
+                    }
+                }
+            }
         }
 
         /// <summary>
-        /// Returns all the trigger properties on this class.
+        /// Returns a grouped dictionary of all the settings.
         /// </summary>
-        protected PropertyInfo[] GetTriggerProperties()
+        public IReadOnlyDictionary<string, List<LayoutSetting>> GetSettings()
+        {
+            var dictionary = new Dictionary<string, List<LayoutSetting>>();
+
+            foreach (var setting in this.settingsProperties)
+            {
+                var attr = setting.GetCustomAttribute<LayoutItemAttribute>();
+                if (attr == null)
+                {
+                    continue;
+                }
+
+                if (dictionary[attr.Group] == null)
+                {
+                    dictionary[attr.Group] = new List<LayoutSetting>();
+                }
+
+                var lValue = (InputKeys)setting.GetValue(this);
+                var lSetting = new LayoutSetting(
+                    this, setting, attr.Name, attr.Description, lValue);
+
+                dictionary[attr.Group].Add(lSetting);
+            }
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Returns all the setting properties on this class.
+        /// </summary>
+        protected PropertyInfo[] GetSettingProperties()
         {
             return this.GetType()
               .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-              .Where(HasTriggerAttribute)
+              .Where(CSharpExtensions.HasCustomAttribute<TriggerAttribute>)
               .ToArray();
-        }
-
-        private bool HasTriggerAttribute(PropertyInfo info)
-        {
-            return info.GetCustomAttributes(typeof(TriggerAttribute), true).Length > 0;
         }
     }
 }
