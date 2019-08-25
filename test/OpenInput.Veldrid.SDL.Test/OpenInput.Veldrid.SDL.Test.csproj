@@ -12,10 +12,6 @@
     <DefineConstants Condition="'$(OS)' == 'Windows_NT'">WINDOWS</DefineConstants>
     <DefineConstants Condition="'$(OS)' == 'OSX'">OSX</DefineConstants>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Include="..\TestContext.Veldrid.cs" Link="TestContext.Veldrid.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Veldrid" Version="4.7.0-ge562009c27" />
