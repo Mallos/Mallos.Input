@@ -11,9 +11,7 @@ jobs:
       matrix:
         dotnet: ['2.2.103']
         os: [ubuntu-latest]
-    
-    name: dotnet ${{ matrix.dotnet }}
-    
+
     steps:
     - uses: actions/checkout@v1
     
