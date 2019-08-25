@@ -1,6 +1,6 @@
 name: CI
 
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
@@ -15,8 +15,13 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
     - run: dotnet build
+    
+    - name: Run tests
+    - run: dotnet test
+    
