@@ -1,5 +1,7 @@
 namespace OpenInput.Mechanics
 {
+    using System;
+
     interface IController
     {
         void AttachInput(InputSystem inputSystem);
@@ -11,7 +13,7 @@ namespace OpenInput.Mechanics
     /// controllers. This removes all the need for handling all odd cases
     /// when allowing a new player to leave and exit the game.
     /// </summary>
-    class InputManager<TController>
+    abstract class InputManager<TController>
         where TController : IController
     {
         public InputManager(DeviceSet deviceSet)
@@ -26,6 +28,8 @@ namespace OpenInput.Mechanics
         {
             return false;
         }
+
+        protected abstract TController CreateController(InputKey key, IDevice device);
 
         protected virtual void OnJoin(TController controller)
         {
