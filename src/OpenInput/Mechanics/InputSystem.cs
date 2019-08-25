@@ -138,5 +138,14 @@
         {
             return inputAxis.ContainsKey(name) ? inputAxis[name] : 0.0f;
         }
+
+        /// <summary>
+        /// Clear the input system of all settings.
+        /// </summary>
+        public virtual void Clear()
+        {
+            this.Actions.Clear();
+            this.Axis.Clear();
+        }
     }
 }
