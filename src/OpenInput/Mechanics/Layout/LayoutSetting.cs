@@ -4,7 +4,6 @@ namespace OpenInput.Mechanics.Layout
 
     public struct LayoutSetting
     {
-        private readonly Layout layout;
         private readonly PropertyInfo property;
 
         internal LayoutSetting(
@@ -14,7 +13,7 @@ namespace OpenInput.Mechanics.Layout
             string description,
             InputKeys keys)
         {
-            this.layout = layout;
+            this.Layout = layout;
             this.property = property;
             this.Name = name;
             this.Description = description;
@@ -24,6 +23,11 @@ namespace OpenInput.Mechanics.Layout
             var triggerAttr = property.GetCustomAttribute<TriggerAttribute>();
             this.IsReadOnly = triggerAttr.Locked;
         }
+
+        /// <summary>
+        /// Gets the layout that is associated with this setting.
+        /// </summary>
+        public Layout Layout { get; }
 
         /// <summary>
         /// Gets the name of the setting.
@@ -55,8 +59,7 @@ namespace OpenInput.Mechanics.Layout
                 return false;
             }
 
-            // FIXME: I would like to have some logic here to check wether or not this key is already used.
-            this.property.SetValue(this.layout, keys);
+            this.property.SetValue(this.Layout, keys);
             this.Keys = keys;
 
             return true;

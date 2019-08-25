@@ -68,6 +68,11 @@ var settingsCount = mylayout.TriggerCount();
 
 var settings = mylayout.GetSettings();
 
+if (mylayout.IsKeyUsed(Keys.W))
+{
+  // show alert are you sure you want to set this key.
+}
+
 settings["Movement"][0].Set(new InputKeys(Keys.W, Keys.Up));
 
 // if you have some way to save the layout you can do it now.

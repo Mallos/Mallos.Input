@@ -4,8 +4,6 @@ namespace OpenInput.Mechanics
 
     public struct InputKeys
     {
-        public InputKey[] Keys { get; }
-
         public InputKeys(params Keys[] keys)
         {
             this.Keys = keys.Select(key => new InputKey(key)).ToArray();
@@ -14,6 +12,16 @@ namespace OpenInput.Mechanics
         public InputKeys(params Buttons[] keys)
         {
             this.Keys = keys.Select(key => new InputKey(key)).ToArray();
+        }
+
+        public InputKey[] Keys { get; }
+
+        /// <summary>
+        /// Returns wether or not this contians a <see cref="InputKey" />.
+        /// </summary>
+        public bool HasKey(InputKey key)
+        {
+            return Keys.Any(e => e == key);
         }
     }
 }

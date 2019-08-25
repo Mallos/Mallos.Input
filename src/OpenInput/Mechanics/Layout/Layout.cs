@@ -7,9 +7,9 @@ namespace OpenInput.Mechanics.Layout
     /// <summary>
     /// A class that makes it easier to handle input layouts for your players.
     /// </summary>
-    /// <note>
+    /// <remark>
     /// All settings are required to have a trigger attribute.
-    /// </note>
+    /// </remark>
     public abstract class Layout
     {
         private readonly PropertyInfo[] settingsProperties;
@@ -43,6 +43,32 @@ namespace OpenInput.Mechanics.Layout
         /// Gets the amount of settings that exist on this layout.
         /// </summary>
         public int SettingsCount => this.settingsProperties.Length;
+
+        /// <summary>
+        /// Returns wether or not a key is used in the current layout.
+        /// </summary>
+        public bool IsKeyUsed(InputKey key, out LayoutSetting[] settings)
+        {
+            var result = new List<LayoutSetting>();
+
+            foreach (var property in this.settingsProperties)
+            {
+                var value = (InputKeys)property.GetValue(this);
+                if (value.HasKey(key) && CreateLayoutSetting(property, out var setting, out _))
+                {
+                    result.Add(setting);
+                }
+            }
+
+            if (result.Count > 0)
+            {
+                settings = result.ToArray();
+                return true;
+            }
+
+            settings = null;
+            return false;
+        }
 
         /// <summary>
         /// Clear and apply the current layout to the <see cref="InputSystem"/>.
@@ -81,24 +107,17 @@ namespace OpenInput.Mechanics.Layout
         {
             var dictionary = new Dictionary<string, List<LayoutSetting>>();
 
-            foreach (var setting in this.settingsProperties)
+            foreach (var property in this.settingsProperties)
             {
-                var attr = setting.GetCustomAttribute<LayoutItemAttribute>();
-                if (attr == null)
+                if (CreateLayoutSetting(property, out var setting, out var group))
                 {
-                    continue;
+                    if (dictionary[group] == null)
+                    {
+                        dictionary[group] = new List<LayoutSetting>();
+                    }
+
+                    dictionary[group].Add(setting);
                 }
-
-                if (dictionary[attr.Group] == null)
-                {
-                    dictionary[attr.Group] = new List<LayoutSetting>();
-                }
-
-                var lValue = (InputKeys)setting.GetValue(this);
-                var lSetting = new LayoutSetting(
-                    this, setting, attr.Name, attr.Description, lValue);
-
-                dictionary[attr.Group].Add(lSetting);
             }
 
             return dictionary;
@@ -113,6 +132,25 @@ namespace OpenInput.Mechanics.Layout
               .GetProperties(BindingFlags.Public | BindingFlags.Instance)
               .Where(CSharpExtensions.HasCustomAttribute<TriggerAttribute>)
               .ToArray();
+        }
+
+        private bool CreateLayoutSetting(
+            PropertyInfo propertyInfo,
+            out LayoutSetting setting,
+            out string group)
+        {
+            var attr = propertyInfo.GetCustomAttribute<LayoutItemAttribute>();
+            if (attr == null)
+            {
+                setting = default;
+                group = null;
+                return false;
+            }
+
+            var value = (InputKeys)propertyInfo.GetValue(this);
+            setting = new LayoutSetting(this, propertyInfo, attr.Name, attr.Description, value);
+            group = attr.Group;
+            return true;
         }
     }
 }
