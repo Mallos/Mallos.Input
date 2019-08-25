@@ -6,14 +6,9 @@ on:
     - master
 
 jobs:
-  build:
-    name: dotnet ${{ matrix.dotnet }} and ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        dotnet: ['2.2.103']
-        os: [windows-latest]
+  publish:
+    name: Publish Packages
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
@@ -21,13 +16,22 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ matrix.dotnet }}
-        
+        dotnet-version: '2.2.103'
+
     - run: dotnet build --configuration "Release" --output ./release
 
-    - name: Run tests
-      run: dotnet test
-    
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+
+    - name: Add Nuget Source
+      run: nuget source Add -Name "GitHub - erictuvesson" -Source "https://nuget.pkg.github.com/erictuvesson/index.json" -UserName ${{ secrets.PACKAGE_REGISTRY_USERNAME }} -Password ${{ secrets.PACKAGE_REGISTRY_PASSWORD }}
+
+    - name: Nuget Push
+      run: nuget push ./release/*.nupkg
+
+    - name: Nuget Push Symbols
+      run: nuget push ./release/*.snupkg
+
     - name: Publish package
       if: matrix.os == 'windows-latest'
       env:
