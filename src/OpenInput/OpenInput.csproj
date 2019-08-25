@@ -9,7 +9,7 @@
     <Copyright>Copyright © 2019 Eric Tuvesson (erictuvesson)</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>OpenInput</PackageId>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
     <RepositoryUrl>https://github.com/erictuvesson/OpenInput</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
