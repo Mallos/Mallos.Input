@@ -7,19 +7,31 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-16.04
+    name: dotnet ${{ matrix.dotnet }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     
     strategy:
       matrix:
         dotnet: ['2.2.103', '3.0.100-preview8-013656']
-    
-    name: dotnet ${{ matrix.dotnet }}
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     
     steps:
     - uses: actions/checkout@v1
+    
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
-    - run: dotnet build
+        
+    - run: dotnet build --configuration "Release" --output ./release
+
+    - name: Run tests
+      run: dotnet test
+    
+    - name: Publish package
+      if: matrix.os == 'windows-latest'
+      env:
+        PACKAGE_REGISTRY_USERNAME: ${{ secrets.PACKAGE_REGISTRY_USERNAME }}
+        PACKAGE_REGISTRY_PASSWORD: ${{ secrets.PACKAGE_REGISTRY_PASSWORD }}
+      run: ./nuget/publish.bat
+      
