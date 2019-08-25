@@ -27,7 +27,7 @@ jobs:
       run: nuget source Add -Name "GitHub - erictuvesson" -Source "https://nuget.pkg.github.com/erictuvesson/index.json" -UserName ${{ secrets.PACKAGE_REGISTRY_USERNAME }} -Password ${{ secrets.PACKAGE_REGISTRY_PASSWORD }}
 
     - name: Nuget Push
-      run: nuget push ./build/*.nupkg -Source "GitHub - erictuvesson" --api-key ${{ secrets.PACKAGE_REGISTRY_PASSWORD }}
+      run: nuget push ./build/*.nupkg -Source "GitHub - erictuvesson"
 
     - name: Nuget Push Symbols
-      run: nuget push ./build/*.snupkg -Source "GitHub - erictuvesson" --api-key ${{ secrets.PACKAGE_REGISTRY_PASSWORD }}
+      run: nuget push ./build/*.snupkg -Source "GitHub - erictuvesson"
