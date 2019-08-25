@@ -21,7 +21,7 @@ namespace OpenInput.Mechanics.Layout
             this.Keys = keys;
 
             // TriggerAttribute should always exsist on the property.
-            var triggerAttr = (TriggerAttribute)property.GetCustomAttribute(typeof(TriggerAttribute), true);
+            var triggerAttr = property.GetCustomAttribute<TriggerAttribute>();
             this.IsReadOnly = triggerAttr.Locked;
         }
 
