@@ -20,26 +20,4 @@ namespace OpenInput.Mechanics.Layout
             this.IsReadOnly = isReadOnly;
         }
     }
-
-    public class ActionTriggerAttribute : TriggerAttribute
-    {
-        public ActionTriggerAttribute(string name, bool locked = false)
-            : base(name, locked)
-        {
-        }
-    }
-
-    public class AxisTriggerAttribute : TriggerAttribute
-    {
-        public float Value { get; }
-
-        public AxisTriggerAttribute(
-            string name,
-            float value,
-            bool locked = false)
-            : base(name, locked)
-        {
-            this.Value = value;
-        }
-    }
 }
