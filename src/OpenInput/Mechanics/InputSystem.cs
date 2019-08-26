@@ -1,151 +1,71 @@
 ﻿namespace OpenInput.Mechanics
 {
     using OpenInput.Trackers;
+    using OpenInput.Mechanics.Input;
     using System;
-    using System.Collections.Generic;
-
-    public struct InputAction
-    {
-        public readonly string Name;
-        public readonly InputKey Key;
-
-        /// <summary>
-        /// Initialize a new <see cref="InputAction"/> structure.
-        /// </summary>
-        public InputAction(string name, InputKey key)
-        {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
-
-            this.Name = name;
-            this.Key = key;
-        }
-    }
-
-    public struct InputAxis
-    {
-        public readonly string Name;
-        public readonly InputKey Key;
-        public readonly float Value;
-
-        /// <summary>
-        /// Initialize a new <see cref="InputAxis"/> structure.
-        /// </summary>
-        public InputAxis(string name, InputKey key, float value)
-        {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
-            if (float.IsInfinity(value) || float.IsNaN(value)) throw new ArgumentOutOfRangeException(nameof(value));
-
-            this.Name = name;
-            this.Key = key;
-            this.Value = value;
-        }
-    }
 
     public class InputSystem : ITracker
     {
-        public readonly IKeyboard Keyboard;
-        public readonly IMouse Mouse;
-
-        public readonly List<InputAction> Actions = new List<InputAction>();
-        public readonly List<InputAxis> Axis = new List<InputAxis>();
-
-        private readonly Dictionary<string, bool> inputActions = new Dictionary<string, bool>();
-        private readonly Dictionary<string, float> inputAxis = new Dictionary<string, float>();
-
-        public InputSystem(IKeyboard keyboard, IMouse mouse)
+        public InputSystem(params IDevice[] devices)
         {
-            this.Keyboard = keyboard ?? throw new ArgumentNullException(nameof(keyboard));
-            this.Mouse = mouse ?? throw new ArgumentNullException(nameof(mouse));
+            if (devices == null || devices.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(devices));
+            }
+
+            this.Devices = devices;
         }
 
-        public IEnumerable<KeyValuePair<string, bool>> GetActionsValues()
-        {
-            return inputActions;
-        }
+        /// <summary>
+        /// Gets all the devices used.
+        /// </summary>
+        public IDevice[] Devices { get; }
 
-        public IEnumerable<KeyValuePair<string, float>> GetAxisValues()
-        {
-            return inputAxis;
-        }
+        /// <summary>
+        /// Gets the action collection.
+        /// </summary>
+        public ActionCollection Actions { get; } = new ActionCollection();
 
+        /// <summary>
+        /// Gets the axis collection.
+        /// </summary>
+        public AxisCollection Axis { get; } = new AxisCollection();
+
+        /// <inheritdoc />
         public void Update(float elapsedTime)
         {
-            inputActions.Clear();
-            inputAxis.Clear();
-
-            var keyboardState = Keyboard.GetCurrentState();
-            //var mouseState = Mouse.GetCurrentState();
-
-            foreach (var action in Actions)
-            {
-                switch (action.Key.Type)
-                {
-                    case InputKeyType.Keyboard:
-                        if (keyboardState.IsKeyDown(action.Key.Key))
-                        {
-                            if (inputActions.ContainsKey(action.Name))
-                            {
-                                inputActions[action.Name] = true;
-                            }
-                            else
-                            {
-                                inputActions.Add(action.Name, true);
-                            }
-                        }
-                        break;
-
-                    case InputKeyType.Mouse:
-                        break;
-
-                    case InputKeyType.GamePad:
-                        break;
-                }
-            }
-
-            foreach (var axis in Axis)
-            {
-                switch (axis.Key.Type)
-                {
-                    case InputKeyType.Keyboard:
-                        if (keyboardState.IsKeyDown(axis.Key.Key))
-                        {
-                            if (inputAxis.ContainsKey(axis.Name))
-                            {
-                                inputAxis[axis.Name] += axis.Value;
-                            }
-                            else
-                            {
-                                inputAxis.Add(axis.Name, axis.Value);
-                            }
-                        }
-                        break;
-
-                    case InputKeyType.Mouse:
-                        break;
-
-                    case InputKeyType.GamePad:
-                        break;
-                }
-            }
+            this.Actions.Update(this.Devices);
+            this.Axis.Update(this.Devices);
         }
 
-        public bool GetAction(string name)
-        {
-            return inputActions.ContainsKey(name) ? inputActions[name] : false;
-        }
+        /// <summary>
+        /// Gets the value of a specific action.
+        /// </summary>
+        /// <return>The value</return>
+        public bool GetAction(string name) => this.Actions.GetValue(name);
 
-        public float GetAxis(string name)
-        {
-            return inputAxis.ContainsKey(name) ? inputAxis[name] : 0.0f;
-        }
+        /// <summary>
+        /// Gets the value of a specific axis.
+        /// </summary>
+        /// <return>The value</return>
+        public float GetAxis(string name) => this.Axis.GetValue(name);
 
         /// <summary>
         /// Clear the input system of all settings.
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             this.Actions.Clear();
             this.Axis.Clear();
+        }
+
+        /// <summary>
+        /// Clear all the current values.
+        /// </summary>
+        public void ClearValues()
+        {
+            this.Actions.ClearValues();
+            this.Axis.ClearValues();
         }
     }
 }

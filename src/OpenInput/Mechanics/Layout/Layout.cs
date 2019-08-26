@@ -4,6 +4,8 @@ namespace OpenInput.Mechanics.Layout
     using System.Reflection;
     using System.Collections.Generic;
 
+    using OpenInput.Mechanics.Input;
+
     /// <summary>
     /// A class that makes it easier to handle input layouts for your players.
     /// </summary>

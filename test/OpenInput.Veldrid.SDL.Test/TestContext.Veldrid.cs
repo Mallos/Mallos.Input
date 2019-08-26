@@ -2,6 +2,7 @@ namespace OpenInput.Test
 {
     using ImGuiNET;
     using OpenInput.Mechanics;
+    using OpenInput.Mechanics.Input;
     using System.Collections.Generic;
     using System.Text;
 
@@ -31,8 +32,12 @@ namespace OpenInput.Test
             // Create a input system and register a few inputs.
             InputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
             InputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
+            InputSystem.Actions.Add(new InputAction("Fire", Keys.F));
+            InputSystem.Actions.Add(new InputAction("Fire", MouseButtons.Left));
             InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
             InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
+            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.D, 1.0f));
+            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.A, -1.0f));
 
             // Create a combo tracker and register a few combos.
             ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
@@ -161,15 +166,15 @@ namespace OpenInput.Test
         {
             ImGui.Begin("InputSystem");
             {
-                foreach (var item in inputSystem.Actions)
+                foreach (var item in inputSystem.Actions.GetValues())
                 {
-                    ImGui.Text($"{ item.Name } = { inputSystem.GetAction(item.Name) }");
+                    ImGui.Text($"{item.Key} = {item.Value}");
                 }
 
                 ImGui.Separator();
-                foreach (var item in inputSystem.Axis)
+                foreach (var item in inputSystem.Axis.GetValues())
                 {
-                    ImGui.Text($"{ item.Name } = { inputSystem.GetAxis(item.Name) }");
+                    ImGui.Text($"{item.Key} = {item.Value}");
                 }
             }
             ImGui.End();

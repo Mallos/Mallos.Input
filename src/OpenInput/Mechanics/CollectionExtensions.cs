@@ -11,22 +11,5 @@ namespace OpenInput.Mechanics
         {
             collection.Add(new SequenceCombo(name, keys));
         }
-
-        public static void Add(
-            this ICollection<InputAction> collection,
-            string name,
-            Keys keys)  // FIXME: InputKey
-        {
-            collection.Add(new InputAction(name, keys));
-        }
-
-        public static void Add(
-            this ICollection<InputAxis> collection,
-            string name,
-            Keys keys, // FIXME: InputKey
-            float value)
-        {
-            collection.Add(new InputAxis(name, keys, value));
-        }
     }
 }
