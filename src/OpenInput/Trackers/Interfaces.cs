@@ -13,7 +13,7 @@
         void Update(float elapsedTime);
     }
 
-    public interface IDeviceTracker
+    public interface IDeviceTracker // FIXME: Attach a tracker to a specific device.
     {
 
     }
