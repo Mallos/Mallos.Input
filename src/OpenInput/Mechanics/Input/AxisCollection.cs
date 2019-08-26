@@ -75,7 +75,7 @@ namespace OpenInput.Mechanics.Input
                 var keyboardState = keyboard.GetCurrentState();
                 foreach (var axis in this.Items)
                 {
-                    if (axis.Key.Type != InputKeyType.Keyboard)
+                    if (axis.Key.Type != InputType.Keyboard)
                     {
                         continue;
                     }
@@ -99,7 +99,7 @@ namespace OpenInput.Mechanics.Input
                 var mouseState = mouse.GetCurrentState();
                 foreach (var axis in this.Items)
                 {
-                    if (axis.Key.Type != InputKeyType.Mouse)
+                    if (axis.Key.Type != InputType.Mouse)
                     {
                         continue;
                     }
@@ -123,7 +123,7 @@ namespace OpenInput.Mechanics.Input
                 var gamepadState = gamepad.GetCurrentState();
                 foreach (var axis in this.Items)
                 {
-                    if (axis.Key.Type != InputKeyType.GamePad)
+                    if (axis.Key.Type != InputType.GamePad)
                     {
                         continue;
                     }
