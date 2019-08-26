@@ -144,7 +144,7 @@ namespace OpenInput.Mechanics.Layout
             var attr = propertyInfo.GetCustomAttribute<LayoutItemAttribute>();
             if (attr == null)
             {
-                setting = default;
+                setting = default(LayoutSetting);
                 group = null;
                 return false;
             }
