@@ -4,12 +4,13 @@ on:
   push:
     branches:
     - master
+    - develop
 
 jobs:
   publish:
     name: Publish Packages
     runs-on: windows-latest
-    
+
     steps:
     - uses: actions/checkout@v1
 
@@ -20,10 +21,10 @@ jobs:
 
     - run: dotnet build --configuration "Release"
 
-    - name: Setup Nuget.exe
+    - name: Setup Nuget
       uses: warrenbuckley/Setup-Nuget@v1
 
-    - name: Add Nuget Source
+    - name: Setup Nuget Source
       run: nuget source Add -Name "GitHub - erictuvesson" -Source "https://nuget.pkg.github.com/erictuvesson/index.json" -UserName ${{ secrets.PACKAGE_REGISTRY_USERNAME }} -Password ${{ secrets.PACKAGE_REGISTRY_PASSWORD }}
 
     - name: Nuget Push
