@@ -97,7 +97,25 @@ namespace OpenInput.Mechanics.Input
             if (device is IMouse mouse)
             {
                 var mouseState = mouse.GetCurrentState();
-                // TODO: Support mouse
+                foreach (var action in this.Items)
+                {
+                    if (action.Key.Type != InputKeyType.Mouse)
+                    {
+                        continue;
+                    }
+
+                    if (mouseState.IsButtonDown(action.Key.MouseButton))
+                    {
+                        if (this.values.ContainsKey(action.Name))
+                        {
+                            this.values[action.Name] = true;
+                        }
+                        else
+                        {
+                            this.values.Add(action.Name, true);
+                        }
+                    }
+                }
             }
 
             if (device is IGamePad gamepad)

@@ -7,6 +7,7 @@
         Keyboard,
         Mouse,
         GamePad,
+        Touch,
     }
 
     [StructLayout(LayoutKind.Explicit)]
@@ -16,11 +17,13 @@
 
         [FieldOffset(1)] public readonly Keys Key;
         [FieldOffset(1)] public readonly Buttons Button;
+        [FieldOffset(1)] public readonly MouseButtons MouseButton;
 
         public InputKey(Keys key)
         {
             this.Type = InputKeyType.Keyboard;
             this.Button = 0;
+            this.MouseButton = 0;
             this.Key = key;
         }
 
@@ -28,11 +31,21 @@
         {
             this.Type = InputKeyType.GamePad;
             this.Key = 0;
+            this.MouseButton = 0;
             this.Button = button;
+        }
+
+        public InputKey(MouseButtons button)
+        {
+            this.Type = InputKeyType.Mouse;
+            this.Key = 0;
+            this.Button = 0;
+            this.MouseButton = button;
         }
 
         public static implicit operator InputKey(Keys key) => new InputKey(key);
         public static implicit operator InputKey(Buttons button) => new InputKey(button);
+        public static implicit operator InputKey(MouseButtons button) => new InputKey(button);
 
         public static bool operator ==(InputKey a, InputKey b)
         {
@@ -57,6 +70,7 @@
             switch (this.Type)
             {
                 case InputKeyType.Keyboard: return $"[Keyboard] {this.Key}";
+                case InputKeyType.Mouse: return $"[Mouse] {this.MouseButton}";
                 case InputKeyType.GamePad: return $"[GamePad] {this.Button}";
             }
 

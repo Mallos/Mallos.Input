@@ -92,6 +92,14 @@
         /// </summary>
         public bool XButton2 => this.PressedButtons.HasFlag(MouseButtons.XButton2);
 
+        /// <summary>
+        /// Returns wether or not the button is pressed.
+        /// </summary>
+        public bool IsButtonDown(MouseButtons button)
+        {
+            return this.PressedButtons.HasFlag(button);
+        }
+
         public override string ToString()
         {
             return $"{X}, {Y}, {ScrollWheelValue}, {LeftButton}, {MiddleButton}, {RightButton}, {XButton1}, {XButton2}";

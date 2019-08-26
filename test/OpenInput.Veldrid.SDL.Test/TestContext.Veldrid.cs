@@ -32,8 +32,12 @@ namespace OpenInput.Test
             // Create a input system and register a few inputs.
             InputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
             InputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
+            InputSystem.Actions.Add(new InputAction("Fire", Keys.F));
+            InputSystem.Actions.Add(new InputAction("Fire", MouseButtons.Left));
             InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
             InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
+            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.D, 1.0f));
+            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.A, -1.0f));
 
             // Create a combo tracker and register a few combos.
             ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
