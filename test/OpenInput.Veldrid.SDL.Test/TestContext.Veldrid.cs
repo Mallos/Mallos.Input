@@ -2,6 +2,7 @@ namespace OpenInput.Test
 {
     using ImGuiNET;
     using OpenInput.Mechanics;
+    using OpenInput.Mechanics.Input;
     using System.Collections.Generic;
     using System.Text;
 
@@ -161,15 +162,15 @@ namespace OpenInput.Test
         {
             ImGui.Begin("InputSystem");
             {
-                foreach (var item in inputSystem.Actions)
+                foreach (var item in inputSystem.Actions.GetValues())
                 {
-                    ImGui.Text($"{ item.Name } = { inputSystem.GetAction(item.Name) }");
+                    ImGui.Text($"{item.Key} = {item.Value}");
                 }
 
                 ImGui.Separator();
-                foreach (var item in inputSystem.Axis)
+                foreach (var item in inputSystem.Axis.GetValues())
                 {
-                    ImGui.Text($"{ item.Name } = { inputSystem.GetAxis(item.Name) }");
+                    ImGui.Text($"{item.Key} = {item.Value}");
                 }
             }
             ImGui.End();
