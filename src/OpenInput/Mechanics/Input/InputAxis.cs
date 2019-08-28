@@ -2,7 +2,7 @@ namespace OpenInput.Mechanics.Input
 {
     using System;
 
-    public struct InputAxis
+    public struct InputAxis : IInputTrigger
     {
         /// <summary>
         /// Initialize a new <see cref="InputAxis"/> structure.
@@ -17,14 +17,10 @@ namespace OpenInput.Mechanics.Input
             this.Value = value;
         }
 
-        /// <summary>
-        /// Gets the action name.
-        /// </summary>
+        /// <inheritdoc />
         public string Name { get; }
 
-        /// <summary>
-        /// Gets the key.
-        /// </summary>
+        /// <inheritdoc />
         public InputKey Key { get; }
 
         /// <summary>
