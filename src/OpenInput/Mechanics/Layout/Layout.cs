@@ -20,9 +20,10 @@ namespace OpenInput.Mechanics.Layout
         /// Initializes a new instance of <see cref="Layout"/>.
         /// </summary>
         /// <param name="layoutId">The id of the current layout.</param>
-        public Layout(string layoutId)
+        public Layout(string layoutId, string defaultGroupName = "general")
         {
             this.LayoutId = layoutId;
+            this.DefaultGroupName = defaultGroupName;
             this.settingsProperties = GetSettingProperties();
         }
 
@@ -40,6 +41,11 @@ namespace OpenInput.Mechanics.Layout
         /// Gets or sets the description of the layout.
         /// </summary>
         public string LayoutDescription { get; set; }
+
+        /// <summary>
+        /// Gets the default group name.
+        /// </summary>
+        public string DefaultGroupName { get; }
 
         /// <summary>
         /// Gets the amount of settings that exist on this layout.
@@ -113,12 +119,14 @@ namespace OpenInput.Mechanics.Layout
             {
                 if (CreateLayoutSetting(property, out var setting, out var group))
                 {
-                    if (dictionary[group] == null)
+                    var actualGroup = group ?? this.DefaultGroupName;
+
+                    if (!dictionary.ContainsKey(actualGroup))
                     {
-                        dictionary[group] = new List<LayoutSetting>();
+                        dictionary[actualGroup] = new List<LayoutSetting>();
                     }
 
-                    dictionary[group].Add(setting);
+                    dictionary[actualGroup].Add(setting);
                 }
             }
 

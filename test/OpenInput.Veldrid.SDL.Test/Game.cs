@@ -7,8 +7,10 @@ namespace OpenInput.Test
 
         public Game()
         {
+            var layout = MyLayout.DefaultLayout;
+
             this.deviceSet = new VeldridDeviceSet();
-            this.testContext = new TestContext(this.deviceSet);
+            this.testContext = new TestContext(this.deviceSet, layout);
         }
 
         protected override void Draw(Veldrid.CommandList cl)

@@ -4,14 +4,9 @@ namespace OpenInput.Mechanics
 
     public struct InputKeys
     {
-        public InputKeys(params Keys[] keys)
+        public InputKeys(params InputKey[] keys)
         {
-            this.Keys = keys.Select(key => new InputKey(key)).ToArray();
-        }
-
-        public InputKeys(params Buttons[] keys)
-        {
-            this.Keys = keys.Select(key => new InputKey(key)).ToArray();
+            this.Keys = keys;
         }
 
         public InputKey[] Keys { get; }
@@ -22,6 +17,11 @@ namespace OpenInput.Mechanics
         public bool HasKey(InputKey key)
         {
             return Keys.Any(e => e == key);
+        }
+
+        public override string ToString()
+        {
+            return string.Join(", ", this.Keys);
         }
     }
 }

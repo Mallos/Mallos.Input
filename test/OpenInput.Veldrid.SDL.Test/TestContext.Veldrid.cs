@@ -3,12 +3,16 @@ namespace OpenInput.Test
     using ImGuiNET;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Input;
+    using OpenInput.Mechanics.Layout;
     using System.Collections.Generic;
     using System.Text;
+    using System.Linq;
 
     class TestContext
     {
         public readonly List<DeviceSet> DeviceSets;
+
+        public readonly Layout layout;
 
         public readonly InputSystem InputSystem;
         public readonly ComboTracker ComboTracker;
@@ -18,26 +22,20 @@ namespace OpenInput.Test
 
         private readonly StringBuilder sb = new StringBuilder();
 
-        public TestContext(DeviceSet defaultSet)
+        public TestContext(DeviceSet defaultSet, MyLayout layout)
         {
-            //new OpenInput.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
+            this.layout = layout;
 
             // Add the different types of input context.
             DeviceSets = new List<DeviceSet>(new[]
             {
                 defaultSet,
-                new OpenInput.Dummy.DummyDeviceSet(),
+                // new OpenInput.Dummy.DummyDeviceSet(),
             });
 
             // Create a input system and register a few inputs.
             InputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
-            InputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
-            InputSystem.Actions.Add(new InputAction("Fire", Keys.F));
-            InputSystem.Actions.Add(new InputAction("Fire", MouseButtons.Left));
-            InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
-            InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
-            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.D, 1.0f));
-            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.A, -1.0f));
+            layout.Apply(InputSystem);
 
             // Create a combo tracker and register a few combos.
             ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
@@ -175,6 +173,55 @@ namespace OpenInput.Test
                 foreach (var item in inputSystem.Axis.GetValues())
                 {
                     ImGui.Text($"{item.Key} = {item.Value}");
+                }
+
+                ImGui.Separator();
+
+                if (ImGui.CollapsingHeader("Layout", ImGuiTreeNodeFlags.CollapsingHeader))
+                {
+                    var settings = this.layout.GetSettings();
+                    var settingsKeys = settings.Keys.ToArray();
+                    for (var gi = 0; gi < settingsKeys.Length; gi++)
+                    {
+                        var groupKey = settingsKeys[gi];
+                        var group = settings[groupKey];
+
+                        ImGui.Text($"- {groupKey} -");
+
+                        ImGui.Separator();
+                        ImGui.Columns(3, null, true);
+                        for (var i = 0; i < group.Count; i++)
+                        {
+                            var setting = group[i];
+                            if (setting.IsReadOnly)
+                            {
+                                ImGui.Text($"[ReadOnly] {setting.Name}");
+                            }
+                            else
+                            {
+                                ImGui.Text($"{setting.Name}");
+                            }
+
+                            if (ImGui.IsItemHovered() && !string.IsNullOrWhiteSpace(setting.Description))
+                            {
+                                ImGui.SetTooltip(setting.Description);
+                            }
+
+                            ImGui.NextColumn();
+                            if (setting.Keys.Keys.Length > 0)
+                            {
+                                ImGui.Text($"{setting.Keys.Keys[0]}");
+                            }
+                            ImGui.NextColumn();
+                            if (setting.Keys.Keys.Length > 1)
+                            {
+                                ImGui.Text($"{setting.Keys.Keys[1]}");
+                            }
+                            ImGui.NextColumn();
+                        }
+                        ImGui.Columns(1);
+                        ImGui.Separator();
+                    }
                 }
             }
             ImGui.End();
