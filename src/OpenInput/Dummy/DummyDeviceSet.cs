@@ -1,14 +1,24 @@
 ﻿namespace OpenInput.Dummy
 {
-    public class DummyDeviceSet : DeviceSet
+    public class DummyDeviceSet
+        : DeviceSet<DummyKeyboard, DummyMouse, DummyGamePad>
     {
         public DummyDeviceSet()
             : base("Dummy",
-                  new OpenInput.Dummy.DummyKeyboard(),
-                  new OpenInput.Dummy.DummyMouse(),
-                  (int index) => { return new OpenInput.Dummy.DummyGamePad(index); })
+                  new DummyKeyboard(),
+                  new DummyMouse(),
+                  CreateGamePads())
         {
+        }
 
+        private static DummyGamePad[] CreateGamePads()
+        {
+            var result = new DummyGamePad[4];
+            for (int i = 0; i < 4; i++)
+            {
+                result[i] = new DummyGamePad(i);
+            }
+            return result;
         }
     }
 }
