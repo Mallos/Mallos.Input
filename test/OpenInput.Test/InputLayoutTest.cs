@@ -1,5 +1,6 @@
 namespace OpenInput.Test
 {
+    using Xunit;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Layout;
 
@@ -30,7 +31,7 @@ namespace OpenInput.Test
         [ActionTrigger("Jump")]
         public InputKeys Jump { get; set; }
 
-        [ActionTrigger("Pause", locked: true)]
+        [ActionTrigger("Pause", isReadOnly: true)]
         public InputKeys Pause { get; set; }
 
         public static readonly LayoutTest DefaultLayout = new LayoutTest("KeyboardLayout")
@@ -60,9 +61,22 @@ namespace OpenInput.Test
 
     public class InputLayoutTest
     {
-        public void ConfigureInputSystem()
+        [Fact]
+        public void CheckSettings()
         {
-            throw new System.NotImplementedException();
+            var layout = LayoutTest.DefaultLayout;
+
+            Assert.Equal(6, layout.SettingsCount);
+        }
+
+        public void CheckSettingsOptions()
+        {
+            var layout = LayoutTest.DefaultLayout;
+            var settings = layout.GetSettings();
+
+            Assert.Equal(2, settings.Count);
+            Assert.Equal(5, settings["Movement"].Count);
+            Assert.Equal(2, settings["General"].Count);
         }
     }
 }

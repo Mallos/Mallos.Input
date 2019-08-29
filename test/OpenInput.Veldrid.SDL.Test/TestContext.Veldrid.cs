@@ -4,6 +4,7 @@ namespace OpenInput.Test
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Input;
     using OpenInput.Mechanics.Layout;
+    using OpenInput.Mechanics.Combo;
     using System.Collections.Generic;
     using System.Text;
     using System.Linq;
@@ -40,9 +41,9 @@ namespace OpenInput.Test
             // Create a combo tracker and register a few combos.
             ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
             ComboTracker.OnComboCalled += ComboTracker_OnComboCalled;
-            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
-            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
-            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack3", Buttons.A, Buttons.B, Buttons.X));
+            ComboTracker.SequenceCombos.Add("Attack1", Keys.A, Keys.B, Keys.C);
+            ComboTracker.SequenceCombos.Add("Attack2", Keys.A, Keys.C, Keys.B);
+            ComboTracker.SequenceCombos.Add("Attack3", Buttons.A, Buttons.B, Buttons.X);
         }
 
         public void Update(float elapsedTime)
@@ -67,7 +68,7 @@ namespace OpenInput.Test
             TestWindow_ComboTracker(ComboTracker, ComboHistory);
         }
 
-        private void ComboTracker_OnComboCalled(SequenceCombo obj)
+        private void ComboTracker_OnComboCalled(object sender, SequenceCombo obj)
         {
             ComboHistory.Add(obj.Name);
             if (ComboHistory.Count > ComboHistoryMax)
@@ -238,7 +239,7 @@ namespace OpenInput.Test
                 }
 
                 ImGui.Separator();
-                ImGui.Text($"Current: { comboTracker.GetHistoryString() }");
+                ImGui.Text($"Current: {comboTracker.HistoryAsString()}");
 
                 ImGui.Separator();
                 ImGui.Text("# History:");
