@@ -11,7 +11,7 @@ namespace OpenInput.Test
 
     class TestContext
     {
-        public readonly List<DeviceSet> DeviceSets;
+        public readonly List<IDeviceSet> DeviceSets;
 
         public readonly Layout layout;
 
@@ -23,12 +23,12 @@ namespace OpenInput.Test
 
         private readonly StringBuilder sb = new StringBuilder();
 
-        public TestContext(DeviceSet defaultSet, MyLayout layout)
+        public TestContext(IDeviceSet defaultSet, MyLayout layout)
         {
             this.layout = layout;
 
             // Add the different types of input context.
-            DeviceSets = new List<DeviceSet>(new[]
+            DeviceSets = new List<IDeviceSet>(new[]
             {
                 defaultSet,
                 // new OpenInput.Dummy.DummyDeviceSet(),
@@ -77,7 +77,7 @@ namespace OpenInput.Test
             }
         }
 
-        private void TestWindwow_Input(DeviceSet inputContext)
+        private void TestWindwow_Input(IDeviceSet inputContext)
         {
             string windowTitle = inputContext.Name + " Input";
             ImGui.Begin(windowTitle);

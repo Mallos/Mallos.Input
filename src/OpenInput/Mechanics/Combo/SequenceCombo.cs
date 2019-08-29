@@ -1,8 +1,10 @@
 namespace OpenInput.Mechanics.Combo
 {
+    using System;
     using System.Linq;
+    using System.Collections.Generic;
 
-    public struct SequenceCombo
+    public struct SequenceCombo : IEquatable<SequenceCombo>
     {
         internal readonly InputKeyIndex Index;
 
@@ -22,6 +24,20 @@ namespace OpenInput.Mechanics.Combo
         /// Gets the keys that are required to trigger it.
         /// </summary>
         public InputKey[] Keys { get; }
+
+        /// <summary>
+        /// Check wether the keys match or not.
+        /// </summary>
+        public bool KeysMatch(IEnumerable<InputKey> keys)
+        {
+            return this.Keys.Length == keys.Count() &&
+                   Enumerable.SequenceEqual(this.Keys, keys);
+        }
+
+        public bool Equals(SequenceCombo other)
+        {
+            return this.Name == other.Name && this.KeysMatch(other.Keys);
+        }
 
         public override string ToString()
         {
