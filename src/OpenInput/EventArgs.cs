@@ -47,11 +47,16 @@ namespace OpenInput
         /// <summary>
         /// Initializes a new instance of <see cref="MouseButtonEventArgs"/>.
         /// </summary>
-        public MouseButtonEventArgs(MouseState state)
+        public MouseButtonEventArgs(MouseState state, MouseButtons button)
             : base(state)
         {
-
+            this.Button = button;
         }
+
+        /// <summary>
+        /// Gets the button that was pressed.
+        /// </summar>
+        public MouseButtons Button { get; }
     }
 
     /// <summary>
@@ -84,7 +89,7 @@ namespace OpenInput
         /// <summary>
         /// Gets the char of the key.
         /// </summary>
-        public char KeyChar { get; internal set; } 
+        public char KeyChar { get; internal set; }
         // TODO: Change it to string?
 
         /// <summary>

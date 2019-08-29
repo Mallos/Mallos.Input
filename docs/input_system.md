@@ -5,6 +5,8 @@
 ```cs
 var inputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
 inputSystem.Actions.Add("Jump", Keys.Space);
+inputSystem.Actions.Add("Fire", Keys.F);
+inputSystem.Actions.Add("Fire", MouseButtons.Left);
 inputSystem.Axis.Add("MoveForward", Keys.W, 1.0f);
 inputSystem.Axis.Add("MoveForward", Keys.S, -1.0f);
 inputSystem.Axis.Add("MoveRight", Keys.D, 1.0f);

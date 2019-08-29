@@ -1,5 +1,6 @@
 ﻿namespace OpenInput.Mechanics
 {
+    using System;
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
@@ -58,16 +59,52 @@
             return !(a == b);
         }
 
-        public override string ToString()
+        /// <summary>
+        /// Returns the input type as string.
+        /// </summary>
+        public string TypeAsString() => Enum.GetName(typeof(InputType), this.Type);
+
+        /// <summary>
+        /// Returns the button of this type as string.
+        /// </summary>
+        public string ButtonAsString()
         {
             switch (this.Type)
             {
-                case InputType.Keyboard: return $"[Keyboard] {this.Key}";
-                case InputType.Mouse: return $"[Mouse] {this.MouseButton}";
-                case InputType.GamePad: return $"[GamePad] {this.Button}";
+                default: return string.Empty;
+                case InputType.Keyboard: return this.Key.ToString();
+                case InputType.Mouse: return this.MouseButton.ToString();
+                case InputType.GamePad: return this.Button.ToString();
+            }
+        }
+        /// <summary>
+        /// Returns the button of this type as integer.
+        /// </summary>
+        public int ButtonAsInteger()
+        {
+            switch (this.Type)
+            {
+                default: return 0;
+                case InputType.Keyboard: return (int)this.Key;
+                case InputType.Mouse: return (int)this.MouseButton;
+                case InputType.GamePad: return (int)this.Button;
+            }
+        }
+
+        /// <inheritdoc />
+        public override string ToString() => $"[{this.TypeAsString()}] {this.ButtonAsString()}";
+
+        // FIXME: Come up with a better way to index it.
+        internal static int[] ToQuery(InputKey[] keys)
+        {
+            var result = new int[keys.Length];
+
+            for (var i = 0; i < keys.Length; i++)
+            {
+                result[i + 0] = (int)keys[i].Type * keys[i].ButtonAsInteger();
             }
 
-            return base.ToString();
+            return result;
         }
     }
 }

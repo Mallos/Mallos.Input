@@ -1,12 +1,11 @@
 namespace OpenInput.Test
 {
-    using Xunit;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Layout;
 
-    public class LayoutTest : Layout
+    public class MyLayout : Layout
     {
-        public LayoutTest(string layoutId)
+        public MyLayout(string layoutId)
             : base(layoutId)
         {
         }
@@ -31,10 +30,14 @@ namespace OpenInput.Test
         [ActionTrigger("Jump")]
         public InputKeys Jump { get; set; }
 
+        [LayoutItem("Fire")]
+        [ActionTrigger("Fire")]
+        public InputKeys Fire { get; set; }
+
         [ActionTrigger("Pause", isReadOnly: true)]
         public InputKeys Pause { get; set; }
 
-        public static readonly LayoutTest DefaultLayout = new LayoutTest("KeyboardLayout")
+        public static readonly MyLayout DefaultLayout = new MyLayout("KeyboardLayout")
         {
             LayoutName      = "Default Keyboard Layout",
             LayoutDescription = "The default keyboard layout.",
@@ -43,10 +46,11 @@ namespace OpenInput.Test
             MoveLeft        = new InputKeys(Keys.A, Keys.Left),
             MoveRight       = new InputKeys(Keys.D, Keys.Right),
             Jump            = new InputKeys(Keys.Space),
+            Fire            = new InputKeys(MouseButtons.Left, Keys.F),
             Pause           = new InputKeys(Keys.Escape),
         };
 
-        public static readonly LayoutTest DefaultGamePadLayout = new LayoutTest("GamePadLayout")
+        public static readonly MyLayout DefaultGamePadLayout = new MyLayout("GamePadLayout")
         {
             LayoutName      = "Default GamePad Layout",
             LayoutDescription = "The default GamePad layout.",
@@ -55,28 +59,8 @@ namespace OpenInput.Test
             MoveLeft        = new InputKeys(Buttons.DPadLeft),
             MoveRight       = new InputKeys(Buttons.DPadRight),
             Jump            = new InputKeys(Buttons.A),
+            Fire            = new InputKeys(Buttons.RightTrigger),
             Pause           = new InputKeys(Buttons.Start),
         };
-    }
-
-    public class InputLayoutTest
-    {
-        [Fact]
-        public void CheckSettings()
-        {
-            var layout = LayoutTest.DefaultLayout;
-
-            Assert.Equal(6, layout.SettingsCount);
-        }
-
-        public void CheckSettingsOptions()
-        {
-            var layout = LayoutTest.DefaultLayout;
-            var settings = layout.GetSettings();
-
-            Assert.Equal(2, settings.Count);
-            Assert.Equal(5, settings["Movement"].Count);
-            Assert.Equal(2, settings["General"].Count);
-        }
     }
 }

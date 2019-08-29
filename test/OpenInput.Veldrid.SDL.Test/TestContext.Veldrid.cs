@@ -3,12 +3,17 @@ namespace OpenInput.Test
     using ImGuiNET;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Input;
+    using OpenInput.Mechanics.Layout;
+    using OpenInput.Mechanics.Combo;
     using System.Collections.Generic;
     using System.Text;
+    using System.Linq;
 
     class TestContext
     {
         public readonly List<DeviceSet> DeviceSets;
+
+        public readonly Layout layout;
 
         public readonly InputSystem InputSystem;
         public readonly ComboTracker ComboTracker;
@@ -18,33 +23,27 @@ namespace OpenInput.Test
 
         private readonly StringBuilder sb = new StringBuilder();
 
-        public TestContext(DeviceSet defaultSet)
+        public TestContext(DeviceSet defaultSet, MyLayout layout)
         {
-            //new OpenInput.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
+            this.layout = layout;
 
             // Add the different types of input context.
             DeviceSets = new List<DeviceSet>(new[]
             {
                 defaultSet,
-                new OpenInput.Dummy.DummyDeviceSet(),
+                // new OpenInput.Dummy.DummyDeviceSet(),
             });
 
             // Create a input system and register a few inputs.
             InputSystem = new InputSystem(defaultSet.Keyboard, defaultSet.Mouse);
-            InputSystem.Actions.Add(new InputAction("Jump", Keys.Space));
-            InputSystem.Actions.Add(new InputAction("Fire", Keys.F));
-            InputSystem.Actions.Add(new InputAction("Fire", MouseButtons.Left));
-            InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.W, 1.0f));
-            InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
-            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.D, 1.0f));
-            InputSystem.Axis.Add(new InputAxis("MoveRight", Keys.A, -1.0f));
+            layout.Apply(InputSystem);
 
             // Create a combo tracker and register a few combos.
             ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
             ComboTracker.OnComboCalled += ComboTracker_OnComboCalled;
-            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
-            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
-            ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack3", Buttons.A, Buttons.B, Buttons.X));
+            ComboTracker.SequenceCombos.Add("Attack1", Keys.A, Keys.B, Keys.C);
+            ComboTracker.SequenceCombos.Add("Attack2", Keys.A, Keys.C, Keys.B);
+            ComboTracker.SequenceCombos.Add("Attack3", Buttons.A, Buttons.B, Buttons.X);
         }
 
         public void Update(float elapsedTime)
@@ -69,7 +68,7 @@ namespace OpenInput.Test
             TestWindow_ComboTracker(ComboTracker, ComboHistory);
         }
 
-        private void ComboTracker_OnComboCalled(SequenceCombo obj)
+        private void ComboTracker_OnComboCalled(object sender, SequenceCombo obj)
         {
             ComboHistory.Add(obj.Name);
             if (ComboHistory.Count > ComboHistoryMax)
@@ -176,6 +175,55 @@ namespace OpenInput.Test
                 {
                     ImGui.Text($"{item.Key} = {item.Value}");
                 }
+
+                ImGui.Separator();
+
+                if (ImGui.CollapsingHeader("Layout", ImGuiTreeNodeFlags.CollapsingHeader))
+                {
+                    var settings = this.layout.GetSettings();
+                    var settingsKeys = settings.Keys.ToArray();
+                    for (var gi = 0; gi < settingsKeys.Length; gi++)
+                    {
+                        var groupKey = settingsKeys[gi];
+                        var group = settings[groupKey];
+
+                        ImGui.Text($"- {groupKey} -");
+
+                        ImGui.Separator();
+                        ImGui.Columns(3, null, true);
+                        for (var i = 0; i < group.Count; i++)
+                        {
+                            var setting = group[i];
+                            if (setting.IsReadOnly)
+                            {
+                                ImGui.Text($"[ReadOnly] {setting.Name}");
+                            }
+                            else
+                            {
+                                ImGui.Text($"{setting.Name}");
+                            }
+
+                            if (ImGui.IsItemHovered() && !string.IsNullOrWhiteSpace(setting.Description))
+                            {
+                                ImGui.SetTooltip(setting.Description);
+                            }
+
+                            ImGui.NextColumn();
+                            if (setting.Keys.Keys.Length > 0)
+                            {
+                                ImGui.Text($"{setting.Keys.Keys[0]}");
+                            }
+                            ImGui.NextColumn();
+                            if (setting.Keys.Keys.Length > 1)
+                            {
+                                ImGui.Text($"{setting.Keys.Keys[1]}");
+                            }
+                            ImGui.NextColumn();
+                        }
+                        ImGui.Columns(1);
+                        ImGui.Separator();
+                    }
+                }
             }
             ImGui.End();
         }
@@ -191,7 +239,7 @@ namespace OpenInput.Test
                 }
 
                 ImGui.Separator();
-                ImGui.Text($"Current: { comboTracker.GetHistoryString() }");
+                ImGui.Text($"Current: {comboTracker.HistoryAsString()}");
 
                 ImGui.Separator();
                 ImGui.Text("# History:");

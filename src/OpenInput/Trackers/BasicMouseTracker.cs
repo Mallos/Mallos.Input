@@ -18,7 +18,7 @@
 
         /// <inheritdoc />
         public event EventHandler<MouseButtonEventArgs> MouseUp;
-        
+
         /// <summary>
         /// Initialize a new <see cref="BasicMouseTracker"/> class.
         /// </summary>
@@ -51,20 +51,22 @@
                 MouseWheel?.Invoke(this, new MouseWheelEventArgs(newState));
             }
 
-            IsMouseDown(newState, newState.LeftButton, oldState.LeftButton);
-            IsMouseDown(newState, newState.MiddleButton, oldState.MiddleButton);
-            IsMouseDown(newState, newState.RightButton, oldState.RightButton);
+            // FIXME: Optimize
 
-            IsMouseDown(newState, newState.XButton1, oldState.XButton1);
-            IsMouseDown(newState, newState.XButton2, oldState.XButton2);
+            IsMouseDown(newState, newState.LeftButton, oldState.LeftButton, MouseButtons.Left);
+            IsMouseDown(newState, newState.MiddleButton, oldState.MiddleButton, MouseButtons.Middle);
+            IsMouseDown(newState, newState.RightButton, oldState.RightButton, MouseButtons.Right);
+
+            IsMouseDown(newState, newState.XButton1, oldState.XButton1, MouseButtons.XButton1);
+            IsMouseDown(newState, newState.XButton2, oldState.XButton2, MouseButtons.XButton2);
         }
 
-        private void IsMouseDown(MouseState state, bool value1, bool value2)
+        private void IsMouseDown(MouseState state, bool value1, bool value2, MouseButtons button)
         {
             if (value1 != value2)
             {
-                if (value1) MouseDown?.Invoke(this, new MouseButtonEventArgs(state));
-                else        MouseUp?.Invoke(this, new MouseButtonEventArgs(state));
+                if (value1) MouseDown?.Invoke(this, new MouseButtonEventArgs(state, button));
+                else        MouseUp?.Invoke(this, new MouseButtonEventArgs(state, button));
             }
         }
     }

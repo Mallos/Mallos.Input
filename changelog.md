@@ -12,6 +12,7 @@ This update contains a lot of changes and a lot of breaking changes, there is a 
 - Add Layout System
 - Improve InputSystem to support any device
 - Improve ComboTracker to support any device
+- Add search functions to ComboTracker
 
 ## Version 1.0.0
 
