@@ -23,11 +23,11 @@ namespace OpenInput.Mechanics.Combo
         /// <summary>
         /// Returns wether or not there is a full match.
         /// </summary>
-        public bool Match(out SequenceCombo hit, params InputKey[] keys)
+        public bool Match(out SequenceCombo hit, IEnumerable<InputKey> keys)
         {
             foreach (var item in this.Items)
             {
-                if (item.Keys.Length == keys.Length && item.Keys == keys)
+                if (item.KeysMatch(keys))
                 {
                     hit = item;
                     return true;

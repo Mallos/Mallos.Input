@@ -123,7 +123,8 @@
                 this.historyIndex = 0;
             }
 
-            if (this.SequenceCombos.Match(out var hit, this.history))
+            // FIXME: Optimize? Span.ToArray
+            if (this.SequenceCombos.Match(out var hit, this.History.ToArray()))
             {
                 this.OnComboCalled?.Invoke(this, hit);
                 this.historyIndex = 0;

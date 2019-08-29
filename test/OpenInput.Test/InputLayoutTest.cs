@@ -1,5 +1,6 @@
 namespace OpenInput.Test
 {
+    using System.Linq;
     using Xunit;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Layout;
@@ -69,14 +70,14 @@ namespace OpenInput.Test
             Assert.Equal(6, layout.SettingsCount);
         }
 
+        [Fact]
         public void CheckSettingsOptions()
         {
             var layout = LayoutTest.DefaultLayout;
             var settings = layout.GetSettings();
 
-            Assert.Equal(2, settings.Count);
+            Assert.Equal(new string[] { "Movement" }, settings.Keys.ToArray());
             Assert.Equal(5, settings["Movement"].Count);
-            Assert.Equal(2, settings["General"].Count);
         }
     }
 }
