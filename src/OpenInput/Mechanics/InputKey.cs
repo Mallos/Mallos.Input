@@ -93,18 +93,5 @@
 
         /// <inheritdoc />
         public override string ToString() => $"[{this.TypeAsString()}] {this.ButtonAsString()}";
-
-        // FIXME: Come up with a better way to index it.
-        internal static int[] ToQuery(InputKey[] keys)
-        {
-            var result = new int[keys.Length];
-
-            for (var i = 0; i < keys.Length; i++)
-            {
-                result[i + 0] = (int)keys[i].Type * keys[i].ButtonAsInteger();
-            }
-
-            return result;
-        }
     }
 }
