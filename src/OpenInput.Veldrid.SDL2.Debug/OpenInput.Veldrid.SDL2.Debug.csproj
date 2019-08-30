@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>OpenInput.Debug</RootNamespace>
+    <CodeAnalysisRuleSet>../../build/Analyzers.ruleset</CodeAnalysisRuleSet>
+    <Authors>Eric Tuvesson</Authors>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Description>A portable way of accessing HID devices for different frameworks. Targets .NET Standard 2.0</Description>
+    <Copyright>Copyright © 2019 Eric Tuvesson (erictuvesson)</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>OpenInput.Veldrid.SDL2.Debug</PackageId>
+    <PackageVersion>1.0.0-rc-preview1</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <RepositoryUrl>https://github.com/erictuvesson/OpenInput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageProjectUrl>https://github.com/erictuvesson/OpenInput</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageOutputPath>$(SolutionDir)build</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="../../build/stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Veldrid.ImGui" Version="5.70.0-ge562009c27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenInput\OpenInput.csproj" />
+    <ProjectReference Include="..\OpenInput.Veldrid.SDL2\OpenInput.Veldrid.SDL2.csproj" />
+  </ItemGroup>
+
+</Project>

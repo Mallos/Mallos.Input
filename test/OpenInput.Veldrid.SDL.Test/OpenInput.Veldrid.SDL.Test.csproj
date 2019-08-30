@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OpenInput.Veldrid.SDL2\OpenInput.Veldrid.SDL2.csproj" />
+    <ProjectReference Include="..\..\src\OpenInput.Veldrid.SDL2.Debug\OpenInput.Veldrid.SDL2.Debug.csproj" />
     <ProjectReference Include="..\..\src\OpenInput\OpenInput.csproj" />
   </ItemGroup>
 
