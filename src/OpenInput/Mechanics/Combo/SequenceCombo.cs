@@ -41,8 +41,12 @@ namespace OpenInput.Mechanics.Combo
 
         public override string ToString()
         {
-            var keys = Keys.Select(e => e.ToString());
-            return $"{this.Name}: {string.Join(",", keys)}";
+            if (this.Keys != null)
+            {
+                var keys = Keys.Select(e => e.ToString());
+                return $"{this.Name}: {string.Join(",", keys)}";
+            }
+            return $"{this.Name}: NaN";
         }
     }
 }

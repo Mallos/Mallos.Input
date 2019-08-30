@@ -94,6 +94,11 @@
         public event EventHandler<SequenceCombo> OnComboCalled;
 
         /// <summary>
+        /// Occures when a the current combo is reset and not called.
+        /// </summary>
+        public event EventHandler<InputKeys> OnComboReset;
+
+        /// <summary>
         /// Gets the button history as a string.
         /// </summary>
         /// <returns>A string containing all the history keys.</returns>
@@ -120,6 +125,7 @@
             this.timeSincelast += elapsedTime;
             if (this.timeSincelast > this.ComboTimeout & this.historyIndex > 0)
             {
+                this.OnComboReset?.Invoke(this, new InputKeys(this.History.ToArray()));
                 this.historyIndex = 0;
             }
 
