@@ -44,7 +44,7 @@ namespace OpenInput.Mechanics
 
             // We don't want a lot of shorter versions that might match.
             // This will just flood our results otherwise.
-            if (this.index.Length > other.index.Length)
+            if (this.index.Length < other.index.Length)
             {
                 return InputKeyMatch.NoMatch;
             }

@@ -21,5 +21,37 @@ namespace OpenInput.Test
             Assert.Equal(name, hit.Name);
             Assert.Equal(keys, hit.Keys);
         }
+
+        [Fact]
+        public void Search()
+        {
+            var name = "test";
+            var keys = new InputKey[] { Keys.A, Keys.B, Keys.C };
+
+            var sequences = new SequenceCollection();
+            sequences.Add(name, keys);
+
+            var matches = sequences.Search(keys);
+
+            Assert.Equal(1, matches.Length);
+            Assert.Equal(name, matches[0].Name);
+            Assert.Equal(keys, matches[0].Keys);
+        }
+
+        [Fact]
+        public void FuzzySearch()
+        {
+            var name = "test";
+            var keys = new InputKey[] { Keys.A, Keys.B, Keys.C };
+
+            var sequences = new SequenceCollection();
+            sequences.Add(name, keys);
+
+            var matches = sequences.FuzzySearch(2, Keys.A, Keys.B);
+
+            Assert.Equal(1, matches.Length);
+            Assert.Equal(name, matches[0].Name);
+            Assert.Equal(keys, matches[0].Keys);
+        }
     }
 }
