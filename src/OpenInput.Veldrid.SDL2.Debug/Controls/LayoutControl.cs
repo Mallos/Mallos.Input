@@ -2,6 +2,7 @@ namespace OpenInput.Debug.Controls
 {
     using ImGuiNET;
     using System;
+    using System.Linq;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Input;
     using OpenInput.Mechanics.Layout;
@@ -20,7 +21,7 @@ namespace OpenInput.Debug.Controls
 
         public override void DrawControl()
         {
-            var settings = this.layout.GetSettings();
+            var settings = this.Layout.GetSettings();
             var settingsKeys = settings.Keys.ToArray();
             for (var gi = 0; gi < settingsKeys.Length; gi++)
             {

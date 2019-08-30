@@ -1,5 +1,6 @@
 namespace OpenInput.Debug.Controls.Devices
 {
+    using System.Text;
     using ImGuiNET;
     using OpenInput.Mechanics;
     using OpenInput.Mechanics.Input;
@@ -20,9 +21,7 @@ namespace OpenInput.Debug.Controls.Devices
 
         public override void DrawControl()
         {
-            ImGui.Text($"Mouse (Name: \"{this.Mouse.Name}\")");
-
-            var mouseState = inputContext.Mouse.GetCurrentState();
+            var mouseState = this.Mouse.GetCurrentState();
 
             sb.Clear();
             sb.AppendLine($"Position: { mouseState.X }, { mouseState.Y }");
@@ -36,5 +35,7 @@ namespace OpenInput.Debug.Controls.Devices
 
             ImGui.Text(sb.ToString());
         }
+
+        public override string ToString() => $"Mouse (Name: \"{this.Mouse.Name}\")";
     }
 }

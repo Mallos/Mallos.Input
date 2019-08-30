@@ -18,13 +18,13 @@ namespace OpenInput.Debug.Controls.Devices
 
         public override void DrawControl()
         {
-            ImGui.Text($"Keyboard (Name: \"{this.Keyboard.Name}\")");
-
-            var keyboardState = this..Keyboard.GetCurrentState();
+            var keyboardState = this.Keyboard.GetCurrentState();
             foreach (var item in keyboardState.Keys)
             {
                 ImGui.Text(item.ToString());
             }
         }
+
+        public override string ToString() => $"Keyboard (Name: \"{this.Keyboard.Name}\")";
     }
 }

@@ -18,14 +18,12 @@ namespace OpenInput.Debug.Controls.Devices
 
         public override void DrawControl()
         {
-            ImGui.Text($"GamePad (Name: \"{this.GamePad.Name}\", Index: {this.GamePad.Index})");
+            var gamepadState = this.GamePad.GetCurrentState();
 
-            var gamepadState = inputContext.GamePads[i].GetCurrentState();
+            ImGui.Text($"Name: {this.GamePad.Name}");
+            ImGui.Text($"IsConnected: {gamepadState.IsConnected}");
 
-            ImGui.Text($"Name: { inputContext.GamePads[i].Name }");
-            ImGui.Text($"IsConnected: { gamepadState.IsConnected }");
-
-            ImGui.BeginChild($"GamePad.{i}.Child1");
+            ImGui.BeginChild($"GamePad.Child1");
             if (ImGui.CollapsingHeader("Buttons", ImGuiTreeNodeFlags.CollapsingHeader))
             {
                 var buttonValues = System.Enum.GetValues(typeof(Buttons));
@@ -50,5 +48,7 @@ namespace OpenInput.Debug.Controls.Devices
             }
             ImGui.EndChild();
         }
+
+        public override string ToString() => $"GamePad (Name: \"{this.GamePad.Name}\", Index: {this.GamePad.Index})";
     }
 }

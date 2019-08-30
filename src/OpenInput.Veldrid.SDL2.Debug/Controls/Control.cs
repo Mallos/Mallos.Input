@@ -3,7 +3,7 @@ namespace OpenInput.Debug.Controls
     using System;
     using ImGuiNET;
 
-    public abstract class Control // : IDisposable
+    public abstract class Control : IDisposable
     {
         public void DrawWindow()
         {
@@ -13,5 +13,9 @@ namespace OpenInput.Debug.Controls
         }
 
         public abstract void DrawControl();
+
+        public virtual void Dispose()
+        {
+        }
     }
 }
