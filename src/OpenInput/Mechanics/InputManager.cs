@@ -3,29 +3,8 @@ namespace OpenInput.Mechanics
     using System;
     using System.Collections.Generic;
     using OpenInput.Trackers;
-
-    public interface IController
-    {
-        void AttachInput(InputManagerEntry entry);
-
-        void DeattachInput(InputManagerEntry entry);
-
-        void UpdateController(float elapsedTime, InputSystem input);
-    }
-
-    public abstract class InputManagerEntry
-    {
-        internal InputManagerEntry(
-            InputSystem inputSystem,
-            ComboTracker comboTracker)
-        {
-            this.InputSystem = inputSystem;
-            this.ComboTracker = comboTracker;
-        }
-
-        public InputSystem InputSystem { get; }
-        public ComboTracker ComboTracker { get; }
-    }
+    using OpenInput.Mechanics.Combo;
+    using OpenInput.Mechanics.Manager;
 
     /// <summary>
     /// A complete manager of handling joining and leaving input devices to
@@ -39,7 +18,7 @@ namespace OpenInput.Mechanics
 
         private readonly Dictionary<int, Entry> entries = new Dictionary<int, Entry>();
 
-        public InputManager(DeviceSet deviceSet)
+        public InputManager(IDeviceSet deviceSet)
         {
             this.DeviceSet = deviceSet;
         }
@@ -47,7 +26,7 @@ namespace OpenInput.Mechanics
         /// <summary>
         /// Gets the associated device set.
         /// </summary>
-        public DeviceSet DeviceSet { get; }
+        public IDeviceSet DeviceSet { get; }
 
         /// <summary>
         /// Gets or sets wether or not we can register new controllers now.
@@ -63,6 +42,8 @@ namespace OpenInput.Mechanics
         /// Gets all the connected controllers.
         /// </summary>
         public Dictionary<int, Entry>.ValueCollection Controllers => this.entries.Values;
+
+        public event EventHandler<Entry> OnJoined;
 
         /// <inheritdoc />
         public void Update(float elapsedTime)
@@ -93,10 +74,10 @@ namespace OpenInput.Mechanics
 
         protected virtual bool CanJoin(InputKey key, IDevice device)
         {
-            return false;
+            return key.Key == Keys.Space;
         }
 
-        protected virtual TController CreateController(InputKey key, IDevice device)
+        protected virtual TController CreateController(InputKey key, IDevice[] devices)
         {
             return default(TController);
         }
@@ -127,7 +108,11 @@ namespace OpenInput.Mechanics
                     if (gamepadState.IsButtonDown(button) &&
                         this.CanJoin(inputKey, gamepad))
                     {
-                        this.RegisterDevice(gamepadHashCode, inputKey, gamepad);
+                        this.RegisterDevice(
+                            gamepadHashCode,
+                            inputKey,
+                            new IDevice[] { gamepad },
+                            new ITracker[] {});
                     }
                 }
             }
@@ -140,30 +125,50 @@ namespace OpenInput.Mechanics
                     var inputKey = new InputKey(key);
                     if (CanJoin(inputKey, this.DeviceSet.Keyboard))
                     {
-                        this.RegisterDevice(KeyboardMouseKey, inputKey, this.DeviceSet.Keyboard);
+                        this.RegisterKeyboardMouse(inputKey);
                     }
                 }
             }
         }
 
-        private void RegisterDevice(int deviceHashCode, InputKey inputKey, IDevice device)
+        private void RegisterKeyboardMouse(InputKey inputKey)
+        {
+            this.RegisterDevice(
+                KeyboardMouseKey,
+                inputKey,
+                new IDevice[] {
+                    this.DeviceSet.Keyboard,
+                    this.DeviceSet.Mouse
+                },
+                new ITracker[] {
+                    this.DeviceSet.KeyboardTracker,
+                    this.DeviceSet.MouseTracker
+                });
+        }
+
+        private void RegisterDevice(
+            int deviceHashCode,
+            InputKey inputKey,
+            IDevice[] devices,
+            ITracker[] trackers)
         {
             if (this.MaxControllers > this.entries.Count)
             {
                 return;
             }
 
-            var controller = CreateController(inputKey, device); // FIXME:
+            var controller = CreateController(inputKey, devices);
             if (controller == null)
             {
                 return;
             }
 
-            var inputSystem = new InputSystem(null, null);
-            var comboTracker = new ComboTracker(null);
+            var inputSystem = new InputSystem(devices);
+            var comboTracker = new ComboTracker(trackers);
 
             this.entries[deviceHashCode] = new Entry(controller, inputSystem, comboTracker);
 
+            this.OnJoined?.Invoke(this, this.entries[deviceHashCode]);
             this.OnJoin(this.entries[deviceHashCode]);
         }
 
