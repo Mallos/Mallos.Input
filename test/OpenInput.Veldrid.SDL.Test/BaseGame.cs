@@ -1,4 +1,4 @@
-﻿using Veldrid;
+using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
 
@@ -6,15 +6,15 @@ namespace OpenInput.Test
 {
     abstract class BaseGame
     {
-        public readonly Sdl2Window window;
-        public readonly GraphicsDevice graphicsDevice;
-        public readonly ImGuiRenderer imGuiRenderer;
-        public readonly CommandList commandList;
+        public readonly Sdl2Window Window;
+        public readonly GraphicsDevice GraphicsDevice;
+        public readonly ImGuiRenderer ImGuiRenderer;
+        public readonly CommandList CommandList;
         private bool windowResized = false;
 
         public BaseGame()
         {
-            var windowCreateInfo = new WindowCreateInfo
+            WindowCreateInfo windowCreateInfo = new WindowCreateInfo
             {
                 X = 100,
                 Y = 100,
@@ -23,13 +23,15 @@ namespace OpenInput.Test
                 WindowTitle = "OpenInput Veldrid SDL2 Test",
             };
 
-            var options = new GraphicsDeviceOptions(
+            GraphicsDeviceOptions options = new GraphicsDeviceOptions(
                 debug: false,
                 swapchainDepthFormat: PixelFormat.R16_UNorm,
                 syncToVerticalBlank: true,
                 resourceBindingModel: ResourceBindingModel.Improved,
                 preferDepthRangeZeroToOne: true,
-                preferStandardClipSpaceYDirection: true);
+                preferStandardClipSpaceYDirection: true
+            );
+
 #if DEBUG
             options.Debug = true;
 #endif
@@ -37,57 +39,57 @@ namespace OpenInput.Test
             VeldridStartup.CreateWindowAndGraphicsDevice(
                 windowCreateInfo,
                 options,
-                GetSupportedGraphicsBackend(),
-                out this.window,
-                out this.graphicsDevice);
+                this.GetSupportedGraphicsBackend(),
+                out this.Window,
+                out this.GraphicsDevice);
 
-            this.window.Resized += () =>
+            this.Window.Resized += () =>
             {
-                this.imGuiRenderer.WindowResized(this.window.Width, this.window.Height);
+                this.ImGuiRenderer.WindowResized(this.Window.Width, this.Window.Height);
                 this.windowResized = true;
             };
 
-            this.commandList = this.graphicsDevice.ResourceFactory.CreateCommandList();
+            this.CommandList = this.GraphicsDevice.ResourceFactory.CreateCommandList();
 
-            this.imGuiRenderer = new ImGuiRenderer(
-                this.graphicsDevice,
-                this.graphicsDevice.SwapchainFramebuffer.OutputDescription,
-                this.window.Width,
-                this.window.Height);
+            this.ImGuiRenderer = new ImGuiRenderer(
+                this.GraphicsDevice,
+                this.GraphicsDevice.SwapchainFramebuffer.OutputDescription,
+                this.Window.Width,
+                this.Window.Height);
         }
 
         public InputSnapshot LastInputSnapshot { get; private set; }
 
         public void Run()
         {
-            while (this.window.Exists)
+            while (this.Window.Exists)
             {
                 if (this.windowResized)
                 {
                     this.windowResized = false;
-                    this.graphicsDevice.ResizeMainWindow((uint)this.window.Width, (uint)this.window.Height);
+                    this.GraphicsDevice.ResizeMainWindow((uint)this.Window.Width, (uint)this.Window.Height);
                 }
 
-                this.LastInputSnapshot = this.window.PumpEvents();
+                this.LastInputSnapshot = this.Window.PumpEvents();
 
-                this.imGuiRenderer.Update(1f / 60, this.LastInputSnapshot);
+                this.ImGuiRenderer.Update(1f / 60, this.LastInputSnapshot);
 
-                this.commandList.Begin();
-                this.commandList.SetFramebuffer(this.graphicsDevice.MainSwapchain.Framebuffer);
-                this.commandList.ClearColorTarget(0, RgbaFloat.CornflowerBlue);
-                this.commandList.ClearDepthStencil(1f);
+                this.CommandList.Begin();
+                this.CommandList.SetFramebuffer(this.GraphicsDevice.MainSwapchain.Framebuffer);
+                this.CommandList.ClearColorTarget(0, RgbaFloat.CornflowerBlue);
+                this.CommandList.ClearDepthStencil(1f);
 
-                this.Draw(this.commandList);
+                this.Draw(this.CommandList);
 
-                this.imGuiRenderer.Render(this.graphicsDevice, this.commandList);
+                this.ImGuiRenderer.Render(this.GraphicsDevice, this.CommandList);
 
-                this.commandList.End();
+                this.CommandList.End();
 
-                if (this.window.Exists)
+                if (this.Window.Exists)
                 {
-                    this.graphicsDevice.SubmitCommands(this.commandList);
-                    this.graphicsDevice.SwapBuffers();
-                    this.graphicsDevice.WaitForIdle();
+                    this.GraphicsDevice.SubmitCommands(this.CommandList);
+                    this.GraphicsDevice.SwapBuffers();
+                    this.GraphicsDevice.WaitForIdle();
                 }
             }
         }
@@ -96,6 +98,7 @@ namespace OpenInput.Test
 
         private GraphicsBackend GetSupportedGraphicsBackend()
         {
+#pragma warning disable IDE0022 // Use expression body for methods
 #if DEBUG && WINDOWS
             return GraphicsBackend.Direct3D11;
 #elif WINDOWS
@@ -106,6 +109,7 @@ namespace OpenInput.Test
             // FIXME: OSX DefineConstants
             return GraphicsBackend.Metal; // GraphicsBackend.OpenGL
 #endif
+#pragma warning restore IDE0022 // Use expression body for methods
         }
     }
 }

@@ -14,14 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid" Version="4.7.0-ge562009c27" />
-    <PackageReference Include="Veldrid.ImGui" Version="5.70.0-ge562009c27" />
-    <PackageReference Include="Veldrid.StartupUtilities" Version="4.7.0-ge562009c27" />
+    <PackageReference Include="Veldrid" Version="4.7.0" />
+    <PackageReference Include="Veldrid.ImGui" Version="5.70.0-ge6647cf4a7" />
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OpenInput.Debug.ImGuiNET\OpenInput.Debug.ImGuiNET.csproj" />
     <ProjectReference Include="..\..\src\OpenInput.Veldrid.SDL2\OpenInput.Veldrid.SDL2.csproj" />
-    <ProjectReference Include="..\..\src\OpenInput.Veldrid.SDL2.Debug\OpenInput.Veldrid.SDL2.Debug.csproj" />
     <ProjectReference Include="..\..\src\OpenInput\OpenInput.csproj" />
   </ItemGroup>
 
