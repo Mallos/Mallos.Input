@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants Condition="'$(OS)' == 'Windows_NT'">WINDOWS</DefineConstants>
-    <DefineConstants Condition="'$(OS)' == 'OSX'">OSX</DefineConstants>
+    <DefineConstants Condition="'$(IsWindows)' == 'true'">WINDOWS</DefineConstants>
+    <DefineConstants Condition="'$(IsLinux)' == 'true'">LINUX</DefineConstants>
+    <DefineConstants Condition="'$(IsMacOS)' == 'true'">OSX</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
