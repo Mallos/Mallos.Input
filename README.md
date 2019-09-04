@@ -18,16 +18,20 @@ A portable way of accessing HID devices cross-platform
 ### Mechanics
 A lot of the simple things should be in the hands of the designers not the programmers, so lets make it easy to modify key features!
 
+* [Input Manager](./docs/input_manager.md)
+
+  Handles everything for you, from registering new players with custom key layouts to handling the device state. This makes it easy to not have to care about what device the user is on and gives them a custom *InputSystem* based on the *Layout*.
+
 * [Combo Tracker](./docs/combo_tracker.md)
-  
+
   Makes it super easy to handle key combos.
 
 * [Input System](./docs/input_system.md)
-  
+
   Bind keys to string keys, support both actions and axis events.
 
 * [Layout](./docs/layout.md)
-  
+
   Rebinding layout, get/modify all the possible rebindable keys and apply it to the *Input System* giving you a simple way to handle user rebindable keys while not making it hard to create new layouts.
 
 ## Contributing

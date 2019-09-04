@@ -16,10 +16,12 @@ namespace OpenInput.Test
         private readonly Layout layout;
         private readonly InputSystem InputSystem;
         private readonly ComboTracker ComboTracker;
+        private readonly MyInputManager inputManager;
 
         private ComboTrackerControl ComboTrackerControl;
         private InputSystemControl InputSystemControl;
         private DeviceSetControl DeviceSetControl;
+        private InputManagerControl<MyPlayer> InputManagerControl;
 
         public Game()
         {
@@ -49,6 +51,9 @@ namespace OpenInput.Test
 
             this.ComboTrackerControl = new ComboTrackerControl(this.ComboTracker);
             this.InputSystemControl = new InputSystemControl(this.InputSystem);
+
+            this.inputManager = new MyInputManager();
+            this.InputManagerControl = new InputManagerControl<MyPlayer>();
         }
 
         protected override void Draw(Veldrid.CommandList cl)
@@ -62,10 +67,12 @@ namespace OpenInput.Test
             this.deviceSet.Update(elapsedTime);
             this.InputSystem.Update(elapsedTime);
             this.ComboTracker.Update(elapsedTime);
+            this.inputManager.Update(elapsedTime);
 
             this.DeviceSetControl.DrawWindow();
             this.InputSystemControl.DrawWindow();
             this.ComboTrackerControl.DrawWindow();
+            this.InputManagerControl.DrawWindow();
         }
     }
 }
