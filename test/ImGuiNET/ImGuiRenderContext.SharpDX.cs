@@ -1,4 +1,4 @@
-﻿namespace ImGuiNET
+namespace ImGuiNET
 {
     using SharpDX.D3DCompiler;
     using SharpDX.Direct3D11;
@@ -89,8 +89,6 @@ float4 main(PS_INPUT input) : SV_Target
             window.KeyUp += OnKeyUp;
             window.KeyPress += OnKeyPress;
 
-            ImGui.GetIO().FontAtlas.AddDefaultFont();
-
             SetOpenTKKeyMappings();
             
             CreateDeviceObjects();
@@ -98,7 +96,7 @@ float4 main(PS_INPUT input) : SV_Target
         
         public void BeginFrame(float elapsedTime = 1.0f / 60.0f)
         {
-            IO io = ImGui.GetIO();
+            ImGuiIOPtr io = ImGui.GetIO();
             io.DisplaySize = new System.Numerics.Vector2(Window.Width, Window.Height);
             io.DeltaTime = elapsedTime;
 
@@ -111,13 +109,14 @@ float4 main(PS_INPUT input) : SV_Target
         {
             ImGui.Render();
 
-            DrawData* data = ImGui.GetDrawData();
+            ImDrawDataPtr data = ImGui.GetDrawData();
             RenderImDrawData(data);
         }
 
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            ImGui.AddInputCharacter(e.KeyChar);
+            ImGuiIOPtr io = ImGui.GetIO();
+            io.AddInputCharacter(e.KeyChar);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -132,32 +131,36 @@ float4 main(PS_INPUT input) : SV_Target
             UpdateModifiers(e);
         }
 
-        private unsafe int OnTextEdited(TextEditCallbackData* data)
-        {
-            char currentEventChar = (char)data->EventChar;
-            return 0;
-        }
+        // private unsafe int OnTextEdited(TextEditCallbackData* data)
+        // {
+        //     char currentEventChar = (char)data->EventChar;
+        //     return 0;
+        // }
 
         private static void UpdateModifiers(KeyEventArgs e)
         {
-            IO io = ImGui.GetIO();
-            io.AltPressed = e.Alt;
-            io.CtrlPressed = e.Control;
-            io.ShiftPressed = e.Shift;
+            ImGuiIOPtr io = ImGui.GetIO();
+            io.KeyAlt= e.Alt;
+            io.KeyCtrl = e.Control;
+            io.KeyShift = e.Shift;
         }
 
         private unsafe void CreateDeviceObjects()
         {
-            IO io = ImGui.GetIO();
+            ImGuiIOPtr io = ImGui.GetIO();
 
             // Build texture atlas
-            FontTextureData texData = io.FontAtlas.GetTexDataAsRGBA32();
+            io.Fonts.GetTexDataAsRGBA32(
+                out byte* pixels,
+                out int width,
+                out int height
+            );
 
             // Create DirectX Texture
             fontTexture = new Texture2D(Device, new Texture2DDescription()
             {
-                Width = texData.Width,
-                Height = texData.Height,
+                Width = width,
+                Height = height,
                 MipLevels = 1,
                 ArraySize = 1,
                 Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm,
@@ -165,7 +168,7 @@ float4 main(PS_INPUT input) : SV_Target
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.ShaderResource,
                 CpuAccessFlags = 0
-            }, new SharpDX.DataRectangle(new IntPtr(texData.Pixels), texData.Width));
+            }, new SharpDX.DataRectangle(new IntPtr(pixels), width));
 
             fontTextureView = new ShaderResourceView(Device, fontTexture, new ShaderResourceViewDescription()
             {
@@ -178,7 +181,7 @@ float4 main(PS_INPUT input) : SV_Target
                 }
             });
 
-            io.FontAtlas.SetTexID(FontTextureId);
+            io.Fonts.SetTexID(new IntPtr(FontTextureId));
 
             // Create texture sampler
             fontSampler = new SamplerState(Device, new SamplerStateDescription()
@@ -257,29 +260,29 @@ float4 main(PS_INPUT input) : SV_Target
 
         private static void SetOpenTKKeyMappings()
         {
-            IO io = ImGui.GetIO();
-            io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
-            io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
-            io.KeyMap[GuiKey.RightArrow] = (int)Keys.Right;
-            io.KeyMap[GuiKey.UpArrow] = (int)Keys.Up;
-            io.KeyMap[GuiKey.DownArrow] = (int)Keys.Down;
-            io.KeyMap[GuiKey.PageUp] = (int)Keys.PageUp;
-            io.KeyMap[GuiKey.PageDown] = (int)Keys.PageDown;
-            io.KeyMap[GuiKey.Home] = (int)Keys.Home;
-            io.KeyMap[GuiKey.End] = (int)Keys.End;
-            io.KeyMap[GuiKey.Delete] = (int)Keys.Delete;
-            io.KeyMap[GuiKey.Backspace] = (int)Keys.Back;
-            io.KeyMap[GuiKey.Enter] = (int)Keys.Enter;
-            io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
-            io.KeyMap[GuiKey.A] = (int)Keys.A;
-            io.KeyMap[GuiKey.C] = (int)Keys.C;
-            io.KeyMap[GuiKey.V] = (int)Keys.V;
-            io.KeyMap[GuiKey.X] = (int)Keys.X;
-            io.KeyMap[GuiKey.Y] = (int)Keys.Y;
-            io.KeyMap[GuiKey.Z] = (int)Keys.Z;
+            ImGuiIOPtr io = ImGui.GetIO();
+            io.KeyMap[(int)ImGuiKey.Tab] = (int)Keys.Tab;
+            io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)Keys.Left;
+            io.KeyMap[(int)ImGuiKey.RightArrow] = (int)Keys.Right;
+            io.KeyMap[(int)ImGuiKey.UpArrow] = (int)Keys.Up;
+            io.KeyMap[(int)ImGuiKey.DownArrow] = (int)Keys.Down;
+            io.KeyMap[(int)ImGuiKey.PageUp] = (int)Keys.PageUp;
+            io.KeyMap[(int)ImGuiKey.PageDown] = (int)Keys.PageDown;
+            io.KeyMap[(int)ImGuiKey.Home] = (int)Keys.Home;
+            io.KeyMap[(int)ImGuiKey.End] = (int)Keys.End;
+            io.KeyMap[(int)ImGuiKey.Delete] = (int)Keys.Delete;
+            io.KeyMap[(int)ImGuiKey.Backspace] = (int)Keys.Back;
+            io.KeyMap[(int)ImGuiKey.Enter] = (int)Keys.Enter;
+            io.KeyMap[(int)ImGuiKey.Escape] = (int)Keys.Escape;
+            io.KeyMap[(int)ImGuiKey.A] = (int)Keys.A;
+            io.KeyMap[(int)ImGuiKey.C] = (int)Keys.C;
+            io.KeyMap[(int)ImGuiKey.V] = (int)Keys.V;
+            io.KeyMap[(int)ImGuiKey.X] = (int)Keys.X;
+            io.KeyMap[(int)ImGuiKey.Y] = (int)Keys.Y;
+            io.KeyMap[(int)ImGuiKey.Z] = (int)Keys.Z;
         }
 
-        private unsafe void UpdateImGuiInput(IO io)
+        private unsafe void UpdateImGuiInput(ImGuiIOPtr io)
         {
             //MouseState cursorState = Mouse.GetCursorState();
             //MouseState mouseState = Mouse.GetState();
@@ -304,7 +307,7 @@ float4 main(PS_INPUT input) : SV_Target
             throw new NotImplementedException();
         }
 
-        private unsafe void RenderImDrawData(DrawData* draw_data)
+        private unsafe void RenderImDrawData(ImDrawDataPtr draw_data)
         {
             var context = this.Device.ImmediateContext;
 

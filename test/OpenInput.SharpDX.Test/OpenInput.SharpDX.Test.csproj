@@ -1,12 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <RootNamespace>OpenInput.Test</RootNamespace>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     <OutputTypeEx>exe</OutputTypeEx>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DefineConstants Condition="'$(TargetFramework)' == 'net461'">net461</DefineConstants>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,13 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="0.1.6" />
-    <PackageReference Include="SharpDX" Version="3.1.2-beta109" />
-    <PackageReference Include="SharpDX.D3DCompiler" Version="3.1.2-beta109" />
-    <PackageReference Include="SharpDX.Desktop" Version="3.1.2-beta109" />
-    <PackageReference Include="SharpDX.Direct3D11" Version="3.1.2-beta109" />
-    <PackageReference Include="SharpDX.DXGI" Version="3.1.2-beta109" />
-    <PackageReference Include="SharpDX.Mathematics" Version="3.1.2-beta109" />
+    <PackageReference Include="ImGui.NET" Version="1.71.0" />
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Desktop" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using SharpDX;
+using ImGuiNET;
+using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -24,6 +25,9 @@ namespace OpenInput.Test
         private Texture2D renderTarget;
         private RenderTargetView renderTargetView;
 
+        private ImGuiRenderContext imGuiRender;
+        private TestContext testContext;
+
         public Game()
         {
             this.form = new RenderForm("OpenInput.Test");
@@ -48,12 +52,9 @@ namespace OpenInput.Test
             renderTarget = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
             renderTargetView = new RenderTargetView(device, renderTarget);
 
-            InitDemoResources();
-        }
+            this.imGuiRender = new ImGuiRenderContext(this.form, this.device);
 
-        private void InitDemoResources()
-        {
-
+            this.testContext = new TestContext(new RawDeviceSet());
         }
 
         public void Run()
@@ -61,11 +62,13 @@ namespace OpenInput.Test
             this.form.Show();
             while (this.renderLoop.NextFrame())
             {
-                ImmediateContext.ClearRenderTargetView(renderTargetView, Color.Black);
+                this.ImmediateContext.ClearRenderTargetView(this.renderTargetView, Color.Black);
 
+                this.imGuiRender.BeginFrame();
+                this.testContext.AddImGuiStuff();
+                this.imGuiRender.EndFrame();
 
-
-                swapChain.Present(0, PresentFlags.None);
+                this.swapChain.Present(0, PresentFlags.None);
             }
         }
     }

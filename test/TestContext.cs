@@ -2,12 +2,14 @@ namespace OpenInput.Test
 {
     using ImGuiNET;
     using OpenInput.Mechanics;
+    using OpenInput.Mechanics.Combo;
+    using OpenInput.Mechanics.Input;
     using System.Collections.Generic;
     using System.Text;
 
     class TestContext
     {
-        public readonly List<DeviceSet> DeviceSets;
+        public readonly List<IDeviceSet> DeviceSets;
 
         public readonly InputSystem InputSystem;
         public readonly ComboTracker ComboTracker;
@@ -17,12 +19,12 @@ namespace OpenInput.Test
 
         private readonly StringBuilder sb = new StringBuilder();
         
-        public TestContext(DeviceSet defaultSet)
+        public TestContext(IDeviceSet defaultSet)
         {
             //new OpenInput.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
             
             // Add the different types of input context.
-            DeviceSets = new List<DeviceSet>(new[]
+            DeviceSets = new List<IDeviceSet>(new[]
             {
                 defaultSet,
                 new OpenInput.Dummy.DummyDeviceSet(),
@@ -35,7 +37,7 @@ namespace OpenInput.Test
             InputSystem.Axis.Add(new InputAxis("MoveForward", Keys.S, -1.0f));
 
             // Create a combo tracker and register a few combos.
-            ComboTracker = new ComboTracker(defaultSet.KeyboardTracker, 0.5f, 4);
+            ComboTracker = new ComboTracker(defaultSet.KeyboardTracker);
             ComboTracker.OnComboCalled += ComboTracker_OnComboCalled;
             ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack1", Keys.A, Keys.B, Keys.C));
             ComboTracker.SequenceCombos.Add(new SequenceCombo("Attack2", Keys.A, Keys.C, Keys.B));
@@ -64,7 +66,7 @@ namespace OpenInput.Test
             TestWindow_ComboTracker(ComboTracker, ComboHistory);
         }
 
-        private void ComboTracker_OnComboCalled(SequenceCombo obj)
+        private void ComboTracker_OnComboCalled(object sender, SequenceCombo obj)
         {
             ComboHistory.Add(obj.Name);
             if (ComboHistory.Count > ComboHistoryMax)
@@ -73,7 +75,7 @@ namespace OpenInput.Test
             }
         }
 
-        private void TestWindwow_Input(DeviceSet inputContext)
+        private void TestWindwow_Input(IDeviceSet inputContext)
         {
             string windowTitle = inputContext.Name + " Input";
             ImGui.BeginWindow(windowTitle);
@@ -186,7 +188,7 @@ namespace OpenInput.Test
                 }
 
                 ImGui.Separator();
-                ImGui.Text($"Current: { comboTracker.GetHistoryString() }");
+                ImGui.Text($"Current: { comboTracker.HistoryAsString() }");
 
                 ImGui.Separator();
                 ImGui.Text("# History:");

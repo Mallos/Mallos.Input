@@ -1,4 +1,4 @@
-﻿namespace OpenInput.RawInput
+namespace OpenInput.RawInput
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +14,10 @@
         public readonly HashSet<OpenInput.Keys> Keys;
 
         public MouseState MouseState;
+
+        private MouseButtons mouseButtons = MouseButtons.None;
+        private int realMouseX = 0, realMouseY = 0;
+        private int realScrollWheelValue = 0;
 
         private int MouseX, MouseY;
 
@@ -150,13 +154,13 @@
                         RECT rect = new RECT();
                         if (WindowsInterop.GetWindowRect(Handle, ref rect))
                         {
-                            this.MouseState.X = this.MouseX - rect.Left;
-                            this.MouseState.Y = this.MouseY - rect.Top;
+                            this.realMouseX = this.MouseX - rect.Left;
+                            this.realMouseY = this.MouseY - rect.Top;
                         }
                         else
                         {
-                            this.MouseState.X = this.MouseX;
-                            this.MouseState.Y = this.MouseY;
+                            this.realMouseX = this.MouseX;
+                            this.realMouseY = this.MouseY;
                         }
 
                     } break;
@@ -170,23 +174,23 @@
             switch ((MouseButtonsFlags)rawBuffer.data.mouse.usButtonFlags)
             {
                 case MouseButtonsFlags.MouseWheel:
-                    this.MouseState.ScrollWheelValue += (rawBuffer.data.mouse.usButtonData == 120) ? 1 : -1;
+                    this.realScrollWheelValue += (rawBuffer.data.mouse.usButtonData == 120) ? 1 : -1;
                     break;
 
-                case MouseButtonsFlags.LeftButtonDown: this.MouseState.LeftButton = true; break;
-                case MouseButtonsFlags.LeftButtonUp: this.MouseState.LeftButton = false; break;
+                case MouseButtonsFlags.LeftButtonDown: this.mouseButtons |= MouseButtons.Left; break;
+                case MouseButtonsFlags.LeftButtonUp: this.mouseButtons &= ~MouseButtons.Left; break;
 
-                case MouseButtonsFlags.MiddleButtonDown: this.MouseState.MiddleButton = true; break;
-                case MouseButtonsFlags.MiddleButtonUp: this.MouseState.MiddleButton = false; break;
+                case MouseButtonsFlags.MiddleButtonDown: this.mouseButtons |= MouseButtons.Middle; break;
+                case MouseButtonsFlags.MiddleButtonUp: this.mouseButtons &= ~MouseButtons.Middle; break;
 
-                case MouseButtonsFlags.RightButtonDown: this.MouseState.RightButton = true; break;
-                case MouseButtonsFlags.RightButtonUp: this.MouseState.RightButton = false; break;
+                case MouseButtonsFlags.RightButtonDown: this.mouseButtons |= MouseButtons.Right; break;
+                case MouseButtonsFlags.RightButtonUp: this.mouseButtons &= ~MouseButtons.Right; break;
 
-                case MouseButtonsFlags.Button4Down: this.MouseState.XButton1 = true; break;
-                case MouseButtonsFlags.Button4Up: this.MouseState.XButton1 = false; break;
+                case MouseButtonsFlags.Button4Down: this.mouseButtons |= MouseButtons.XButton1; break;
+                case MouseButtonsFlags.Button4Up: this.mouseButtons &= ~MouseButtons.XButton1; break;
 
-                case MouseButtonsFlags.Button5Down: this.MouseState.XButton2 = true; break;
-                case MouseButtonsFlags.Button5Up: this.MouseState.XButton2 = false; break;
+                case MouseButtonsFlags.Button5Down: this.mouseButtons |= MouseButtons.XButton2; break;
+                case MouseButtonsFlags.Button5Up: this.mouseButtons &= ~MouseButtons.XButton2; break;
             }
         }
 
