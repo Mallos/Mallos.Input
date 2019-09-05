@@ -1,7 +1,9 @@
 namespace OpenInput
 {
     using System;
+    using System.ComponentModel;
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class FuzzyHelper
     {
         public static int StartWith<T>(T[] value1, T[] value2)

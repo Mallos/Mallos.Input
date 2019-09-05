@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Trackers
+namespace OpenInput.Trackers
 {
     using System;
 
@@ -35,20 +35,20 @@
         {
             // TODO: Key to char
 
-            var difference = newState.CompareBoth(oldState);
+            Tuple<Keys[], Keys[]> difference = newState.CompareBoth(oldState);
             if (difference.Item1.Length > 0)
             {
-                foreach (var item in difference.Item1)
+                foreach (Keys item in difference.Item1)
                 {
-                    KeyUp?.Invoke(this, new KeyEventArgs(newState, item, ' '));
+                    this.KeyUp?.Invoke(this, new KeyEventArgs(newState, item, ' '));
                 }
             }
 
             if (difference.Item2.Length > 0)
             {
-                foreach (var item in difference.Item2)
+                foreach (Keys item in difference.Item2)
                 {
-                    KeyDown?.Invoke(this, new KeyEventArgs(newState, item, ' '));
+                    this.KeyDown?.Invoke(this, new KeyEventArgs(newState, item, ' '));
                 }
             }
         }

@@ -1,8 +1,8 @@
-﻿namespace OpenInput
+namespace OpenInput
 {
-    using OpenInput.Trackers;
     using System.Collections.Generic;
     using System.Linq;
+    using OpenInput.Trackers;
     using Veldrid;
 
     public class VeldridKeyboard : VeldridDevice, IKeyboard
@@ -24,7 +24,7 @@
 
         internal override void UpdateSnapshot(InputSnapshot snapshot)
         {
-            foreach (var key in snapshot.KeyEvents)
+            foreach (KeyEvent key in snapshot.KeyEvents)
             {
                 if (key.Down)
                 {
@@ -36,7 +36,7 @@
                 }
             }
 
-            var newKeys = this.pressedKeys.Select(key => key.ConvertKey()).ToArray();
+            Keys[] newKeys = this.pressedKeys.Select(key => key.ConvertKey()).ToArray();
             this.currentState = new KeyboardState(newKeys);
         }
     }

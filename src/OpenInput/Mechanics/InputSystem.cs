@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Mechanics
+namespace OpenInput.Mechanics
 {
     using OpenInput.Trackers;
     using OpenInput.Mechanics.Input;
@@ -6,6 +6,9 @@
 
     public class InputSystem : ITracker
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="InputSystem"/>.
+        /// </summary>
         public InputSystem(params IDevice[] devices)
         {
             if (devices == null || devices.Length == 0)

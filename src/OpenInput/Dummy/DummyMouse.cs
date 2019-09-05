@@ -1,6 +1,5 @@
-﻿namespace OpenInput.Dummy
+namespace OpenInput.Dummy
 {
-    using System;
     using OpenInput.Trackers;
 
     /// <summary>
@@ -10,29 +9,19 @@
     {
         /// <inheritdoc />
         public string Name => "Dummy Mouse";
-        
-        /// <inheritdoc />
-        public IMouseTracker CreateTracker()
-        {
-            return new BasicMouseTracker(this);
-        }
 
         /// <inheritdoc />
-        public MouseState GetCurrentState()
-        {
-            return MouseState.Empty;
-        }
+        public IMouseTracker CreateTracker() => new BasicMouseTracker(this);
 
         /// <inheritdoc />
-        public void GetPosition(out int x, out int y)
-        {
-            y = x = 0;
-        }
+        public MouseState GetCurrentState() => MouseState.Empty;
+
+        /// <inheritdoc />
+        public void GetPosition(out int x, out int y) => y = x = 0;
 
         /// <inheritdoc />
         public void SetPosition(int x, int y)
         {
-
         }
     }
 }

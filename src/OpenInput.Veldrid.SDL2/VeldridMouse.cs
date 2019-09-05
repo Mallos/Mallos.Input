@@ -1,8 +1,7 @@
-﻿namespace OpenInput
+namespace OpenInput
 {
-    using OpenInput.Trackers;
     using System.Collections.Generic;
-    using System.Linq;
+    using OpenInput.Trackers;
     using Veldrid;
 
     public class VeldridMouse : VeldridDevice, IMouse
@@ -34,7 +33,7 @@
 
         internal override void UpdateSnapshot(InputSnapshot snapshot)
         {
-            foreach (var key in snapshot.MouseEvents)
+            foreach (MouseEvent key in snapshot.MouseEvents)
             {
                 if (key.Down)
                 {
@@ -47,9 +46,9 @@
             }
 
             this.currentState = new MouseState(
-                (int)snapshot.MousePosition.X,
-                (int)snapshot.MousePosition.Y,
-                (int)snapshot.WheelDelta,
+                (int) snapshot.MousePosition.X,
+                (int) snapshot.MousePosition.Y,
+                (int) snapshot.WheelDelta,
                 pressedButtons.Contains(MouseButton.Left),
                 pressedButtons.Contains(MouseButton.Middle),
                 pressedButtons.Contains(MouseButton.Right),

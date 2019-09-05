@@ -1,9 +1,8 @@
-﻿namespace OpenInput.Touch
+namespace OpenInput.Touch
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
 
     /// NOTE: Pages with more on touch events
     /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd353242(v=vs.85).aspx
@@ -16,37 +15,28 @@
     /// </summary>
     public struct TouchCollection : IList<TouchLocation>, IEnumerable<TouchLocation>
     {
-        /// <inheritdoc />
-        public TouchLocation this[int index]
-        {
-            get
-            {
-                return collection[index];
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        /// <inheritdoc />
-        public int Count => collection.Length;
-
-        /// <inheritdoc />
-        public bool IsReadOnly => false;
-
-        private TouchLocation[] collection;
+        private readonly TouchLocation[] collection;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of <see cref="TouchCollection"/>.
         /// </summary>
         public TouchCollection(TouchLocation[] collection)
         {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-
-            this.collection = collection;
+            this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
         }
+
+        /// <inheritdoc />
+        public TouchLocation this[int index]
+        {
+            get => this.collection[index];
+            set => throw new NotSupportedException();
+        }
+
+        /// <inheritdoc />
+        public int Count => this.collection.Length;
+
+        /// <inheritdoc />
+        public bool IsReadOnly => false;
 
         #region IList
         /// <inheritdoc />

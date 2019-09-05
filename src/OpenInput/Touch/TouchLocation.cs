@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Touch
+namespace OpenInput.Touch
 {
     using System;
     using System.Numerics;
@@ -11,15 +11,6 @@
     {
         // TODO: Add previus position and state
 
-        /// <summary> Gets the ID of the touch location. </summary>
-        public int Id { get; internal set; }
-
-        /// <summary> Gets the position of the touch location. </summary>
-        public Vector2 Position { get; internal set; }
-        
-        /// <summary> Gets the state of the touch location. </summary>
-        public TouchLocationState State { get; internal set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchLocation"/> struct.
         /// </summary>
@@ -30,25 +21,39 @@
             this.Position = position;
         }
 
+        /// <summary>
+        /// Gets the ID of the touch location.
+        /// </summary>
+        public int Id { get; }
+
+        /// <summary>
+        /// Gets the position of the touch location.
+        /// </summary>
+        public Vector2 Position { get; }
+        
+        /// <summary>
+        /// Gets the state of the touch location.
+        /// </summary>
+        public TouchLocationState State { get; }
+
         public static bool operator !=(TouchLocation value1, TouchLocation value2)
-        {
-            return (value1.Id != value2.Id) && (value1.Position != value2.Position) && (value1.State != value2.State);
-        }
+            => (value1.Id != value2.Id)
+            && (value1.Position != value2.Position)
+            && (value1.State != value2.State);
 
         public static bool operator ==(TouchLocation value1, TouchLocation value2)
-        {
-            return (value1.Id == value2.Id) && (value1.Position == value2.Position) && (value1.State == value2.State);
-        }
+            => (value1.Id == value2.Id)
+            && (value1.Position == value2.Position)
+            && (value1.State == value2.State);
 
-        public override bool Equals(object obj) => (obj is TouchLocation) && this.Equals((TouchLocation)obj);
+        public override bool Equals(object obj)
+            => (obj is TouchLocation) && this.Equals((TouchLocation)obj);
+
         public bool Equals(TouchLocation other)
-        {
-            return (this.Id == other.Id) && (this.Position == other.Position) && (this.State == other.State);
-        }
+            => (this.Id == other.Id)
+            && (this.Position == other.Position)
+            && (this.State == other.State);
 
-        public override int GetHashCode()
-        {
-            return Id;
-        }
+        public override int GetHashCode() => this.Id;
     }
 }

@@ -1,9 +1,13 @@
-﻿namespace OpenInput
+namespace OpenInput
 {
+    using System;
     using OpenInput.Trackers;
+    using Veldrid;
 
-    public class VeldridGamePad : IGamePad
+    public class VeldridGamePad : VeldridDevice, IGamePad
     {
+        private GamePadState currentState = new GamePadState();
+
         public VeldridGamePad(int index)
         {
             this.Index = index;
@@ -17,15 +21,14 @@
         public string Name { get; private set; }
 
         /// <inheritdoc />
-        public IGamePadTracker CreateTracker()
-        {
-            throw new System.NotImplementedException();
-        }
+        public IGamePadTracker CreateTracker() => new BasicGamePadTracker(this);
 
         /// <inheritdoc />
-        public GamePadState GetCurrentState()
+        public GamePadState GetCurrentState() => this.currentState;
+
+        internal override void UpdateSnapshot(InputSnapshot snapshot)
         {
-            throw new System.NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

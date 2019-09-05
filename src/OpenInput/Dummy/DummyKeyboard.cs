@@ -1,10 +1,6 @@
-﻿namespace OpenInput.Dummy
+namespace OpenInput.Dummy
 {
     using OpenInput.Trackers;
-
-    public class DummyTextInput : TextInput
-    {
-    }
 
     /// <summary>
     /// Dummy Keyboard, does nothing.
@@ -15,20 +11,12 @@
         public string Name => "Dummy Keyboard";
 
         /// <inheritdoc />
-        public IKeyboardTracker CreateTracker()
-        {
-            return new BasicKeyboardTracker(this);
-        }
+        public IKeyboardTracker CreateTracker() => new BasicKeyboardTracker(this);
 
         /// <inheritdoc />
-        public TextInput TextInput => textInput;
-
-        private readonly TextInput textInput = new DummyTextInput();
+        public TextInput TextInput { get; } = new DummyTextInput();
 
         /// <inheritdoc />
-        public KeyboardState GetCurrentState()
-        {
-            return KeyboardState.Empty;
-        }
+        public KeyboardState GetCurrentState() => KeyboardState.Empty;
     }
 }

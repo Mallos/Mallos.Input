@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Trackers
+namespace OpenInput.Trackers
 {
     using System;
 
@@ -11,11 +11,6 @@
         /// Update the tracker.
         /// </summary>
         void Update(float elapsedTime);
-    }
-
-    public interface IDeviceTracker
-    {
-
     }
 
     /// <summary>

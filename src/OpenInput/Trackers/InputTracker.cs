@@ -13,6 +13,9 @@ namespace OpenInput.Trackers
     /// </note>
     public class InputTracker : IDisposable
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="InputTracker"/>.
+        /// </summary>
         public InputTracker(params ITracker[] trackers)
         {
             if (trackers == null || trackers.Length < 0)
@@ -48,48 +51,48 @@ namespace OpenInput.Trackers
 
         private void BindTrackers()
         {
-            foreach (var tracker in this.Trackers)
+            foreach (ITracker tracker in this.Trackers)
             {
                 if (tracker is IKeyboardTracker keyboardTracker)
                 {
-                    keyboardTracker.KeyDown += OnKeyboardKeyDown;
-                    keyboardTracker.KeyUp += OnKeyboardKeyUp;
+                    keyboardTracker.KeyDown += this.OnKeyboardKeyDown;
+                    keyboardTracker.KeyUp += this.OnKeyboardKeyUp;
                 }
 
                 if (tracker is IMouseTracker mouseTracker)
                 {
-                    mouseTracker.MouseDown += OnMouseDown;
-                    mouseTracker.MouseUp += OnMouseUp;
+                    mouseTracker.MouseDown += this.OnMouseDown;
+                    mouseTracker.MouseUp += this.OnMouseUp;
                 }
 
                 if (tracker is IGamePadTracker gamePadTracker)
                 {
-                    gamePadTracker.ButtonDown += OnGamePadButtonDown;
-                    gamePadTracker.ButtonUp += OnGamePadButtonUp;
+                    gamePadTracker.ButtonDown += this.OnGamePadButtonDown;
+                    gamePadTracker.ButtonUp += this.OnGamePadButtonUp;
                 }
             }
         }
 
         private void UnbindTrackers()
         {
-            foreach (var tracker in this.Trackers)
+            foreach (ITracker tracker in this.Trackers)
             {
                 if (tracker is IKeyboardTracker keyboardTracker)
                 {
-                    keyboardTracker.KeyDown -= OnKeyboardKeyDown;
-                    keyboardTracker.KeyUp -= OnKeyboardKeyUp;
+                    keyboardTracker.KeyDown -= this.OnKeyboardKeyDown;
+                    keyboardTracker.KeyUp -= this.OnKeyboardKeyUp;
                 }
 
                 if (tracker is IMouseTracker mouseTracker)
                 {
-                    mouseTracker.MouseDown -= OnMouseDown;
-                    mouseTracker.MouseUp -= OnMouseUp;
+                    mouseTracker.MouseDown -= this.OnMouseDown;
+                    mouseTracker.MouseUp -= this.OnMouseUp;
                 }
 
                 if (tracker is IGamePadTracker gamePadTracker)
                 {
-                    gamePadTracker.ButtonDown -= OnGamePadButtonDown;
-                    gamePadTracker.ButtonUp -= OnGamePadButtonUp;
+                    gamePadTracker.ButtonDown -= this.OnGamePadButtonDown;
+                    gamePadTracker.ButtonUp -= this.OnGamePadButtonUp;
                 }
             }
         }

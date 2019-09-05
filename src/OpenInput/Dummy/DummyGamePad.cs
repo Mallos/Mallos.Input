@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Dummy
+namespace OpenInput.Dummy
 {
     using OpenInput.Trackers;
 
@@ -7,12 +7,6 @@
     /// </summary>
     public class DummyGamePad : IGamePad
     {
-        /// <inheritdoc />
-        public int Index { get; private set; }
-
-        /// <inheritdoc />
-        public string Name => "Dummy GamePad";
-
         /// <summary>
         /// Initialize a new <see cref="DummyGamePad"/> class.
         /// </summary>
@@ -23,15 +17,15 @@
         }
 
         /// <inheritdoc />
-        public IGamePadTracker CreateTracker()
-        {
-            return new BasicGamePadTracker(this);
-        }
+        public int Index { get; private set; }
 
         /// <inheritdoc />
-        public GamePadState GetCurrentState()
-        {
-            return GamePadState.Empty;
-        }
+        public string Name => "Dummy GamePad";
+
+        /// <inheritdoc />
+        public IGamePadTracker CreateTracker() => new BasicGamePadTracker(this);
+
+        /// <inheritdoc />
+        public GamePadState GetCurrentState() => GamePadState.Empty;
     }
 }

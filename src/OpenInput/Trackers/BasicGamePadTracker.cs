@@ -1,4 +1,4 @@
-﻿namespace OpenInput.Trackers
+namespace OpenInput.Trackers
 {
     using System;
 
@@ -7,12 +7,6 @@
     /// </summary>
     public class BasicGamePadTracker : BasicDeviceTracker<IGamePadTracker, GamePadState>, IGamePadTracker
     {
-        /// <inheritdoc />
-        public event EventHandler<GamePadEventArgs> ButtonDown;
-
-        /// <inheritdoc />
-        public event EventHandler<GamePadEventArgs> ButtonUp;
-
         /// <summary>
         /// Initialize a new <see cref="BasicGamePadTracker"/> class.
         /// </summary>
@@ -20,7 +14,6 @@
         public BasicGamePadTracker(IGamePad gamePad)
             : base(gamePad)
         {
-
         }
 
         /// <summary>
@@ -30,12 +23,33 @@
         public BasicGamePadTracker(IDevice<IGamePadTracker, GamePadState> gamePad)
             : base(gamePad)
         {
-
         }
+
+        /// <inheritdoc />
+        public event EventHandler<GamePadEventArgs> ButtonDown;
+
+        /// <inheritdoc />
+        public event EventHandler<GamePadEventArgs> ButtonUp;
 
         protected override void Track(GamePadState newState, GamePadState oldState)
         {
-            throw new NotImplementedException();
+            foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
+            {
+                bool newButton = newState.Buttons.IsButtonDown(button);
+                bool oldButton = oldState.Buttons.IsButtonDown(button);
+
+                if (newButton != oldButton)
+                {
+                    if (newButton)
+                    {
+                        this.ButtonDown?.Invoke(this, new GamePadEventArgs(newState));
+                    }
+                    else
+                    {
+                        this.ButtonUp?.Invoke(this, new GamePadEventArgs(newState));
+                    }
+                }
+            }
         }
     }
 }
