@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <!-- <TargetFramework>netstandard2.0</TargetFramework> -->
     <RootNamespace>OpenInput.Debug</RootNamespace>
     <CodeAnalysisRuleSet>../../build/Analyzers.ruleset</CodeAnalysisRuleSet>
     <Description>A portable way of accessing HID devices for different frameworks. Targets .NET Standard 2.0</Description>
@@ -12,12 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.71.0" />
+    <PackageReference Include="Veldrid.ImGui" Version="5.70.0-ge6647cf4a7" />
+    <!-- <PackageReference Include="ImGui.NET" Version="1.71.0" /> -->
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OpenInput\OpenInput.csproj" />
-    <ProjectReference Include="..\OpenInput.Veldrid.SDL2\OpenInput.Veldrid.SDL2.csproj" />
   </ItemGroup>
 
   <Import Project="..\OpenInput.Debug\OpenInput.Debug.projitems" Label="Shared" />
