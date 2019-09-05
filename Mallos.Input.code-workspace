@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "path": "src/Mallos.Input"
+    },
+    {
+      "path": "src/Mallos.Input.Veldrid.SDL2"
+    },
+    {
+      "path": "test/Mallos.Input.Veldrid.SDL.Test"
+    },
+    {
+      "path": "test/Mallos.Input.Test"
+    },
+    {
+      "path": "docs"
+    },
+    {
+      "path": "src/Mallos.Input.Veldrid.SDL2.Debug"
+    }
+  ],
+  "settings": {}
+}

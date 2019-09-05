@@ -1,7 +1,7 @@
-namespace OpenInput.Test
+namespace Mallos.Input.Test
 {
     using ImGuiNET;
-    using OpenInput.Mechanics;
+    using Mallos.Input.Mechanics;
     using System.Collections.Generic;
     using System.Text;
 
@@ -19,13 +19,13 @@ namespace OpenInput.Test
         
         public TestContext(DeviceSet defaultSet)
         {
-            //new OpenInput.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
+            //new Mallos.Input.RawDeviceSet(windowHandle.Value), // TODO: Window Handle
             
             // Add the different types of input context.
             DeviceSets = new List<DeviceSet>(new[]
             {
                 defaultSet,
-                new OpenInput.Dummy.DummyDeviceSet(),
+                new Mallos.Input.Dummy.DummyDeviceSet(),
             });
             
             // Create a input system and register a few inputs.
