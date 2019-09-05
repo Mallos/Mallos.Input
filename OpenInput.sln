@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4FB0816A-AD8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A14D1E2F-7D7E-481D-91A7-71F7837D60BE}"
 	ProjectSection(SolutionItems) = preProject
+		changelog.md = changelog.md
 		README.md = README.md
 	EndProjectSection
 EndProject

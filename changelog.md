@@ -6,6 +6,8 @@ This update contains a lot of changes and a lot of breaking changes, there is a 
 
 - Improve MouseState to use enums for the buttons
 - Use Veldrid nightly version
+- Discontinue SharpDX Support (RawInput) for now
+- Discontinue OpenTK Support for now
 
 #### Mechanics:
 
