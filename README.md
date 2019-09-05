@@ -2,18 +2,18 @@
 A portable way of accessing HID devices cross-platform
 
 ## Supported Platforms
-* Windows (RawInput)
-* OpenTK
+
 * Veldrid
 
 ## Features
+
 * Event based input
 
 ### Supported Devices
+
 * Mouse
 * Keyboard
-* ~~TouchDevice~~
-* GamePad
+* _Limited GamePad_
 
 ### Mechanics
 A lot of the simple things should be in the hands of the designers not the programmers, so lets make it easy to modify key features!
@@ -29,6 +29,13 @@ A lot of the simple things should be in the hands of the designers not the progr
 * [Layout](./docs/layout.md)
   
   Rebinding layout, get/modify all the possible rebindable keys and apply it to the *Input System* giving you a simple way to handle user rebindable keys while not making it hard to create new layouts.
+
+## Roadmap
+
+* Add back RawInput Support
+* Add back OpenTK Support
+* Add Full TouchDevice Support
+* Add Full GamePad Support
 
 ## Contributing
 Contributions are always welcome.
