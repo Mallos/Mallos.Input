@@ -1,4 +1,4 @@
-# OpenInput
+# Mallos.Input
 A portable way of accessing HID devices cross-platform
 
 ## Supported Platforms
