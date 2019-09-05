@@ -13,8 +13,8 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>Copyright 2019 (c) Eric Tuvesson (erictuvesson). All rights reserved.</Copyright>
     <Authors>Eric Tuvesson</Authors>
-    <RepositoryUrl>https://github.com/erictuvesson/OpenInput</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/erictuvesson/OpenInput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/erictuvesson/Mallos.Input</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/erictuvesson/Mallos.Input</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
