@@ -1,4 +1,32 @@
-namespace Mallos.Input{    using Veldrid;    internal static class VeldridHelpers    {        public static Keys ConvertKey(this Key key)        {            switch (key)            {                default:                case Key.Unknown:
+namespace Mallos.Input{    using Veldrid;    internal static class VeldridHelpers    {
+        public static MouseButtons ConvertMouseButtons(this MouseButton button)
+        {
+            switch (button)
+            {
+                case MouseButton.Left:
+                    return MouseButtons.Left;
+                case MouseButton.Middle:
+                    return MouseButtons.Middle;
+                case MouseButton.Right:
+                    return MouseButtons.Right;
+                case MouseButton.Button1:
+                    return MouseButtons.XButton1;
+                case MouseButton.Button2:
+                    return MouseButtons.XButton2;
+
+                case MouseButton.Button3:
+                case MouseButton.Button4:
+                case MouseButton.Button5:
+                case MouseButton.Button6:
+                case MouseButton.Button7:
+                case MouseButton.Button8:
+                case MouseButton.Button9:
+                case MouseButton.LastButton:
+                default:
+                    return MouseButtons.Empty;
+            }
+        }
+        public static Keys ConvertKey(this Key key)        {            switch (key)            {                default:                case Key.Unknown:
                     return Keys.Unknown;                case Key.ShiftLeft:
                     return Keys.LeftShift;                case Key.ShiftRight:
                     return Keys.RightShift;                case Key.ControlLeft:
