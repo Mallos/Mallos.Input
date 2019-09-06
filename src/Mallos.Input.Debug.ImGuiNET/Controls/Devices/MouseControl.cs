@@ -19,19 +19,19 @@ namespace Mallos.Input.Debug.Controls.Devices
 
         public override void DrawControl()
         {
-            var mouseState = this.Mouse.GetCurrentState();
+            MouseState mouseState = this.Mouse.GetCurrentState();
 
-            sb.Clear();
-            sb.AppendLine($"Position: { mouseState.X }, { mouseState.Y }");
-            sb.AppendLine($"MouseWheel: { mouseState.ScrollWheelValue }");
-            sb.AppendLine();
-            sb.AppendLine($"Left Button: { mouseState.LeftButton }");
-            sb.AppendLine($"Middle Button: { mouseState.MiddleButton }");
-            sb.AppendLine($"Right Button: { mouseState.RightButton }");
-            sb.AppendLine($"XButton1: { mouseState.XButton1 }");
-            sb.AppendLine($"XButton2: { mouseState.XButton2 }");
+            this.sb.Clear();
+            this.sb.AppendLine($"Position: { mouseState.X }, { mouseState.Y }");
+            this.sb.AppendLine($"MouseWheel: { mouseState.ScrollWheelValue }");
+            this.sb.AppendLine();
+            this.sb.AppendLine($"Left Button: { mouseState.LeftButton }");
+            this.sb.AppendLine($"Middle Button: { mouseState.MiddleButton }");
+            this.sb.AppendLine($"Right Button: { mouseState.RightButton }");
+            this.sb.AppendLine($"XButton1: { mouseState.XButton1 }");
+            this.sb.AppendLine($"XButton2: { mouseState.XButton2 }");
 
-            ImGui.Text(sb.ToString());
+            ImGui.Text(this.sb.ToString());
         }
 
         public override string ToString() => $"Mouse (Name: \"{this.Mouse.Name}\")";

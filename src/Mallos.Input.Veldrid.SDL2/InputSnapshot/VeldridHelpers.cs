@@ -1,4 +1,4 @@
-namespace Mallos.Input{    using Veldrid;    internal static class VeldridHelpers    {
+namespace Mallos.Input.InputSnapshot{    using Veldrid;    internal static class VeldridHelpers    {
         public static MouseButtons ConvertMouseButtons(this MouseButton button)
         {
             switch (button)

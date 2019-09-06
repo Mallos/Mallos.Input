@@ -1,4 +1,4 @@
-namespace Mallos.Input
+namespace Mallos.Input.InputSnapshot
 {
     using System;
     using Mallos.Input.Trackers;
