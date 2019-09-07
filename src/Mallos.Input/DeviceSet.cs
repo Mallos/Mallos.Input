@@ -1,4 +1,4 @@
-﻿namespace Mallos.Input
+namespace Mallos.Input
 {
     using Mallos.Input.Trackers;
 
@@ -17,37 +17,37 @@
             TGamePad[] gamePads)
         {
             this.Name = name;
-            this.Keyboard = keyboard;
-            this.Mouse = mouse;
+            this.GKeyboard = keyboard;
+            this.GMouse = mouse;
 
             // FIXME: Figure out how to handle new gamepad connect
-            this.GamePads = gamePads;
+            this.TGamePads = gamePads;
 
-            this.KeyboardTracker = Keyboard?.CreateTracker();
-            this.MouseTracker = Mouse?.CreateTracker();
+            this.KeyboardTracker = this.GKeyboard?.CreateTracker();
+            this.MouseTracker = this.GMouse?.CreateTracker();
         }
 
         /// <inheritdoc />
         public string Name { get; }
 
-        protected TKeyboard Keyboard { get; }
-        protected TMouse Mouse { get; }
-        protected TGamePad[] GamePads { get; }
+        /// <inheritdoc />
+        IKeyboard Keyboard => this.GKeyboard;
 
         /// <inheritdoc />
-        IKeyboard IDeviceSet.Keyboard => this.Keyboard;
+        IMouse Mouse => this.GMouse;
 
         /// <inheritdoc />
-        IMouse IDeviceSet.Mouse => this.Mouse;
-
-        /// <inheritdoc />
-        IGamePad[] IDeviceSet.GamePads => this.GamePads as IGamePad[];
+        IGamePad[] GamePads => this.TGamePads as IGamePad[];
 
         /// <inheritdoc />
         public IKeyboardTracker KeyboardTracker { get; }
 
         /// <inheritdoc />
         public IMouseTracker MouseTracker { get; }
+        
+        protected TKeyboard GKeyboard { get; }
+        protected TMouse GMouse { get; }
+        protected TGamePad[] TGamePads { get; }
 
         /// <inheritdoc />
         public void Update(float elapsedTime)

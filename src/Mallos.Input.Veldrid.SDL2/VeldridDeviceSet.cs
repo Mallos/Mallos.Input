@@ -15,8 +15,8 @@ namespace Mallos.Input
 
         public void UpdateSnapshot(InputSnapshot snapshot)
         {
-            this.Keyboard.UpdateSnapshot(snapshot);
-            this.Mouse.UpdateSnapshot(snapshot);
+            this.GKeyboard.UpdateSnapshot(snapshot);
+            this.GMouse.UpdateSnapshot(snapshot);
         }
     }
 }
