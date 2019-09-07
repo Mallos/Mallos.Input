@@ -19,7 +19,7 @@ namespace Mallos.Input.Window
                 case SDL_MouseButton.X2:
                     return MouseButtons.XButton2;
                 default:
-                    return MouseButtons.Left;
+                    return MouseButtons.Empty;
             }
         }
 

@@ -1,42 +1,36 @@
 namespace Mallos.Input.Window
 {
-    using System;
+    using System.Numerics;
     using System.Runtime.CompilerServices;
     using Mallos.Input.Trackers;
+    using Mallos.Input.Trackers.Smart;
     using Veldrid.Sdl2;
     using static Veldrid.Sdl2.Sdl2Native;
 
     public unsafe partial class MallosSdl2Window
     {
-        private int currentMouseX;
-        private int currentMouseY;
-        private bool[] currentMouseButtonStates = new bool[13];
+        private readonly MouseStateTracker mouseTracker = new MouseStateTracker();
 
         void IMouse.SetPosition(int x, int y)
         {
             if (this.Exists)
             {
                 SDL_WarpMouseInWindow(this.window, x, y);
-                this.currentMouseX = x;
-                this.currentMouseY = y;
+                this.mouseTracker.OnMove(new Vector2(x, y), Vector2.Zero);
             }
         }
 
         void IMouse.GetPosition(out int x, out int y)
         {
-            x = this.currentMouseX;
-            y = this.currentMouseY;
+            x = this.mouseTracker.MouseState.X;
+            y = this.mouseTracker.MouseState.Y;
         }
 
         IMouseTracker IDevice<IMouseTracker, Input.MouseState>.CreateTracker()
-        {
-            throw new NotImplementedException();
-        }
+            => this.mouseTracker;
 
         Input.MouseState IDevice<IMouseTracker, Input.MouseState>.GetCurrentState()
-        {
-            throw new NotImplementedException();
-        }
+            => this.mouseTracker.MouseState;
 
         private unsafe void HandleMouseEvent(SDL_Event* ev)
         {
@@ -61,43 +55,25 @@ namespace Mallos.Input.Window
         }
 
         private void HandleMouseWheelEvent(SDL_MouseWheelEvent mouseWheelEvent)
-        {
-            //MouseWheel?.Invoke(new MouseWheelEventArgs(GetCurrentMouseState(), (float)mouseWheelEvent.y));
-        }
+            => this.mouseTracker.OnMouseWheel(mouseWheelEvent.y);
 
         private void HandleMouseButtonEvent(SDL_MouseButtonEvent mouseButtonEvent)
         {
-            //MouseButton button = MapMouseButton(mouseButtonEvent.button);
-            //bool down = mouseButtonEvent.state == 1;
-            //_currentMouseButtonStates[(int)button] = down;
-            //_privateSnapshot.MouseDown[(int)button] = down;
-            //MouseEvent mouseEvent = new MouseEvent(button, down);
-            //_privateSnapshot.MouseEventsList.Add(mouseEvent);
-            //if (down)
-            //{
-            //    MouseDown?.Invoke(mouseEvent);
-            //}
-            //else
-            //{
-            //    MouseUp?.Invoke(mouseEvent);
-            //}
+            if (mouseButtonEvent.state == 1)
+            {
+                this.mouseTracker.OnButtonDown(mouseButtonEvent.button.Convert());
+            }
+            else
+            {
+                this.mouseTracker.OnButtonUp(mouseButtonEvent.button.Convert());
+            }
         }
 
         private void HandleMouseMotionEvent(SDL_MouseMotionEvent mouseMotionEvent)
         {
-            //Vector2 mousePos = new Vector2(mouseMotionEvent.x, mouseMotionEvent.y);
-            //Vector2 delta = new Vector2(mouseMotionEvent.xrel, mouseMotionEvent.yrel);
-            //_currentMouseX = (int)mousePos.X;
-            //_currentMouseY = (int)mousePos.Y;
-            //_privateSnapshot.MousePosition = mousePos;
-
-            //if (!_firstMouseEvent)
-            //{
-            //    _currentMouseDelta += delta;
-            //    MouseMove?.Invoke(new MouseMoveEventArgs(GetCurrentMouseState(), mousePos));
-            //}
-
-            //_firstMouseEvent = false;
+            Vector2 mousePos = new Vector2(mouseMotionEvent.x, mouseMotionEvent.y);
+            Vector2 delta = new Vector2(mouseMotionEvent.xrel, mouseMotionEvent.yrel);
+            this.mouseTracker.OnMove(mousePos, delta);
         }
     }
 }

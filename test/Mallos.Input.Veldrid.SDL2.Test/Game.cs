@@ -12,7 +12,6 @@ namespace Mallos.Input.Test
 
     class Game : BaseGame
     {
-        private readonly VeldridDeviceSet deviceSet;
         private readonly Layout layout;
         private readonly InputSystem InputSystem;
         private readonly ComboTracker ComboTracker;
@@ -23,10 +22,8 @@ namespace Mallos.Input.Test
 
         public Game()
         {
-            this.deviceSet = new VeldridDeviceSet();
-
             // FIXME: How the generics was done is bad, lets fix that.
-            var defaultSet = (IDeviceSet)deviceSet;
+            var defaultSet = (IDeviceSet)this.Window.DeviceSet;
 
             this.DeviceSetControl = new DeviceSetControl(defaultSet);
 
@@ -56,10 +53,7 @@ namespace Mallos.Input.Test
             // FIXME: Handle elapsed time and not constant
             float elapsedTime = 1f / 60;
 
-            // FIXME: Can I get the "last" state from Veldrid?
-            this.deviceSet.UpdateSnapshot(this.LastInputSnapshot);
-
-            this.deviceSet.Update(elapsedTime);
+            //this.deviceSet.Update(elapsedTime);
             this.InputSystem.Update(elapsedTime);
             this.ComboTracker.Update(elapsedTime);
 

@@ -8,6 +8,8 @@ namespace Mallos.Input.Window
     using Veldrid.Sdl2;
     using static Veldrid.Sdl2.Sdl2Native;
 
+    public delegate void SDLEventHandler(ref SDL_Event ev);
+
     public unsafe partial class MallosSdl2Window
     {
         private readonly List<SDL_Event> events = new List<SDL_Event>();
@@ -19,17 +21,14 @@ namespace Mallos.Input.Window
 
         public bool PumpEvents()
         {
-            if (this.threadedProcessing)
+            if (!this.Exists)
             {
-                // SimpleInputSnapshot snapshot = Interlocked.Exchange(ref _privateSnapshot, _privateBackbuffer);
-                // snapshot.CopyTo(_publicSnapshot);
-                // snapshot.Clear();
+                return false;
             }
-            else
+
+            if (!this.threadedProcessing)
             {
                 this.ProcessEvents(null);
-                // _privateSnapshot.CopyTo(_publicSnapshot);
-                // _privateSnapshot.Clear();
             }
 
             return true;

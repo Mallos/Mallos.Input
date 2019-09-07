@@ -1,3 +1,4 @@
+using Mallos.Input.Window;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
@@ -6,7 +7,7 @@ namespace Mallos.Input.Test
 {
     abstract class BaseGame
     {
-        public readonly Sdl2Window Window;
+        public readonly MallosSdl2Window Window;
         public readonly GraphicsDevice GraphicsDevice;
         public readonly ImGuiRenderer ImGuiRenderer;
         public readonly CommandList CommandList;
@@ -58,8 +59,6 @@ namespace Mallos.Input.Test
                 this.Window.Height);
         }
 
-        public InputSnapshot LastInputSnapshot { get; private set; }
-
         public void Run()
         {
             while (this.Window.Exists)
@@ -70,7 +69,7 @@ namespace Mallos.Input.Test
                     this.GraphicsDevice.ResizeMainWindow((uint)this.Window.Width, (uint)this.Window.Height);
                 }
 
-                this.LastInputSnapshot = this.Window.PumpEvents();
+                this.Window.PumpEvents();
 
                 this.ImGuiRenderer.Update(1f / 60, this.LastInputSnapshot);
 

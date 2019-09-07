@@ -9,8 +9,6 @@ namespace Mallos.Input.Window
     using Veldrid.Sdl2;
     using static Veldrid.Sdl2.Sdl2Native;
 
-    public delegate void SDLEventHandler(ref SDL_Event ev);
-
     public unsafe partial class MallosSdl2Window : IWindow, IMouse, IKeyboard
     {
         private IntPtr window;

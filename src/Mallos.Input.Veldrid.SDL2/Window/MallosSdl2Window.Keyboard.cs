@@ -1,21 +1,19 @@
 namespace Mallos.Input.Window
 {
-    using System;
     using System.Runtime.CompilerServices;
     using Mallos.Input.Trackers;
+    using Mallos.Input.Trackers.Smart;
     using Veldrid.Sdl2;
 
     public unsafe partial class MallosSdl2Window
     {
+        private readonly KeyboardStateTracker keyboardTracker = new KeyboardStateTracker();
+
         IKeyboardTracker IDevice<IKeyboardTracker, KeyboardState>.CreateTracker()
-        {
-            throw new NotImplementedException();
-        }
+            => this.keyboardTracker;
 
         KeyboardState IDevice<IKeyboardTracker, KeyboardState>.GetCurrentState()
-        {
-            throw new NotImplementedException();
-        }
+            => this.keyboardTracker.KeyboardState;
 
         private unsafe void HandleKeyboardEvent(SDL_Event* ev)
         {
@@ -64,17 +62,18 @@ namespace Mallos.Input.Window
 
         private void HandleKeyboardEvent(SDL_KeyboardEvent keyboardEvent)
         {
-            // SimpleInputSnapshot snapshot = _privateSnapshot;
-            // KeyEvent keyEvent = new KeyEvent(MapKey(keyboardEvent.keysym), keyboardEvent.state == 1, MapModifierKeys(keyboardEvent.keysym.mod));
-            // snapshot.KeyEventsList.Add(keyEvent);
-            // if (keyboardEvent.state == 1)
-            // {
-            //     KeyDown?.Invoke(keyEvent);
-            // }
-            // else
-            // {
-            //     KeyUp?.Invoke(keyEvent);
-            // }
+            if (keyboardEvent.state == 1)
+            {
+                this.keyboardTracker.OnKeyDown(
+                    keyboardEvent.keysym.Convert(),
+                    (char)keyboardEvent.keysym.sym);
+            }
+            else
+            {
+                this.keyboardTracker.OnKeyUp(
+                    keyboardEvent.keysym.Convert(),
+                    (char) keyboardEvent.keysym.sym);
+            }
         }
     }
 }
