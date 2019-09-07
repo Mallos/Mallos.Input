@@ -31,13 +31,13 @@ namespace Mallos.Input
         public string Name { get; }
 
         /// <inheritdoc />
-        IKeyboard Keyboard => this.GKeyboard;
+        public IKeyboard Keyboard => this.GKeyboard;
 
         /// <inheritdoc />
-        IMouse Mouse => this.GMouse;
+        public IMouse Mouse => this.GMouse;
 
         /// <inheritdoc />
-        IGamePad[] GamePads => this.TGamePads as IGamePad[];
+        public IGamePad[] GamePads => this.TGamePads as IGamePad[];
 
         /// <inheritdoc />
         public IKeyboardTracker KeyboardTracker { get; }
