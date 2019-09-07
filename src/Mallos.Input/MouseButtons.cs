@@ -1,38 +1,35 @@
 namespace Mallos.Input
 {
-    using System;
-
     /// <summary>
     /// The possible mouse buttons.
     /// </summary>
-    [Flags]
-    public enum MouseButtons
+    public enum MouseButtons : byte
     {
-        Empty,
+        Empty = 0,
 
         /// <summary>
         /// The left mouse button.
         /// </summary>
-        Left,
+        Left = 1,
 
         /// <summary>
         /// The middle mouse button.
         /// </summary>
-        Middle,
+        Middle = 2,
 
         /// <summary>
         /// The right mouse button.
         /// </summary>
-        Right,
+        Right = 4,
 
         /// <summary>
         /// The extra mouse button 1.
         /// </summary>
-        XButton1,
+        XButton1 = 8,
 
         /// <summary>
         /// The extra mouse button 2.
         /// </summary>
-        XButton2,
+        XButton2 = 16,
     }
 }

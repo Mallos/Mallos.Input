@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <!-- <TargetFramework>netstandard2.0</TargetFramework> -->
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Mallos.Input.Debug</RootNamespace>
     <CodeAnalysisRuleSet>../../build/Analyzers.ruleset</CodeAnalysisRuleSet>
     <Description>A portable way of accessing HID devices for different frameworks. Targets .NET Standard 2.0</Description>
@@ -13,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid.ImGui" Version="5.70.0-ge6647cf4a7" />
-    <!-- <PackageReference Include="ImGui.NET" Version="1.71.0" /> -->
+    <PackageReference Include="ImGui.NET" Version="1.70.0" />
   </ItemGroup>
 
   <ItemGroup>

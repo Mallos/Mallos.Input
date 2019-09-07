@@ -1,13 +1,12 @@
 namespace Mallos.Input
 {
-    using System.Collections.Generic;
     using Mallos.Input.Trackers;
     using Veldrid;
 
     public class VeldridMouse : VeldridDevice, IMouse
     {
-        private readonly HashSet<MouseButton> pressedButtons = new HashSet<MouseButton>();
         private MouseState currentState = new MouseState();
+        private MouseButtons buttons = MouseButtons.Empty;
 
         /// <inheritdoc />
         public string Name => "Veldrid Mouse";
@@ -37,11 +36,11 @@ namespace Mallos.Input
             {
                 if (key.Down)
                 {
-                    this.pressedButtons.Add(key.MouseButton);
+                    this.buttons |= key.MouseButton.ConvertMouseButtons();
                 }
                 else
                 {
-                    this.pressedButtons.Remove(key.MouseButton);
+                    this.buttons ^= key.MouseButton.ConvertMouseButtons();
                 }
             }
 
@@ -49,11 +48,7 @@ namespace Mallos.Input
                 (int) snapshot.MousePosition.X,
                 (int) snapshot.MousePosition.Y,
                 (int) snapshot.WheelDelta,
-                pressedButtons.Contains(MouseButton.Left),
-                pressedButtons.Contains(MouseButton.Middle),
-                pressedButtons.Contains(MouseButton.Right),
-                pressedButtons.Contains(MouseButton.Button1),
-                pressedButtons.Contains(MouseButton.Button2));
+                this.buttons);
         }
     }
 }

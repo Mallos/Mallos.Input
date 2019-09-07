@@ -1,4 +1,4 @@
-﻿namespace Mallos.Input
+namespace Mallos.Input
 {
     using System.Numerics;
 
@@ -55,7 +55,7 @@
         /// <summary>
         /// Gets a <see cref="Vector2"/> of the cursor position.
         /// </summary>
-        public Vector2 Position => new Vector2(X, Y);
+        public Vector2 Position => new Vector2(this.X, this.Y);
 
         /// <summary>
         /// Gets or sets the scroll wheel value of this state.
@@ -70,35 +70,32 @@
         /// <summary>
         /// Gets wether the left button is pressed.
         /// </summary>
-        public bool LeftButton => this.PressedButtons.HasFlag(MouseButtons.Left);
+        public bool LeftButton => this.IsButtonDown(MouseButtons.Left);
 
         /// <summary>
         /// Gets wether the middle button is pressed.
         /// </summary>
-        public bool MiddleButton => this.PressedButtons.HasFlag(MouseButtons.Middle);
+        public bool MiddleButton => this.IsButtonDown(MouseButtons.Middle);
 
         /// <summary>
         /// Gets wether the right button is pressed.
         /// </summary>
-        public bool RightButton => this.PressedButtons.HasFlag(MouseButtons.Right);
+        public bool RightButton => this.IsButtonDown(MouseButtons.Right);
 
         /// <summary>
         /// Gets wether the extra button 1 is pressed.
         /// </summary>
-        public bool XButton1 => this.PressedButtons.HasFlag(MouseButtons.XButton1);
+        public bool XButton1 => this.IsButtonDown(MouseButtons.XButton1);
 
         /// <summary>
         /// Gets wether the extra button 2 is pressed.
         /// </summary>
-        public bool XButton2 => this.PressedButtons.HasFlag(MouseButtons.XButton2);
+        public bool XButton2 => this.IsButtonDown(MouseButtons.XButton2);
 
         /// <summary>
         /// Returns wether or not the button is pressed.
         /// </summary>
-        public bool IsButtonDown(MouseButtons button)
-        {
-            return this.PressedButtons.HasFlag(button);
-        }
+        public bool IsButtonDown(MouseButtons button) => (this.PressedButtons & button) == button;
 
         public override string ToString()
         {
