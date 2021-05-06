@@ -67,4 +67,9 @@ namespace Mallos.Input.Trackers
         /// </summary>
         event EventHandler<GamePadEventArgs> ButtonUp;
     }
+
+    public interface ITouchTracker : ITracker
+    {
+
+    }
 }

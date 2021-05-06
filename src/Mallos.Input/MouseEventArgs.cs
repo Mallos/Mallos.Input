@@ -8,6 +8,11 @@ namespace Mallos.Input
     public class MouseEventArgs : EventArgs
     {
         /// <summary>
+        /// Gets the state as of when the event occurs.
+        /// </summary>
+        public MouseState State { get; internal set; }
+
+        /// <summary>
         /// Initializes a new instance of <see cref="MouseEventArgs"/>.
         /// </summary>
         public MouseEventArgs(MouseState state)
@@ -15,10 +20,8 @@ namespace Mallos.Input
             this.State = state;
         }
 
-        /// <summary>
-        /// Gets the state as of when the event occurs.
-        /// </summary>
-        public MouseState State { get; internal set; }
+        public override string ToString()
+            => $"<MouseEventArgs, State: {this.State}>";
     }
 
     /// <summary>
@@ -26,6 +29,12 @@ namespace Mallos.Input
     /// </summary>
     public class MouseButtonEventArgs : MouseEventArgs
     {
+
+        /// <summary>
+        /// Gets the button that was pressed.
+        /// </summar>
+        public MouseButtons Button { get; }
+
         /// <summary>
         /// Initializes a new instance of <see cref="MouseButtonEventArgs"/>.
         /// </summary>
@@ -35,10 +44,8 @@ namespace Mallos.Input
             this.Button = button;
         }
 
-        /// <summary>
-        /// Gets the button that was pressed.
-        /// </summar>
-        public MouseButtons Button { get; }
+        public override string ToString()
+            => $"<MouseEventArgs, State: {this.State}, Button: {this.Button}>";
     }
 
     /// <summary>
@@ -53,5 +60,8 @@ namespace Mallos.Input
             : base(state)
         {
         }
+
+        public override string ToString()
+            => $"<MouseWheelEventArgs, State: {this.State}>";
     }
 }

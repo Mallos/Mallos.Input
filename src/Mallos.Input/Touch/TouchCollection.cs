@@ -39,78 +39,70 @@ namespace Mallos.Input.Touch
         public bool IsReadOnly => false;
 
         #region IList
+
         /// <inheritdoc />
         public bool Contains(TouchLocation item)
         {
-            for (var i = 0; i < collection.Length; i++)
+            for (int i = 0; i < this.collection.Length; i++)
             {
-                if (collection[i] == item)
+                if (this.collection[i] == item)
+                {
                     return true;
+                }
             }
             return false;
         }
 
         /// <inheritdoc />
         public void CopyTo(TouchLocation[] array, int arrayIndex)
-        {
-            collection.CopyTo(array, arrayIndex);
-        }
+            => this.collection.CopyTo(array, arrayIndex);
 
         /// <inheritdoc />
         public int IndexOf(TouchLocation item)
         {
-            for (var i = 0; i < collection.Length; i++)
+            for (int i = 0; i < this.collection.Length; i++)
             {
-                if (collection[i] == item)
+                if (this.collection[i] == item)
+                {
                     return i;
+                }
             }
             return -1;
         }
 
         void ICollection<TouchLocation>.Add(TouchLocation item)
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
 
         void ICollection<TouchLocation>.Clear()
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
 
         bool ICollection<TouchLocation>.Remove(TouchLocation item)
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
 
         void IList<TouchLocation>.Insert(int index, TouchLocation item)
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
 
         void IList<TouchLocation>.RemoveAt(int index)
-        {
-            throw new NotSupportedException();
-        }
+            => throw new NotSupportedException();
+
         #endregion
 
         #region IEnumerable
+
         /// <inheritdoc />
         public IEnumerator GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+            => new Enumerator(this);
 
         /// <inheritdoc />
         IEnumerator<TouchLocation> IEnumerable<TouchLocation>.GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+            => new Enumerator(this);
+
         #endregion
 
-        class Enumerator : IEnumerator<TouchLocation>
+        private class Enumerator : IEnumerator<TouchLocation>
         {
-            public TouchLocation Current => collection[position];
-            object IEnumerator.Current => Current;
+            public TouchLocation Current => this.collection[this.position];
+            object IEnumerator.Current => this.Current;
 
             private readonly TouchCollection collection;
             private int position;
@@ -128,13 +120,10 @@ namespace Mallos.Input.Touch
             }
 
             public void Reset()
-            {
-                this.position = -1;
-            }
+                => this.position = -1;
 
             public void Dispose()
             {
-
             }
         }
     }
