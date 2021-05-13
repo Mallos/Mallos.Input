@@ -11,7 +11,10 @@ Hook the Javascript events:
 
 // Mouse
 window.game.canvas.onmousemove = (e) => {
-    game.instance.invokeMethodAsync('OnMouseMove', e.clientX, e.clientY);
+    const clientRect = e.target.getBoundingClientRect();
+    const absPositionX = e.clientX - clientRect.x;
+    const absPositionY = e.clientY - clientRect.y;
+    game.instance.invokeMethodAsync('OnMouseMove', absPositionX, absPositionY);
 };
 window.game.canvas.onmousedown = (e) => {
     game.instance.invokeMethodAsync('OnMouseDown', e.button);
