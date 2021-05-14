@@ -28,8 +28,6 @@ export function addEvents(id) {
     return false;
   }
 
-  console.log(canvas);
-
   ///
   /// Mouse
   ///
