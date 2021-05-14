@@ -1,4 +1,4 @@
-﻿namespace Mallos.Input.Blazor
+namespace Mallos.Input.Blazor
 {
     /// <summary>
     /// This is taken from <seealso cref="Microsoft.AspNetCore.Components.Web.MouseEventArgs"/>.
@@ -20,23 +20,23 @@
         /// This value remains consistent for every event involving this finger's
         /// (or stylus's) movement on the surface until it is lifted off the surface.
         /// </summary>
-        public int identifier;
+        public long Identifier;
 
         /// <summary>
         /// Gets the X coordinate of the touch point relative to the viewport, including any scroll offset.
         /// </summary>
-        public int x;
+        public int X;
 
         /// <summary>
         /// Gets the Y coordinate of the touch point relative to the viewport, including any scroll offset.
         /// </summary>
-        public int y;
+        public int Y;
 
         /// <summary>
         /// Gets the amount of pressure the user is applying to the touch surface for a Touch point.
         /// https://developer.mozilla.org/en-US/docs/Web/API/Touch/force
         /// </summary>
-        public float force;
+        public float Force;
 
         /// <summary>
         /// Gets the radius of the ellipse that most closely circumscribes
@@ -44,6 +44,18 @@
         /// https://developer.mozilla.org/en-US/docs/Web/API/Touch/radiusX
         /// https://developer.mozilla.org/en-US/docs/Web/API/Touch/radiusY
         /// </summary>
-        public int radius;
+        public int Radius;
+    }
+
+    public class BoundingClientRect
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public double Top { get; set; }
+        public double Right { get; set; }
+        public double Bottom { get; set; }
+        public double Left { get; set; }
     }
 }

@@ -69,9 +69,10 @@ namespace Mallos.Input
         
         protected TTouchDevice GTouchDevice { get; }
 
-        public DeviceSet(string name, TKeyboard keyboard, TMouse mouse, TGamePad[] gamePads, TTouchDevice youchDevice)
+        public DeviceSet(string name, TKeyboard keyboard, TMouse mouse, TGamePad[] gamePads, TTouchDevice touchDevice)
             : base(name, keyboard, mouse, gamePads)
         {
+            this.GTouchDevice = touchDevice;
         }
 
         public DeviceSet(string name, TKeyboard keyboard, TMouse mouse, TGamePad[] gamePads)

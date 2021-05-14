@@ -1,0 +1,78 @@
+@inherits MInputWrapperComponent
+
+<div id="@id"
+     @ref="wrapperRef"
+     role="region"
+     aria-role="input system"
+     @onmousemove="(args) => OnMouseMove(args)"
+     @onmousedown="(args) => OnMouseDown(args)"
+     @onmouseup="(args) => OnMouseUp(args)"
+     @onmousewheel="(args) => OnMouseWheel(args)"
+     @onkeydown="(args) => OnKeyDown(args)"
+     @onkeyup="(args) => OnKeyDown(args)"
+     @ontouchstart="(args) => OnTouch(args)"
+     @ontouchend="(args) => OnTouch(args)"
+     @ontouchmove="(args) => OnTouch(args)"
+     @ontouchenter="(args) => OnTouch(args)"
+     @ontouchleave="(args) => OnTouch(args)"
+     @ontouchcancel="(args) => OnTouch(args)">
+  @ChildContent
+</div>
+
+@code {
+    async Task OnMouseMove(MouseEventArgs eventArgs)
+    {
+        // TODO: Maybe cache the bounding client rect?
+        // var clientRect = await this.GetBoundingClientRect();
+        // var mouseX = (int)(eventArgs.ClientX - clientRect.X);
+        // var mouseY = (int)(eventArgs.ClientY - clientRect.Y);
+        
+        var mouseX = (int)eventArgs.ClientX;
+        var mouseY = (int)eventArgs.ClientY;
+
+        await BlazorMouseState.OnMouseMove(mouseX, mouseY);
+    }
+
+    ValueTask OnMouseDown(MouseEventArgs eventArgs)
+    {
+        var button = (int)eventArgs.Button;
+        return BlazorMouseState.OnMouseToggle(button, true);
+    }
+
+    ValueTask OnMouseUp(MouseEventArgs eventArgs)
+    {
+        var button = (int)eventArgs.Button;
+        return BlazorMouseState.OnMouseToggle(button, false);
+    }
+
+    ValueTask OnMouseWheel(MouseEventArgs eventArgs)
+    {
+        // TODO: Get DeltaY
+        return BlazorMouseState.OnMouseWheel(0);
+    }
+
+    ValueTask OnKeyDown(KeyboardEventArgs eventArgs)
+    {
+        return BlazorKeyboardState.OnKeyDown(int.Parse(eventArgs.Code));
+    }
+
+    ValueTask OnKeyUp(KeyboardEventArgs eventArgs)
+    {
+        return BlazorKeyboardState.OnKeyUp(int.Parse(eventArgs.Code));
+    }
+
+    ValueTask OnTouch(TouchEventArgs eventArgs)
+    {
+        var points = eventArgs.Touches.Select(x => new BlazorTouchPoint()
+        {
+            Identifier = x.Identifier,
+            X = (int)x.ClientX,
+            Y = (int)x.ClientY,
+            // TODO: Get force and radius
+            Force = float.MaxValue,
+            Radius = int.MinValue
+        }).ToArray();
+        
+        return BlazorTouchDeviceState.OnTouch(points);
+    }
+}

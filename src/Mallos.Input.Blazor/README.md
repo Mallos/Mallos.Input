@@ -5,6 +5,15 @@ Mallos.Input for Blazor canvas.
 
 ## Getting Started
 
+This is built as a wrapper component that will listen to all events.
+```html
+  <MInputWrapper @ref="_input">
+    <BECanvas @ref="_canvas"></BECanvas>
+  </MInputWrapper>
+```
+
+### Old:
+
 Hook the Javascript events:
 ```js
 // \wwwroot\index.html

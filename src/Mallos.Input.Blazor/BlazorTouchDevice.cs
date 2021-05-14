@@ -1,4 +1,4 @@
-﻿namespace Mallos.Input.Blazor
+namespace Mallos.Input.Blazor
 {
     using Mallos.Input.Touch;
     using Mallos.Input.Trackers;
@@ -44,9 +44,9 @@
             touchLocations = points.Select(x =>
             {
                 var state = TouchLocationState.Moved;
-                var position = new Vector2(x.x, x.y);
+                var position = new Vector2(x.X, x.Y);
 
-                return new TouchLocation(x.identifier, state, position);
+                return new TouchLocation((int)x.Identifier, state, position);
             }).ToArray();
 
             return ValueTask.CompletedTask;
