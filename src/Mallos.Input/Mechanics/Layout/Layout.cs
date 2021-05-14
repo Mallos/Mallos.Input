@@ -24,7 +24,7 @@ namespace Mallos.Input.Mechanics.Layout
         {
             this.LayoutId = layoutId;
             this.DefaultGroupName = defaultGroupName;
-            this.settingsProperties = GetSettingProperties();
+            this.settingsProperties = this.GetSettingProperties();
         }
 
         /// <summary>

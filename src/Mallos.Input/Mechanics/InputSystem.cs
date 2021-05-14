@@ -4,6 +4,18 @@ namespace Mallos.Input.Mechanics
     using Mallos.Input.Mechanics.Input;
     using System;
 
+    /// <summary>
+    /// <see cref="InputSystem"/> have 2 types of input modes, Action and Axis modes,
+    /// which can have "friendly names".
+    ///
+    /// Actions are designed to only handle pressed and released states,
+    /// for example a key press, mouse button, or a gamepad button.
+    /// So an action is either True or False at all times.
+    ///
+    /// Axes are designed to handle multiple input types that will
+    /// create a vector which is useful for handling movement input.
+    /// For example with a gamepad you can handle transitional movement.
+    /// </summary>
     public class InputSystem : ITracker
     {
         /// <summary>
@@ -45,13 +57,15 @@ namespace Mallos.Input.Mechanics
         /// Gets the value of a specific action.
         /// </summary>
         /// <return>The value</return>
-        public bool GetAction(string name) => this.Actions.GetValue(name);
+        public bool GetAction(string name)
+            => this.Actions.GetValue(name);
 
         /// <summary>
         /// Gets the value of a specific axis.
         /// </summary>
         /// <return>The value</return>
-        public float GetAxis(string name) => this.Axis.GetValue(name);
+        public float GetAxis(string name)
+            => this.Axis.GetValue(name);
 
         /// <summary>
         /// Clear the input system of all settings.
