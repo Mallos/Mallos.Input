@@ -4,6 +4,7 @@ A portable way of accessing HID devices cross-platform
 ## Supported Platforms
 
 * Veldrid
+* Blazor
 
 ## Features
 
@@ -14,6 +15,7 @@ A portable way of accessing HID devices cross-platform
 * Mouse
 * Keyboard
 * _Limited GamePad_
+* _Limited Touch_
 
 ### Mechanics
 A lot of the simple things should be in the hands of the designers not the programmers, so lets make it easy to modify key features!
