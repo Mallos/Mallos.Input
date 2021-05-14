@@ -50,10 +50,41 @@ namespace Mallos.Input
         protected TGamePad[] TGamePads { get; }
 
         /// <inheritdoc />
-        public void Update(float elapsedTime)
+        public virtual void Update(float elapsedTime)
         {
-            KeyboardTracker?.Update(elapsedTime);
-            MouseTracker?.Update(elapsedTime);
+            this.KeyboardTracker?.Update(elapsedTime);
+            this.MouseTracker?.Update(elapsedTime);
+        }
+    }
+
+    public class DeviceSet<TKeyboard, TMouse, TGamePad, TTouchDevice> : DeviceSet<TKeyboard, TMouse, TGamePad>
+        where TKeyboard : IKeyboard
+        where TMouse : IMouse
+        where TGamePad : IGamePad
+        where TTouchDevice : ITouchDevice
+    {
+        public ITouchDevice Touch => this.GTouchDevice;
+
+        public ITouchTracker TouchTracker { get; }
+        
+        protected TTouchDevice GTouchDevice { get; }
+
+        public DeviceSet(string name, TKeyboard keyboard, TMouse mouse, TGamePad[] gamePads, TTouchDevice touchDevice)
+            : base(name, keyboard, mouse, gamePads)
+        {
+            this.GTouchDevice = touchDevice;
+        }
+
+        public DeviceSet(string name, TKeyboard keyboard, TMouse mouse, TGamePad[] gamePads)
+            : base(name, keyboard, mouse, gamePads)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void Update(float elapsedTime)
+        {
+            base.Update(elapsedTime);
+            this.TouchTracker?.Update(elapsedTime);
         }
     }
 }
