@@ -1,5 +1,7 @@
 namespace Mallos.Input.Blazor
 {
+    using Mallos.Input.Blazor.Components;
+
     public class BlazorDeviceSet
         : DeviceSet<
             BlazorKeyboard,
@@ -8,12 +10,12 @@ namespace Mallos.Input.Blazor
             BlazorTouchDevice
         >
     {
-        public BlazorDeviceSet()
+        public BlazorDeviceSet(MInputWrapperComponent component)
             : base("Blazor",
-                  new BlazorKeyboard(),
-                  new BlazorMouse(),
+                  new BlazorKeyboard(component),
+                  new BlazorMouse(component),
                   null,
-                  new BlazorTouchDevice())
+                  new BlazorTouchDevice(component))
         {
         }
     }
