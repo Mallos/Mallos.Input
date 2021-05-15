@@ -1,14 +1,9 @@
 namespace Mallos.Input.Test
 {
-    using ImGuiNET;
     using Mallos.Input.Debug.Controls;
     using Mallos.Input.Mechanics;
-    using Mallos.Input.Mechanics.Input;
-    using Mallos.Input.Mechanics.Layout;
     using Mallos.Input.Mechanics.Combo;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Linq;
+    using Mallos.Input.Mechanics.Layout;
 
     class Game : BaseGame
     {
@@ -26,7 +21,7 @@ namespace Mallos.Input.Test
             this.deviceSet = new VeldridDeviceSet();
 
             // FIXME: How the generics was done is bad, lets fix that.
-            var defaultSet = (IDeviceSet)deviceSet;
+            var defaultSet = (IDeviceSet) deviceSet;
 
             this.DeviceSetControl = new DeviceSetControl(defaultSet);
 
