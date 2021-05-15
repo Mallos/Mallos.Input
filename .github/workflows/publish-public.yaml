@@ -25,7 +25,7 @@ jobs:
         dotnet-version: ${{ matrix.dotnet }}
 
     - name: Build and create nuget packages
-      run: dotnet build -c ${{ matrix.configuration }} -p:publicRelease=true
+      run: dotnet pack -c ${{ matrix.configuration }} -p:publicRelease=true
 
     - name: Publish NuGet Packages to GitHub
       run: dotnet nuget push ./bin/Packages/Mallos.Input.*.nupkg --skip-duplicate --no-symbols true -s https://nuget.pkg.github.com/mallos/index.json -k ${{ secrets.GITHUB_TOKEN }}
