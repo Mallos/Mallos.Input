@@ -55,7 +55,7 @@ jobs:
       run: dotnet build -c ${{ matrix.configuration }}
 
     - name: Publish NuGet Packages to GitHub
-      run: dotnet nuget push ./bin/Packages/Mallos.Input.*.nupkg --skip-duplicate --no-symbols true -s https://nuget.pkg.github.com/erictuvesson/index.json -k ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push ./bin/Packages/Mallos.Input.*.nupkg --skip-duplicate --no-symbols true -s https://nuget.pkg.github.com/mallos/index.json -k ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish NuGet Packages to NuGet
       run: dotnet nuget push ./bin/Packages/Mallos.Input.*.nupkg --skip-duplicate --no-symbols true -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }}
