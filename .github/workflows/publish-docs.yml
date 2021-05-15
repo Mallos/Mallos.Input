@@ -4,6 +4,8 @@ on:
   push:
     branches:
     - master
+    paths:
+    - 'docs/**'
 
 jobs:
   tests:
@@ -17,11 +19,27 @@ jobs:
     - name: Checkout 🛎
       uses: actions/checkout@v2.3.4
         
-    - name: vuepress-deploy
-      uses: jenkey2011/vuepress-deploy@master
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        TARGET_REPO: mallos/Mallos.Input
-        TARGET_BRANCH: docs
-        BUILD_SCRIPT: yarn && yarn build
-        BUILD_DIR: docs/.vuepress/dist/
+    - name: Generate static vuepress files
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - run: npm ci
+    - run: npm run build
+
+    - name: Init new repo in dist folder and commit generated files
+      run: |
+        cd docs/.vuepress/dist
+        git init
+        git add -A
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m 'deploy'
+
+    - name: Force push to destination branch
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        force: true
+        directory: ./docs/.vuepress/dist
