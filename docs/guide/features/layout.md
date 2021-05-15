@@ -5,6 +5,7 @@ this makes it super easy to create multiple input layouts which can be serialize
 ## Features
 - Easy input layouts for input system
 - Helper methods for creating a settings page
+- Handle Mouse Buttons, Keyboard keys and GamePad buttons all in the same place
 
 ## Getting Started
 

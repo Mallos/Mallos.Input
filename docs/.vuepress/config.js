@@ -48,7 +48,6 @@ module.exports = {
           children: [
             '',
             'feature',
-            'getting-started',
           ]
         },
         {

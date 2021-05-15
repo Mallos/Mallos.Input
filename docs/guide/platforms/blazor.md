@@ -1,7 +1,9 @@
-# ASP.NET Blazor
+# [ASP.NET Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
 Blazor lets you build interactive web UIs using C# instead of JavaScript,
-with __Mallos.Input__ we can make it easier to create complex and interactable elements for the web, with a strong target for handling HTML Canvases.
+with __Mallos.Input__ we can make it easier to create complex and interactable elements for the web,
+with a strong target for handling HTML Canvases.
 
+## Samples
 A sample can be found [here](https://github.com/Mallos/Mallos.Input/tree/4c7b80fa7e7f0c80a567b26ea47c3826de4d094a/samples/blazor) which is using Blazor HTML Canvas.
 
 ## Installing
