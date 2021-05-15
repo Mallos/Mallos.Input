@@ -200,6 +200,8 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
+# VuePress dist folder
+docs/.vuepress/dist
 
 *.ini
 !stylecop.json

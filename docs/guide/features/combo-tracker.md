@@ -1,6 +1,12 @@
 # Combo Tracker
+Combo Tracker allows you to track button combos.
 
-## Example
+## Features
+- Event Driven
+- Multiple & Complex combos
+- Find combos with normal and fuzzy searching
+
+## Getting Started
 
 ```cs
 // You can pass any trackers or multiple trackers at once.
@@ -18,8 +24,7 @@ comboTracker.SequenceCombos.Add("Attack2", Keys.A, Keys.C, Keys.B);
 comboTracker.SequenceCombos.Add("Attack3", Buttons.A, Buttons.B, Buttons.X);
 ```
 
-### Combo Searching
-
+## Combo Searching
 A feature useful for displaying possible combos.
 
 ```cs
