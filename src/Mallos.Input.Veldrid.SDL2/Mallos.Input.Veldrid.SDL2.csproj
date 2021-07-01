@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid.SDL2" Version="4.7.0-ge562009c27" />
+    <PackageReference Include="Veldrid.SDL2" Version="4.8.0" />
   </ItemGroup>
 
   <ItemGroup>
