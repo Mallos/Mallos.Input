@@ -10,6 +10,14 @@ export function init(instance) {
   return true;
 }
 
+function invokeNet(name, ...args) {
+  try {
+    _callbackInstance.invokeMethodAsync(name, ...args);
+  } catch (exception) {
+    console.error(exception);
+  }
+}
+
 export function getBoundingClientRect(id) {
   const element = document.getElementById(id);
   if (element) {
@@ -36,19 +44,19 @@ export function addEvents(id) {
     const clientRect = e.target.getBoundingClientRect();
     const absPositionX = e.clientX - clientRect.x;
     const absPositionY = e.clientY - clientRect.y;
-    _callbackInstance.invokeMethodAsync('OnMouseMove', absPositionX, absPositionY);
+    invokeNet('OnMouseMove', absPositionX, absPositionY);
   });
 
   canvas.addEventListener('mousedown', e => {
-    _callbackInstance.invokeMethodAsync('OnMouseDown', e.button);
+    invokeNet('OnMouseDown', e.button);
   });
 
   canvas.addEventListener('mouseup', e => {
-    _callbackInstance.invokeMethodAsync('OnMouseUp', e.button);
+    invokeNet('OnMouseUp', e.button);
   });
 
   canvas.addEventListener('mousewheel', e => {
-    _callbackInstance.invokeMethodAsync('OnMouseWheel', e.deltaY);
+    invokeNet('OnMouseWheel', e.deltaY);
   });
 
   ///
@@ -56,11 +64,11 @@ export function addEvents(id) {
   ///
 
   canvas.addEventListener('keydown', e => {
-    _callbackInstance.invokeMethodAsync('OnKeyDown', e.keyCode);
+    invokeNet('OnKeyDown', e.keyCode);
   });
 
   canvas.addEventListener('keyup', e => {
-    _callbackInstance.invokeMethodAsync('OnKeyUp', e.keyCode);
+    invokeNet('OnKeyUp', e.keyCode);
   });
 
   ///
@@ -80,7 +88,7 @@ export function addEvents(id) {
       });
     }
 
-    _callbackInstance.invokeMethodAsync('OnTouch', touchPoints);
+    invokeNet('OnTouch', touchPoints);
   }
 
   canvas.addEventListener('touchstart', e => {
