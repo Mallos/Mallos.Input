@@ -1,9 +1,9 @@
 namespace Mallos.Input.Mechanics.Input
 {
-    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using System.Linq;
 
     public abstract class TriggerCollection<TType, TValue> : ObservableCollection<TType>
         where TType : IInputTrigger
@@ -16,14 +16,23 @@ namespace Mallos.Input.Mechanics.Input
         /// </summary>
         public List<string> Keys { get; private set; } = new List<string>();
 
+        public void Add(params TType[] values)
+        {
+            if (values != null)
+            {
+                foreach (TType item in values)
+                {
+                    base.Add(item);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the value of a specific trigger.
         /// </summary>
         /// <return>The value</return>
         public TValue GetValue(string name)
-        {
-            return this.values.ContainsKey(name) ? this.values[name] : default(TValue);
-        }
+            => this.values.ContainsKey(name) ? this.values[name] : default;
 
         /// <summary>
         /// Returns all the trigger keys and values.
@@ -32,12 +41,12 @@ namespace Mallos.Input.Mechanics.Input
         {
             this.tmpValues.Clear();
 
-            foreach (var key in this.Keys)
+            foreach (string key in this.Keys)
             {
                 this.tmpValues[key] = this.GetValue(key);
             }
 
-            return tmpValues;
+            return this.tmpValues;
         }
 
         /// <summary>
@@ -46,6 +55,10 @@ namespace Mallos.Input.Mechanics.Input
         public void ClearValues()
         {
             this.values.Clear();
+        }
+
+        protected virtual void BeforeProcessDevices(IDevice[] devices, IReadOnlyDictionary<string, TValue> lastState)
+        {
         }
 
         protected abstract TValue OnTriggerDown(TType trigger, TValue currentValue);
@@ -58,9 +71,10 @@ namespace Mallos.Input.Mechanics.Input
 
         internal void Update(params IDevice[] devices)
         {
+            this.BeforeProcessDevices(devices, this.values);
             this.values.Clear();
 
-            foreach (var device in devices)
+            foreach (IDevice device in devices)
             {
                 this.ProcessDevice(device);
             }
@@ -68,10 +82,11 @@ namespace Mallos.Input.Mechanics.Input
 
         private void ProcessDevice(IDevice device)
         {
+            // process all the keyboard events
             if (device is IKeyboard keyboard)
             {
-                var keyboardState = keyboard.GetCurrentState();
-                foreach (var trigger in this.Items)
+                KeyboardState keyboardState = keyboard.GetCurrentState();
+                foreach (TType trigger in this.Items)
                 {
                     if (trigger.Key.Type != InputType.Keyboard)
                     {
@@ -85,10 +100,11 @@ namespace Mallos.Input.Mechanics.Input
                 }
             }
 
+            // process all the mouse events
             if (device is IMouse mouse)
             {
-                var mouseState = mouse.GetCurrentState();
-                foreach (var trigger in this.Items)
+                MouseState mouseState = mouse.GetCurrentState();
+                foreach (TType trigger in this.Items)
                 {
                     if (trigger.Key.Type != InputType.Mouse)
                     {
@@ -102,10 +118,11 @@ namespace Mallos.Input.Mechanics.Input
                 }
             }
 
+            // process all the gamepad events
             if (device is IGamePad gamepad)
             {
-                var gamepadState = gamepad.GetCurrentState();
-                foreach (var trigger in this.Items)
+                GamePadState gamepadState = gamepad.GetCurrentState();
+                foreach (TType trigger in this.Items)
                 {
                     if (trigger.Key.Type != InputType.GamePad)
                     {
@@ -121,15 +138,15 @@ namespace Mallos.Input.Mechanics.Input
 
             if (device is ITouchDevice touch)
             {
-                var touchState = touch.GetCurrentState();
+                Touch.TouchCollection touchState = touch.GetCurrentState();
                 // TODO: Support touch
             }
         }
 
         private void OnClicked(TType trigger)
         {
-            this.values.TryGetValue(trigger.Name, out var currentValue);
-            var newValue = this.OnTriggerDown(trigger, currentValue);
+            this.values.TryGetValue(trigger.Name, out TValue currentValue);
+            TValue newValue = this.OnTriggerDown(trigger, currentValue);
             this.values[trigger.Name] = newValue;
         }
     }
