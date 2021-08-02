@@ -61,6 +61,13 @@ namespace Mallos.Input.Mechanics
             => this.Actions.GetValue(name);
 
         /// <summary>
+        /// Gets wether the specific action just changed to true.
+        /// </summary>
+        /// <return>The value</return>
+        public bool GetNewAction(string name)
+            => this.Actions.GetNewValue(name);
+
+        /// <summary>
         /// Gets the value of a specific axis.
         /// </summary>
         /// <return>The value</return>
