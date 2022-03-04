@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Events | Mallos.Input Docs</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="A portable way of accessing HID devices cross-platform">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/Mallos.Input/assets/css/0.styles.f1556441.css" as="style"><link rel="preload" href="/Mallos.Input/assets/js/app.bf575dd6.js" as="script"><link rel="preload" href="/Mallos.Input/assets/js/2.80f403c2.js" as="script"><link rel="preload" href="/Mallos.Input/assets/js/10.cdcc7e85.js" as="script"><link rel="prefetch" href="/Mallos.Input/assets/js/11.42b2a6af.js"><link rel="prefetch" href="/Mallos.Input/assets/js/12.141f234c.js"><link rel="prefetch" href="/Mallos.Input/assets/js/13.98f7f3f4.js"><link rel="prefetch" href="/Mallos.Input/assets/js/14.5cfabb5b.js"><link rel="prefetch" href="/Mallos.Input/assets/js/15.4f00eca1.js"><link rel="prefetch" href="/Mallos.Input/assets/js/3.f19f8194.js"><link rel="prefetch" href="/Mallos.Input/assets/js/4.e7c996f5.js"><link rel="prefetch" href="/Mallos.Input/assets/js/5.6eff8140.js"><link rel="prefetch" href="/Mallos.Input/assets/js/6.17d5dd20.js"><link rel="prefetch" href="/Mallos.Input/assets/js/7.f908b5a8.js"><link rel="prefetch" href="/Mallos.Input/assets/js/8.f24d23af.js"><link rel="prefetch" href="/Mallos.Input/assets/js/9.9f0f34fe.js">
+    <link rel="stylesheet" href="/Mallos.Input/assets/css/0.styles.f1556441.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/Mallos.Input/" class="home-link router-link-active"><!----> <span class="site-name">Mallos.Input Docs</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/Mallos.Input/guide/" class="nav-link router-link-active">
+  Guide
+</a></div> <a href="https://github.com/Mallos/Mallos.Input" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/Mallos.Input/guide/" class="nav-link router-link-active">
+  Guide
+</a></div> <a href="https://github.com/Mallos/Mallos.Input" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Guide</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/Mallos.Input/guide/" aria-current="page" class="sidebar-link">Introduction</a></li><li><a href="/Mallos.Input/guide/feature.html" class="sidebar-link">Features</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Features</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/Mallos.Input/guide/features/events.html" aria-current="page" class="active sidebar-link">Events</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/Mallos.Input/guide/features/events.html#features" class="sidebar-link">Features</a></li><li class="sidebar-sub-header"><a href="/Mallos.Input/guide/features/events.html#getting-started" class="sidebar-link">Getting Started</a></li></ul></li><li><a href="/Mallos.Input/guide/features/input-system.html" class="sidebar-link">Input System</a></li><li><a href="/Mallos.Input/guide/features/combo-tracker.html" class="sidebar-link">Combo Tracker</a></li><li><a href="/Mallos.Input/guide/features/layout.html" class="sidebar-link">Layout</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Platforms</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/Mallos.Input/guide/platforms/blazor.html" class="sidebar-link">ASP.NET Blazor</a></li><li><a href="/Mallos.Input/guide/platforms/veldrid.html" class="sidebar-link">Veldrid</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="events"><a href="#events" class="header-anchor">#</a> Events</h1> <p>Events are taken directly from the device set.</p> <p>Events are built on top of a tracking system,
+which can be specifically built for a platform to handle the raw events or
+a real-time tracker that checks the difference each tick.
+That will in turn invoke the events.</p> <h2 id="features"><a href="#features" class="header-anchor">#</a> Features</h2> <ul><li>Mouse Events</li> <li>Keyboard Events</li> <li>GamePad Events</li></ul> <h3 id="input-tracker"><a href="#input-tracker" class="header-anchor">#</a> Input Tracker</h3> <p>Input Tracker is an extra feature that was built to track multiple types of devices.
+Which will combine the events to just a very few, but still keep the same context.</p> <p>This kind of tracker is used in the Combo system,
+which supports multiple types of inputs from different devices.</p> <h2 id="getting-started"><a href="#getting-started" class="header-anchor">#</a> Getting Started</h2> <p>Make sure that the device set is getting updated on every tick.
+This is required for all platforms that doesn't pull the events directly when they happen.</p> <div class="language-cs extra-class"><pre class="language-cs"><code><span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span><span class="token function">Update</span><span class="token punctuation">(</span>elapsedTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="mouse-event-example"><a href="#mouse-event-example" class="header-anchor">#</a> Mouse Event Example</h3> <p>This is something that I used to test all the mouse events that were called by the blazor device set.</p> <div class="language-cs extra-class"><pre class="language-cs"><code><span class="token keyword">class</span> <span class="token class-name">MouseLogger</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">BlazorDeviceSet</span> DeviceSet <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">MouseTestLogger</span><span class="token punctuation">(</span><span class="token class-name">BlazorDeviceSet</span> DeviceSet<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet <span class="token operator">=</span> DeviceSet<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>MouseTracker<span class="token punctuation">.</span>MouseDown <span class="token operator">+=</span> MouseTracker_MouseDown<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>MouseTracker<span class="token punctuation">.</span>MouseUp <span class="token operator">+=</span> MouseTracker_MouseUp<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>MouseTracker<span class="token punctuation">.</span>MouseWheel <span class="token operator">+=</span> MouseTracker_MouseWheel<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>MouseTracker<span class="token punctuation">.</span>Move <span class="token operator">+=</span> MouseTracker_Move<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">MouseTracker_Move</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sender<span class="token punctuation">,</span> <span class="token class-name">Mallos<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>MouseEventArgs</span> e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> mouseState <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>Mouse<span class="token punctuation">.</span><span class="token function">GetCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>mouseState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">MouseTracker_MouseWheel</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sender<span class="token punctuation">,</span> <span class="token class-name">Mallos<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>MouseWheelEventArgs</span> e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> mouseState <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>Mouse<span class="token punctuation">.</span><span class="token function">GetCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>mouseState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">MouseTracker_MouseUp</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sender<span class="token punctuation">,</span> <span class="token class-name">Mallos<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>MouseButtonEventArgs</span> e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> mouseState <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>Mouse<span class="token punctuation">.</span><span class="token function">GetCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>mouseState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">MouseTracker_MouseDown</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sender<span class="token punctuation">,</span> <span class="token class-name">Mallos<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>MouseButtonEventArgs</span> e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> mouseState <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>Mouse<span class="token punctuation">.</span><span class="token function">GetCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>mouseState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="keyboard-event-example"><a href="#keyboard-event-example" class="header-anchor">#</a> Keyboard Event Example</h3> <p>This is something that I used to test all the keyboard events that were called by the blazor device set.</p> <div class="language-cs extra-class"><pre class="language-cs"><code><span class="token keyword">class</span> <span class="token class-name">KeyboardTestLogger</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">BlazorDeviceSet</span> DeviceSet <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">KeyboardTestLogger</span><span class="token punctuation">(</span><span class="token class-name">BlazorDeviceSet</span> DeviceSet<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet <span class="token operator">=</span> DeviceSet<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>KeyboardTracker<span class="token punctuation">.</span>KeyUp <span class="token operator">+=</span> KeyboardTracker_KeyUp<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>KeyboardTracker<span class="token punctuation">.</span>KeyDown <span class="token operator">+=</span> KeyboardTracker_KeyDown<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">KeyboardTracker_KeyUp</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sender<span class="token punctuation">,</span> <span class="token class-name">Mallos<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>KeyEventArgs</span> e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> keyboardState <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>Keyboard<span class="token punctuation">.</span><span class="token function">GetCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">&quot;KeyUp: &quot;</span> <span class="token operator">+</span> keyboardState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">KeyboardTracker_KeyDown</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sender<span class="token punctuation">,</span> <span class="token class-name">Mallos<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>KeyEventArgs</span> e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> keyboardState <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>DeviceSet<span class="token punctuation">.</span>Keyboard<span class="token punctuation">.</span><span class="token function">GetCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">&quot;KeyDown: &quot;</span> <span class="token operator">+</span> keyboardState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/Mallos.Input/guide/feature.html" class="prev">
+        Features
+      </a></span> <span class="next"><a href="/Mallos.Input/guide/features/input-system.html">
+        Input System
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/Mallos.Input/assets/js/app.bf575dd6.js" defer></script><script src="/Mallos.Input/assets/js/2.80f403c2.js" defer></script><script src="/Mallos.Input/assets/js/10.cdcc7e85.js" defer></script>
+  </body>
+</html>
