@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <NerdbankGitVersioningVersion>3.4.244</NerdbankGitVersioningVersion>
+    <NerdbankGitVersioningVersion>3.5.104</NerdbankGitVersioningVersion>
   </PropertyGroup>
 
   <ItemGroup>
