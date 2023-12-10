@@ -38,11 +38,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
 
   <PropertyGroup>
-    <NerdbankGitVersioningVersion>3.4.244</NerdbankGitVersioningVersion>
+    <NerdbankGitVersioningVersion>3.6.133</NerdbankGitVersioningVersion>
   </PropertyGroup>
 
   <ItemGroup>
