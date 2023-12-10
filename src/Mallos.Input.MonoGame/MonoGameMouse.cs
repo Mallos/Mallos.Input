@@ -15,10 +15,10 @@ namespace Mallos.Input.MonoGame
         {
             Microsoft.Xna.Framework.Input.MouseState state = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
-            var newState = new MouseState(
+            MouseState newState = new(
                 x: state.X,
                 y: state.Y,
-                scrollWheel: state.ScrollWheelValue - lastScrollWheelValue,
+                scrollWheel: state.ScrollWheelValue - this.lastScrollWheelValue,
                 leftButton: state.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,
                 middleButton: state.MiddleButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,
                 rightButton: state.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,

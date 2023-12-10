@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.88
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4FB0816A-AD8E-448E-928A-774A64FC1C30}"
 EndProject
@@ -33,11 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "veldrid", "veldrid", "{071F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Veldrid.SDL2.Sample", "samples\veldrid\Veldrid.SDL2.Sample\Veldrid.SDL2.Sample.csproj", "{D426D75B-352E-48DD-A3EC-84FC238E8AFA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Input.MonoGame", "src\Mallos.Input.MonoGame\Mallos.Input.MonoGame.csproj", "{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\Mallos.Input.Debug\Mallos.Input.Debug.projitems*{185e0c41-48cb-4a2e-b9cd-9696d3a0100c}*SharedItemsImports = 5
-		src\Mallos.Input.Debug\Mallos.Input.Debug.projitems*{ffda853a-f774-491d-bb94-918464bebe47}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -131,6 +129,18 @@ Global
 		{D426D75B-352E-48DD-A3EC-84FC238E8AFA}.Release|x64.Build.0 = Release|Any CPU
 		{D426D75B-352E-48DD-A3EC-84FC238E8AFA}.Release|x86.ActiveCfg = Release|Any CPU
 		{D426D75B-352E-48DD-A3EC-84FC238E8AFA}.Release|x86.Build.0 = Release|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Debug|x64.Build.0 = Debug|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Debug|x86.Build.0 = Debug|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Release|x64.ActiveCfg = Release|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Release|x64.Build.0 = Release|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Release|x86.ActiveCfg = Release|Any CPU
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,8 +156,13 @@ Global
 		{2FB3D047-5D83-4430-80E3-320991B56038} = {F2321B34-936B-4466-B8D3-AF57FC15140D}
 		{071FD44A-9C85-4847-A580-4E99B268840F} = {1CD9C844-1AED-414E-814A-96CD68EC107A}
 		{D426D75B-352E-48DD-A3EC-84FC238E8AFA} = {071FD44A-9C85-4847-A580-4E99B268840F}
+		{E8194C7D-B9DA-453B-8CCB-8D2AAC763676} = {4FB0816A-AD8E-448E-928A-774A64FC1C30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3F35AF9-BE47-4EEB-9C2F-CD7AF08FFA4E}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Mallos.Input.Debug\Mallos.Input.Debug.projitems*{185e0c41-48cb-4a2e-b9cd-9696d3a0100c}*SharedItemsImports = 5
+		src\Mallos.Input.Debug\Mallos.Input.Debug.projitems*{ffda853a-f774-491d-bb94-918464bebe47}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
