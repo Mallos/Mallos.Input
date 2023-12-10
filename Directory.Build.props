@@ -7,14 +7,16 @@
     <OutputPath>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)'))\$(MSBuildProjectName)</OutputPath>
     <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
     <PackageOutputPath>$(BinDir)\Packages\$(Configuration)</PackageOutputPath>
+    <!-- By default this is now turned off -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>Copyright 2019 (c) Eric Tuvesson (erictuvesson). All rights reserved.</Copyright>
     <Authors>Eric Tuvesson</Authors>
-    <RepositoryUrl>https://github.com/erictuvesson/Mallos.Input</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/erictuvesson/Mallos.Input</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mallos/Mallos.Input</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mallos/Mallos.Input</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
@@ -34,12 +36,13 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
 
   <PropertyGroup>
-    <NerdbankGitVersioningVersion>3.0.25</NerdbankGitVersioningVersion>
+    <NerdbankGitVersioningVersion>3.6.133</NerdbankGitVersioningVersion>
   </PropertyGroup>
 
   <ItemGroup>

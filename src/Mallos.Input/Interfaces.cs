@@ -1,4 +1,4 @@
-﻿namespace Mallos.Input
+namespace Mallos.Input
 {
     using Mallos.Input.Touch;
     using Mallos.Input.Trackers;
@@ -63,7 +63,7 @@
     /// <summary>
     /// Interface that represents a touch device.
     /// </summary>
-    public interface ITouchDevice : IDevice<ITracker, TouchCollection>
+    public interface ITouchDevice : IDevice<ITouchTracker, TouchCollection>
     {
         /// <summary>
         /// Used to determine if a touch gesture is available.

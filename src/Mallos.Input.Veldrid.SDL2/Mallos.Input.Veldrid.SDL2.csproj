@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Mallos.Input</RootNamespace>
     <CodeAnalysisRuleSet>../../build/Analyzers.ruleset</CodeAnalysisRuleSet>
     <Description>A portable way of accessing HID devices for different frameworks. Targets .NET Standard 2.0</Description>
@@ -12,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Veldrid.SDL2" Version="4.7.0-ge562009c27" />
+    <PackageReference Include="Veldrid.SDL2" Version="4.9.0" />
   </ItemGroup>
 
   <ItemGroup>

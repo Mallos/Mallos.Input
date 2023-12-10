@@ -23,7 +23,6 @@ namespace Mallos.Input
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseState"/> struct.
         /// </summary>
-        [System.Obsolete("This will be removed in future versions.")]
         public MouseState(int x, int y,
             int scrollWheel,
             bool leftButton, bool middleButton, bool rightButton,

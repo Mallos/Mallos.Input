@@ -1,0 +1,51 @@
+@page "/"
+@using System.Drawing
+@using Blazor.Extensions
+@using BlazorSample.Core
+
+@inject IJSRuntime JsRuntime;
+
+<div
+  id="canvasContainer"
+  style="position: fixed; opacity: 1; background-color: black; width: 100%; height: 100%"
+>
+  <MInputWrapper @ref="inputWrapperComponent">
+    <BECanvas @ref="canvasComponent"></BECanvas>
+  </MInputWrapper>
+</div>
+
+@code
+{
+    MInputWrapperComponent inputWrapperComponent;
+    BECanvasComponent canvasComponent;
+
+    GameContext gameContext;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeAsync<object>("initGame", DotNetObjectReference.Create(this));
+
+            var canvasContext = await canvasComponent.CreateCanvas2DAsync();
+            gameContext = new GameContext(canvasContext, inputWrapperComponent);
+
+            // this will make sure that the viewport is correctly initialized
+            await JsRuntime.InvokeAsync<object>("gameWindowResize", DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public async ValueTask GameLoop(float timeStamp)
+    {
+        if (null == gameContext) return;
+        await gameContext.Step(timeStamp);
+    }
+
+    [JSInvokable]
+    public async ValueTask OnResize(int screenWidth, int screenHeight)
+    {
+        if (null == gameContext) return;
+        gameContext.Display.Size = new Size(screenWidth, screenHeight);
+    }
+}

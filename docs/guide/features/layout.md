@@ -1,7 +1,15 @@
 # Layout
+Handle input layouts easily for the Input System,
+this makes it super easy to create multiple input layouts which can be serialized.
 
-## Example
+## Features
+- Easy input layouts for input system
+- Helper methods for creating a settings page
+- Handle Mouse Buttons, Keyboard keys and GamePad buttons all in the same place
 
+## Getting Started
+
+Create the layout class which have all possible actions and axes that the user will have access too.
 ```cs
 public class LayoutTest : Layout
 {
@@ -57,26 +65,37 @@ public class LayoutTest : Layout
     Pause           = new InputKeys(Buttons.Start),
   };
 }
+```
 
-// ...
+## Helper Methods
 
+There are a few helper methods to make it easier to create a setting page.
+```cs
 var mylayout = LayoutTest.DefaultLayout;
 
-var settingsCount = mylayout.TriggerCount();
+// Returns the amount of settings that exist on this layout. 
+var settingsCount = mylayout.SettingsCount();
 
-// ...
-
+// Returns a dictionary with the settings.
 var settings = mylayout.GetSettings();
 
+// Check if the "W" key is currently used anywhere.
 if (mylayout.IsKeyUsed(Keys.W))
 {
   // show alert are you sure you want to set this key.
 }
 
+// Update a setting direcly.
 settings["Movement"][0].Set(new InputKeys(Keys.W, Keys.Up));
 
 // if you have some way to save the layout you can do it now.
-// in a future version i want to have a config system too
+// There are future plans to build a save system for layouts.
+```
+
+## Applying a Layout to Input System
+
+```cs
+var mylayout = LayoutTest.DefaultLayout;
 
 mylayout.Apply(inputSystem);
 ```

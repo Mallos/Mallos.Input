@@ -1,4 +1,4 @@
-﻿namespace Mallos.Input.Mechanics.Combo
+namespace Mallos.Input.Mechanics.Combo
 {
     using System;
     using Mallos.Input.Trackers;
@@ -51,7 +51,7 @@
         /// </summary>
         public float ComboTimeout
         {
-            get { return this.comboTimeout; }
+            get => this.comboTimeout;
             set
             {
                 if (this.comboTimeout != value)
@@ -71,7 +71,7 @@
         /// </summary>
         public int MaxCombo
         {
-            get { return this.maxCombo; }
+            get => this.maxCombo;
             set
             {
                 if (this.maxCombo != value)
@@ -104,7 +104,7 @@
         /// <returns>A string containing all the history keys.</returns>
         public string HistoryAsString(string seperator = ",")
         {
-            var result = string.Empty;
+            string result = string.Empty;
 
             for (int i = 0; i < this.historyIndex; i++)
             {

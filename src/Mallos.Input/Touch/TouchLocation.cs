@@ -12,16 +12,6 @@ namespace Mallos.Input.Touch
         // TODO: Add previus position and state
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TouchLocation"/> struct.
-        /// </summary>
-        public TouchLocation(int id, TouchLocationState state, Vector2 position)
-        {
-            this.Id = id;
-            this.State = state;
-            this.Position = position;
-        }
-
-        /// <summary>
         /// Gets the ID of the touch location.
         /// </summary>
         public int Id { get; }
@@ -35,6 +25,16 @@ namespace Mallos.Input.Touch
         /// Gets the state of the touch location.
         /// </summary>
         public TouchLocationState State { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TouchLocation"/> struct.
+        /// </summary>
+        public TouchLocation(int id, TouchLocationState state, Vector2 position)
+        {
+            this.Id = id;
+            this.State = state;
+            this.Position = position;
+        }
 
         public static bool operator !=(TouchLocation value1, TouchLocation value2)
             => (value1.Id != value2.Id)
